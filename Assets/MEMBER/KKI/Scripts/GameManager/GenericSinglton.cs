@@ -25,7 +25,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(gameObject); // 필요에 따라!
+            DontDestroyOnLoad(gameObject);
         }
         else if (instance != this)
         {
