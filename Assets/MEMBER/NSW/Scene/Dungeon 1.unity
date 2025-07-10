@@ -7498,8 +7498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4375bbd485ebd54a9785936ecbd158e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePointID: DefaultSavePoint
-  player: {fileID: 0}
+  savePointID: Dungeon 1
+  player: {fileID: 1497966602}
   saveDelay: 0.5
 --- !u!65 &1917585454
 BoxCollider:
@@ -8056,7 +8056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 1497966602}
   respawnDelay: 3
   initialSceneName: GameScene
 --- !u!65 &2010269358
