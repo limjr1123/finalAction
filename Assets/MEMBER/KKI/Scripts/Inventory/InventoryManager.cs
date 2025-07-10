@@ -34,6 +34,8 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private ItemDatabase itemDatabase;
     [SerializeField] private List<InventorySlot> inventory = new();
 
+    // 슬롯 제한 20개
+
     public List<InventorySlot> AllSlots => inventory;
 
     #region 아이템 추가/삭제/사용

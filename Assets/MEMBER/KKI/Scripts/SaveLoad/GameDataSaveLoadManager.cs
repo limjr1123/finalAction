@@ -25,6 +25,7 @@ namespace GameSave
         public int exp;
         public InventorySaveData inventoryData = new();
         public QuestSaveData questData = new();
+        // 추가.
     }
 
     [System.Serializable]
