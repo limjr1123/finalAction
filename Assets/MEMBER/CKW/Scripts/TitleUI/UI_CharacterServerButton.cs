@@ -14,6 +14,9 @@ public class UI_CharacterServerButton : MonoBehaviour
     [SerializeField] Button characterDeleteButton;
 
 
+    [SerializeField] GameObject characterSelectionWindow;
+
+
 
     void Start()
     {
@@ -59,7 +62,7 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void CharacterCreate()
     {
-
+        characterSelectionWindow.SetActive(true);
     }
 
 
