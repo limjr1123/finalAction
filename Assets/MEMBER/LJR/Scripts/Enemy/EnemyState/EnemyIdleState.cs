@@ -12,6 +12,16 @@ public class EnemyIdleState : EnemyState<EnemyController>
 
     public override void Execute()
     {
-        
+        Debug.Log("Enemy is in Idle State");
+        enemy.target = enemy.FindTarget();
+        if(enemy.target != null)
+        {
+            enemy.stateMachine.ChangeState(enemy.stateDict[EnemyStates.Battle]);
+        }
+    }
+
+    public override void Exit()
+    {
+        enemy.anim.SetBool("Idle", false);
     }
 }
