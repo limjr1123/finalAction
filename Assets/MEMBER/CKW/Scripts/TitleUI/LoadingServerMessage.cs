@@ -28,7 +28,7 @@ public class LoadingServerMessage : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
 
         }
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("CKW_CharacterSelectScene");
     }
 
 
