@@ -60,7 +60,6 @@ namespace GameSave
 }
 
 
-
 public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
 {
     private string savePath;
@@ -103,7 +102,6 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
         Debug.Log("게임 데이터 불러오기 완료!");
         return data;
     }
-
 
     public void SetSelectedCharacterSlotIndex(int index) => gameData.selectedCharacterSlotIndex = index;
 
