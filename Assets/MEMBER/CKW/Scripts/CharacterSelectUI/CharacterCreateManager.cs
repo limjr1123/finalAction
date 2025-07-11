@@ -23,6 +23,7 @@ public class CharacterCreateManager : MonoBehaviour
 
 
     [Header("Required Components")]
+    [SerializeField] GameObject selectCharacterWindow;
     [SerializeField] GameObject characterCreationWindow;
     [SerializeField] GameObject nickNameCreationWindow;
 
@@ -51,6 +52,8 @@ public class CharacterCreateManager : MonoBehaviour
 
         if (backButton != null)
             backButton.onClick.AddListener(BackCharacterSelectionWindow);
+
+
         if (selectionJobButton != null)     // 직업 생성 버튼을 눌렀을 때
             selectionJobButton.onClick.AddListener(NickNameCreate);
 
@@ -85,6 +88,7 @@ public class CharacterCreateManager : MonoBehaviour
 
     private void BackCharacterSelectionWindow()
     {
+        selectCharacterWindow.SetActive(true);
         characterCreationWindow.SetActive(false);
     }
 
