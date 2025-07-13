@@ -13,20 +13,16 @@ public class EnemyBattleState : EnemyState<EnemyController>
     EnemyController enemy;
     AIBattleState state;
 
-    [SerializeField] float distanceToStand = 3f;        // 타겟과의 기본 유지 거리
-    [SerializeField] float adjustDistanceThreshold = 1f;    // 거리 조정 허용 오차
+    [SerializeField] float distanceToStand;        // 타겟과의 기본 유지 거리
+    [SerializeField] float adjustDistanceThreshold = 0.1f;    // 거리 조정 허용 오차
 
-    [SerializeField] Vector2 idleTimeRange = new Vector2(2, 3);     // 대기 상태 지속 시간 범위(초)
     float timer = 0;
 
     public override void Enter(EnemyController owner)
     {
         enemy = owner;
+        distanceToStand = enemy.stats.attackRange.GetValue(); // 공격 범위에 따라 거리 설정
         enemy.navAgent.stoppingDistance = distanceToStand; // NavMeshAgent의 정지 거리 설정
-        enemy.battleMovementTimer = 0f;
-
-        enemy.anim.SetBool("Battle", true);
-
     }
 
     public override void Execute()
@@ -41,6 +37,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
             }
         }
 
+        // 거리가 먼 경우 추격 상태로 변경
         if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) > distanceToStand + adjustDistanceThreshold)
         {
             StartChase();
@@ -50,16 +47,16 @@ public class EnemyBattleState : EnemyState<EnemyController>
         {
             if (timer <= 0)
             {
-                if (Random.Range(0, 2) == 0)
-                {
-                    StartIdle();
-                }
+                StartChase();
             }
         }
         else if (state == AIBattleState.Chase)
         {
-            if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) <= distanceToStand + 0.03f)
+            if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) <= distanceToStand + adjustDistanceThreshold)
             {
+                enemy.ChangeState(EnemyStates.Attack);
+                
+                // 공격 후 대기 상태로 전환
                 StartIdle();
                 return;
             }
@@ -70,16 +67,16 @@ public class EnemyBattleState : EnemyState<EnemyController>
         {
             timer -= Time.deltaTime;
         }
-
-        enemy.battleMovementTimer += Time.deltaTime;
-
     }
+
+    // 대기 상태 시작
     private void StartIdle()
     {
         state = AIBattleState.Idle;
-        timer = Random.Range(idleTimeRange.x, idleTimeRange.y);
+        timer = enemy.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
     }
 
+    // 추격 상태 시작
     void StartChase()
     {
         state = AIBattleState.Chase;

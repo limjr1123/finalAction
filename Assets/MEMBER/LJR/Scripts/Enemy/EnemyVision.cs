@@ -32,7 +32,10 @@ public class EnemyVision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other == null)
+            return;
         target = other.GetComponent<PlayerController>();
-        enemyController.target = target.gameObject;
+        if (target != null)
+            enemyController.target = target.gameObject;
     }
 }
