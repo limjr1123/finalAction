@@ -129,13 +129,13 @@ GameObject:
   m_Component:
   - component: {fileID: 35756143}
   - component: {fileID: 35756144}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: LeftHandCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &35756143
 Transform:
   m_ObjectHideFlags: 0
@@ -255,6 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunningSpeed: 5
   SprintSpeed: 10
+  Cam: {fileID: 0}
 --- !u!4 &1447651512
 Transform:
   m_ObjectHideFlags: 0
@@ -774,7 +775,7 @@ Transform:
   m_GameObject: {fileID: 1448015002}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.84, y: -0.276, z: -0.63}
+  m_LocalPosition: {x: -1.35, y: -0.276, z: 0.65}
   m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1892,7 +1893,7 @@ NavMeshAgent:
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 720
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -1949,6 +1950,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f1fd6c7d85f8c44bb6b605b550835b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanceToStand: 0
+  adjustDistanceThreshold: 0.1
 --- !u!114 &1457489696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2028,7 +2031,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &1719285801
 GameObject:
@@ -2040,13 +2043,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1719285802}
   - component: {fileID: 1719285803}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: RightHandCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1719285802
 Transform:
   m_ObjectHideFlags: 0
@@ -2356,7 +2359,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2743,7 +2746,7 @@ Transform:
   m_GameObject: {fileID: 919132148161665226}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.49, y: -0.272, z: 2.48}
+  m_LocalPosition: {x: 0.28, y: -0.272, z: 4.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4439,7 +4442,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!4 &5901452233981300979
 Transform:
