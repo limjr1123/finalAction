@@ -1,65 +1,124 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("속도 관련")]
-    public float RunningSpeed = 5f;
-    public float SprintSpeed = 10f;
+    [Header("플레이어 설정")]
+    public float runningSpeed = 5f;
+    public float sprintSpeed = 10f;
+    public float rotationSpeed = 15f; // 캐릭터 회전 속도
 
-    public Transform Cam; // 카메라 Transform
+    [Header("필수 컴포넌트")]
+    public Transform mainCamera;
 
-    private Rigidbody Player_rb;
-    private Animator Player_anim;
-    private Vector3 Moving;
+    private Rigidbody rb;
+    private Animator animator;
+    private Vector3 moveDirection;
+    private float inputX;
+    private float inputY;
 
-    private float X;
-    private float Y;
-    private bool Sprint;
+    private PlayerHealth playerHealth;
+    private bool isDead = false;
 
     void Start()
     {
-        Player_rb = GetComponent<Rigidbody>();
-        Player_anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+
+        playerHealth = GetComponent<PlayerHealth>();
+        PlayerHealth.OnPlayerDied += OnDeath;
+    }
+
+    void OnDisable()
+    {
+        PlayerHealth.OnPlayerDied -= OnDeath;
+    }
+
+    void OnDeath()
+    {
+        isDead = true;
+        animator.SetTrigger("Die");
+        rb.linearVelocity = Vector3.zero;
+        moveDirection = Vector3.zero;
     }
 
     void Update()
     {
-        AnimatorStateInfo stateInfo = Player_anim.GetCurrentAnimatorStateInfo(0);
+        if (isDead) return;
 
-        if (!stateInfo.IsTag("Attack")) //애니메이터 상태가 Attack이면 이동x
-        {
-            X = Input.GetAxisRaw("Horizontal");
-            Y = Input.GetAxisRaw("Vertical");
-
-            // 카메라 기준 방향
-            Vector3 camForward = Cam.forward;
-            Vector3 camRight = Cam.right;
-            camForward.y = 0f;
-            camRight.y = 0f;
-            camForward.Normalize();
-            camRight.Normalize();
-
-            // 입력 방향을 카메라 기준으로 변환
-            Vector3 moveDir = camForward * Y + camRight * X;
-            moveDir.Normalize();
-
-
-            Player_anim.SetFloat("Speed", moveDir.magnitude);
-            Player_anim.SetFloat("MoveX", moveDir.x);
-            Player_anim.SetFloat("MoveY", moveDir.z);
-
-            Sprint = Input.GetKey(KeyCode.LeftShift);  // 왼쪽 시프트 = 스프린트
-            Player_anim.SetBool("IsSprint", Sprint);
-
-            float speed = Sprint ? SprintSpeed : RunningSpeed;
-            Moving = moveDir * speed;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-                Player_anim.SetTrigger("Evasion"); // 스페이스바 = 회피
-        }
+        HandleInput();
+        HandleAnimatorState();
+        HandleActions();
     }
+
     void FixedUpdate()
     {
-        Player_rb.MovePosition(Player_rb.position + Moving * Time.fixedDeltaTime);
+        if (isDead) return;
+
+        HandleMovement();
+    }
+
+    void HandleInput()
+    {
+        inputX = Input.GetAxisRaw("Horizontal");
+        inputY = Input.GetAxisRaw("Vertical");
+    }
+
+    void HandleAnimatorState()
+    {
+        bool isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
+        bool isBlocking = animator.GetCurrentAnimatorStateInfo(0).IsTag("Block");
+        bool isParrying = animator.GetCurrentAnimatorStateInfo(0).IsTag("Parry");
+
+        if (isAttacking || isBlocking || isParrying)
+        {
+            moveDirection = Vector3.zero; // 공격, 막기, 패링 중에는 이동x
+        }
+        else
+        {
+            // 카메라 기준 이동 방향 계산
+            Vector3 camForward = mainCamera.forward;
+            Vector3 camRight = mainCamera.right;
+            camForward.y = 0;
+            camRight.y = 0;
+            camForward.Normalize();
+            camRight.Normalize();
+            moveDirection = (camForward * inputY + camRight * inputX).normalized;
+
+            // 캐릭터 회전
+            if (moveDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+        }
+
+        animator.SetFloat("MoveX", inputX);
+        animator.SetFloat("MoveY", inputY);
+        animator.SetFloat("Speed", new Vector2(inputX, inputY).magnitude);
+    }
+
+    void HandleActions()
+    {
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        animator.SetBool("IsSprint", isSprinting);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            animator.SetTrigger("Evasion");
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+            animator.SetTrigger("Blocking");
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+            animator.SetTrigger("Parrying");
+
+    }
+
+    void HandleMovement()
+    {
+        bool isSprinting = animator.GetBool("IsSprint");
+        float currentSpeed = isSprinting ? sprintSpeed : runningSpeed;
+
+        rb.MovePosition(rb.position + moveDirection * currentSpeed * Time.fixedDeltaTime);
     }
 }
