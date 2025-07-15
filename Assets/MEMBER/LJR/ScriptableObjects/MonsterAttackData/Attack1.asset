@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <animName>k__BackingField: Attack1
   <hitboxToUse>k__BackingField: 2
-  <impactStartTime>k__BackingField: 0.1
-  <impactEndTime>k__BackingField: 0.27
+  <impactStartTime>k__BackingField: 0.2
+  <impactEndTime>k__BackingField: 0.6

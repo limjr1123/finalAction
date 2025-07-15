@@ -7,7 +7,6 @@ public class EnemyIdleState : EnemyState<EnemyController>
     public override void Enter(EnemyController owner)
     {
         enemy = owner;
-        enemy.anim.SetBool("Idle", true);
     }
 
     public override void Execute()
@@ -22,6 +21,6 @@ public class EnemyIdleState : EnemyState<EnemyController>
 
     public override void Exit()
     {
-        enemy.anim.SetBool("Idle", false);
+
     }
 }

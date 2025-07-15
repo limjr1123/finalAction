@@ -10,7 +10,7 @@ public enum EnemyStates
     Run,
     Battle,
     Attack,
-    gettingHit,
+    getHit,
     Dead,
 }
 
@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour
     public EnemyVision visionSensor { get; internal set; }
     public MeleeEnemy meleeEnemy { get; private set; }
 
-    public float battleMovementTimer { get; set; } = 0f;
+    Vector3 prevPos;
 
     void Start()
     {
@@ -42,6 +42,7 @@ public class EnemyController : MonoBehaviour
         stateDict[EnemyStates.Battle] = GetComponent<EnemyBattleState>();
         stateDict[EnemyStates.Attack] = GetComponent<EnemyAttackState>();
         stateDict[EnemyStates.Dead] = GetComponent<EnemyDeadState>();
+        stateDict[EnemyStates.getHit] = GetComponent<EnemyGetHitState>();
 
         stateMachine = new EnemyStateMachine<EnemyController>(this);
 
@@ -52,6 +53,15 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         stateMachine.Execute();
+
+        var deltaPos = transform.position - prevPos;    // 이전 위치와 현재 위치의 차이 계산
+        var velocity = deltaPos / Time.deltaTime;       // 이동 속도 계산
+
+        float forwardSpeed = Vector3.Dot(velocity, transform.forward); // 이동 방향과 속도 벡터의 내적 계산
+
+        // magnitude로 이동속도 벡터의 크기를 가져와서 실제 설정된Speed에 맞게 비율을 계산(0~1)
+        anim.SetFloat("forwardSpeed", forwardSpeed / navAgent.speed, 0.2f, Time.deltaTime); // 애니메이터의 이동 속도 설정
+        prevPos = transform.position; // 현재 위치 저장
     }
 
 
@@ -74,8 +84,19 @@ public class EnemyController : MonoBehaviour
     {
         stateMachine.ChangeState(stateDict[state]);
     }
+
+    // State 확인 메서드
     public bool IsInState(EnemyStates states)
     {
         return stateMachine.currentState == stateDict[states];
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HitBox"))
+        {
+            Debug.Log("타격 성공");
+        }
+    }
+
 }

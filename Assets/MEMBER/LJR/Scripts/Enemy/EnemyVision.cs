@@ -27,12 +27,14 @@ public class EnemyVision : MonoBehaviour
     {
         // 범위 감지용 콜라이더의 반지름을 적의 어그로 범위(aggroRange)로 설정
         sphereCollider.radius = enemyController.stats.aggroRange.GetValue();
-        Debug.Log(sphereCollider.radius);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other == null)
+            return;
         target = other.GetComponent<PlayerController>();
-        enemyController.target = target.gameObject;
+        if (target != null)
+            enemyController.target = target.gameObject;
     }
 }
