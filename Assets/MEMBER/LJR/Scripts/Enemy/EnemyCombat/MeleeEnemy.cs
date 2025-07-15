@@ -76,13 +76,13 @@ public class MeleeEnemy : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(attackDir.Value), 360f * Time.deltaTime);
         }
         string animName = attacks[comboCounter].animName;
-        Debug.Log(animName);
+
         anim.CrossFade(animName,0.2f);
         yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
 
         //GetNextAnimatorStateInfo 애니매이션 상태 정보를 가져옵니다.
         var animState = anim.GetNextAnimatorStateInfo(1);
-        Debug.Log(animState);
+
         float timer = 0f;
         while (timer <= animState.length)
         {
@@ -106,7 +106,6 @@ public class MeleeEnemy : MonoBehaviour
             {
                 if (normalizedTime >= attacks[comboCounter].impactEndTime)
                 {
-                    
                     attackState = EnemyAttackStateInfo.AttackDelay;
                     //콜라이더 끄기
                     DisableAllCollider();
@@ -130,9 +129,9 @@ public class MeleeEnemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("HitBox") && !inAction)
+        if(other.CompareTag("HitBox"))
         {
-            
+            Debug.Log("타격 성공");
         }
     }
 

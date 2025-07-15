@@ -40,7 +40,10 @@ public class EnemyBattleState : EnemyState<EnemyController>
         // 거리가 먼 경우 추격 상태로 변경
         if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) > distanceToStand + adjustDistanceThreshold)
         {
-            StartChase();
+            if (timer <= 0)
+            {
+                StartChase();
+            }
         }
 
         if (state == AIBattleState.Idle)
@@ -48,6 +51,28 @@ public class EnemyBattleState : EnemyState<EnemyController>
             if (timer <= 0)
             {
                 StartChase();
+            }
+            else
+            {
+                // 공격 범위 내에서는 플레이어 주변을 맴도는 목적지 설정
+                Vector3 directionToPlayer = (enemy.target.transform.position - transform.position).normalized;
+                Vector3 orbitPosition = enemy.target.transform.position - directionToPlayer * (enemy.stats.attackRange.GetValue() - 0.1f);
+
+                enemy.navAgent.SetDestination(orbitPosition);
+
+                // 수동 회전 처리
+                directionToPlayer.y = 0;
+
+                if (directionToPlayer != Vector3.zero)
+                {
+                    float dot = Vector3.Dot(enemy.transform.forward, directionToPlayer);
+
+                    if (dot < 0.9f)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                    }
+                }
             }
         }
         else if (state == AIBattleState.Chase)
