@@ -33,6 +33,8 @@ public class MeleeEnemy : MonoBehaviour
     public bool inCounter { get; set; } = false;
 
     public EnemyAttackStateInfo attackState;
+    public int attacksCount => attacks.Count;
+
     bool doCombo;
     int comboCounter = 0;
 
@@ -54,19 +56,17 @@ public class MeleeEnemy : MonoBehaviour
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
     public void TryToAttack()
     {
-        Debug.Log(inAction);
+        
         if (!inAction)
         {
-            Debug.Log("Enemy is trying to attack");
             StartCoroutine(Attack());
         }
     }
 
     IEnumerator Attack(Vector3? attackDir = null)
     {
-        // 공격 상태를 Idle로 초기화하고 애니메이션을 재생합니다.
-        attackState = EnemyAttackStateInfo.Idle;
         inAction = true;
+        attackState = EnemyAttackStateInfo.Windup;
 
         // attacks 리스트에서 애니매이션을 선택
         comboCounter = UnityEngine.Random.Range(0, attacks.Count);
@@ -76,12 +76,13 @@ public class MeleeEnemy : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(attackDir.Value), 360f * Time.deltaTime);
         }
         string animName = attacks[comboCounter].animName;
-        Debug.Log(animName);
+
         anim.CrossFade(animName,0.2f);
+        yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
 
         //GetNextAnimatorStateInfo 애니매이션 상태 정보를 가져옵니다.
-        var animState = anim.GetNextAnimatorStateInfo(0);
-        Debug.Log(animState);
+        var animState = anim.GetNextAnimatorStateInfo(1);
+
         float timer = 0f;
         while (timer <= animState.length)
         {
@@ -92,10 +93,10 @@ public class MeleeEnemy : MonoBehaviour
 
             if (attackState == EnemyAttackStateInfo.Windup)
             {
-                if (inCounter) break;
-
+                //if (inCounter) break;
                 if (normalizedTime >= attacks[comboCounter].impactStartTime)
                 {
+                    
                     attackState = EnemyAttackStateInfo.Impact;
                     //콜라이더 켜기
                     EnableHitbox(attacks[comboCounter]);
@@ -122,15 +123,23 @@ public class MeleeEnemy : MonoBehaviour
             yield return null;
         }
         attackState = EnemyAttackStateInfo.Idle;
-        anim.CrossFade("Idle", 0.2f);
         comboCounter = 0;
         inAction = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("HitBox"))
+        {
+            Debug.Log("타격 성공");
+        }
     }
 
     void DisableAllCollider()
     {
         // 초기에는 콜라이더를 비활성화합니다.
-        weaponCollider.enabled = false;
+        if (weaponCollider != null)
+            weaponCollider.enabled = false;
         if (leftHandCollider != null)
             leftHandCollider.enabled = false;
         if (rightHandCollider != null)
