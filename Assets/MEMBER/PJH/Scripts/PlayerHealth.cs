@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
-    public float currentHealth;
+    public float currentHealth = 0;
 
     private bool isDead = false;
 
@@ -13,7 +13,8 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        maxHealth = currentHealth;
+        currentHealth = maxHealth;
+        //InvokeRepeating(nameof(DamageOverTime), 1f, 1f); // 실험용 필요없으면 각주처리
     }
 
     public void TakeDamage(float damage)
@@ -36,5 +37,9 @@ public class PlayerHealth : MonoBehaviour
         OnPlayerDied?.Invoke(); // 사망 이벤트 호출
     }
 
+    void DamageOverTime() // 사망 실험용
+    {
+        TakeDamage(10f);
+    }
 
 }
