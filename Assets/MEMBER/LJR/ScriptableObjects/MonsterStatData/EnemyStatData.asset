@@ -20,9 +20,9 @@ MonoBehaviour:
   mana: 0
   manaRegen: 0
   aggroRange: 150
-  attackRange: 2.5
+  attackRange: 1.3
   moveSpeed: 5
   attackSpeed: 1
-  attackInterval: 1.5
+  attackInterval: 3
   criticalChance: 0.05
   criticalDamage: 1.5
