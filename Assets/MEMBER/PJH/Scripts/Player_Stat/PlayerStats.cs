@@ -22,18 +22,18 @@ public class PlayerStats : MonoBehaviour
     public Stat Int; // 지능
 
     [Header("이동 관련 스탯")]
-    public Stat moveSpeed; // 기본 이동속도
-    public Stat sprintSpeed; // 달리기 속도
+    public FloatStat moveSpeed; // 기본 이동속도
+    public FloatStat sprintSpeed; // 달리기 속도
 
     [Header("공격 관련 스탯")]
     public Stat attackDamage; // 물리 공격력
     public Stat magicDamage; // 마법 공격력
-    public Stat attackSpeed; // 공격 속도
+    public FloatStat attackSpeed; // 공격 속도
 
     [Header("치명타 관련 스탯")]
-    public Stat criRate; // 치명타 확률
-    public Stat criDamage; // 치명타 피해량
-    public Stat criResist; // 치명타 저항
+    public FloatStat criRate; // 치명타 확률
+    public FloatStat criDamage; // 치명타 피해량
+    public FloatStat criResist; // 치명타 저항
 
     [Header("레벨 관련 스탯")]
     public Stat level; // 플레이어 레벨

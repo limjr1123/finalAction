@@ -90,4 +90,13 @@ public class EnemyController : MonoBehaviour
     {
         return stateMachine.currentState == stateDict[states];
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HitBox"))
+        {
+            Debug.Log("타격 성공");
+        }
+    }
+
 }
