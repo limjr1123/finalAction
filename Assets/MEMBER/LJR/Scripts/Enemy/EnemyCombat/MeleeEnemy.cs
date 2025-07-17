@@ -31,6 +31,7 @@ public class MeleeEnemy : MonoBehaviour
     // 현재 공격 동작(액션) 중인지 여부를 나타냅니다.
     public bool inAction { get; private set; } = false;
     public bool inCounter { get; set; } = false;
+    public bool inGetHit { get; private set; } = false;
 
     public EnemyAttackStateInfo attackState;
     public int attacksCount => attacks.Count;
@@ -56,8 +57,7 @@ public class MeleeEnemy : MonoBehaviour
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
     public void TryToAttack()
     {
-        
-        if (!inAction)
+        if (!inAction && !inGetHit)
         {
             StartCoroutine(Attack());
         }
@@ -132,7 +132,18 @@ public class MeleeEnemy : MonoBehaviour
         if(other.CompareTag("HitBox"))
         {
             Debug.Log("타격 성공");
+            
+            StartCoroutine(GettingHitAnim());
+
         }
+    }
+
+    IEnumerator GettingHitAnim()
+    {
+        inGetHit = true;
+        anim.CrossFade("GetHit", 0.2f);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(1).length);
+        inGetHit = false;
     }
 
     void DisableAllCollider()
