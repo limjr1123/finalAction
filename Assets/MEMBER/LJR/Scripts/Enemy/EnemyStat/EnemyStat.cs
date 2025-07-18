@@ -5,6 +5,8 @@ public class EnemyStat : MonoBehaviour
 {
     [SerializeField] private EnemyStatData statData;
 
+    [field:SerializeField] public int currentHealth { get; private set; }  //현재 체력
+
     [Header("기본 스탯")]
     public Stat attackDamage;   //물리 공격력
     public Stat magicDamage;    //마법 공격력
@@ -24,18 +26,12 @@ public class EnemyStat : MonoBehaviour
 
     protected Action OnHealthChanged;
 
-    public int currentHealth { get; private set; }  //현재 체력
 
     private void Awake()
     {
         // ScriptableObject의 값을 Stat 객체에 할당
         InitializeStat();
         OnHealthChanged += () => HealthCheck();
-    }
-
-    private void Start()
-    {
-        currentHealth = GetMaxHealth();
     }
 
     protected void InitializeStat()
@@ -54,6 +50,7 @@ public class EnemyStat : MonoBehaviour
         mana.SetDefaultValue(statData.mana);
         manaRegen.SetDefaultValue(statData.manaRegen);
         aggroRange.SetDefaultValue(statData.aggroRange);
+        currentHealth = GetMaxHealth();
     }
 
     private int GetMaxHealth()
