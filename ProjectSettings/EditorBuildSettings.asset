@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/MEMBER/CKW/Scenes/CKW_CharacterSelectScene.unity
     guid: 8b168b0c7974df542ba185954f76263a
   - enabled: 1
-    path: Assets/MEMBER/NSW/Scene/Field.unity
+    path: Assets/MEMBER/NSW/Scene/Dungeon.unity
     guid: 0a8c46d15d0af4f4f9eeef1f53272888
   - enabled: 1
     path: Assets/MEMBER/NSW/Scene/Dungeon 1.unity
