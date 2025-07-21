@@ -136,6 +136,10 @@ public class MeleeEnemy : MonoBehaviour
             leftHandCollider.enabled = false;
         if (rightHandCollider != null)
             rightHandCollider.enabled = false;
+        if (leftFootCollider != null)
+            leftFootCollider.enabled = false;
+        if (rightFootCollider != null)
+            rightFootCollider.enabled = false;
     }
 
     void EnableHitbox(EnemyAttackData attack)
@@ -154,6 +158,12 @@ public class MeleeEnemy : MonoBehaviour
                 break;
             case AttackHitbox.Weapon:
                 weaponCollider.enabled = true;
+                break;
+            case AttackHitbox.LeftFoot:
+                    leftFootCollider.enabled = true;
+                break;
+            case AttackHitbox.RightFoot:
+                    rightFootCollider.enabled = true;
                 break;
             default:
                 break;
