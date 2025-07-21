@@ -13,4 +13,4 @@ public class EnemyAttackData : ScriptableObject
 }
 
 // 공격 시 사용할 히트박스 종류를 정의하는 열거형입니다.
-public enum AttackHitbox { LeftHand, RightHand, TwoHand, Weapon }
+public enum AttackHitbox { LeftHand, RightHand, TwoHand, Weapon, LeftFoot, RightFoot }
