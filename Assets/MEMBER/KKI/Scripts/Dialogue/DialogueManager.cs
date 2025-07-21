@@ -1,49 +1,27 @@
 using TMPro;
 using UnityEngine;
 
+
+// 대화 데이터를 불러오고 대화 실행 및 끝났을 때 사용하는 매니저.
 public class DialogueManager : Singleton<DialogueManager>
 {
-    [SerializeField] private DialogueDataBase dialogueDataBase;
-    public TextMeshProUGUI dialogueText;
-    public TextMeshProUGUI characterNameText;
-    public GameObject dialoguePanel;
+    [SerializeField] private DialogueDatabase dialogueDataBase;
+    [SerializeField] private DialogueSystem dialoguePanel;
 
-    private DialogueData currentDialogue;
-    private int lineIndex = 0;
 
     public void StartDialogue(string dialogueID)
     {
         DialogueData data = dialogueDataBase.GetDialogueData(dialogueID);
         if (data == null) return;
-        currentDialogue = data;
-        lineIndex = 0;
-        dialoguePanel.SetActive(true);
-        ShowNextLine();
-    }
 
-    public void ShowNextLine()
-    {
-        if (lineIndex < currentDialogue.lines.Length)
-        {
-            dialogueText.text = currentDialogue.lines[lineIndex];
-            lineIndex++;
-        }
-        else
-        {
-            if (currentDialogue.nextDialogueId != null)
-            {
-                StartDialogue(currentDialogue.nextDialogueId);
-            }
-            else
-            {
-                EndDialogue();
-            }
-        }
+        if (dialoguePanel == null) return;
+        Debug.Log("다이로그 패널 열림");
+        dialoguePanel.gameObject.SetActive(true);
+        dialoguePanel.StartDialogue(data);
     }
 
     public void EndDialogue()
     {
-        dialoguePanel.SetActive(false);
-        currentDialogue = null;
+        dialoguePanel.gameObject.SetActive(false);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class DialogueData : ScriptableObject
 {
     public string dialogueID;
-    public string characterName;
+    public string NPCName;
     [TextArea] public string[] lines;
     public string nextDialogueId;
 }
