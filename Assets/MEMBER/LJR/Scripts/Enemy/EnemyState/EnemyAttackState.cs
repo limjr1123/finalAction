@@ -41,7 +41,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
                 }
                 else
                 {
-                    StartCoroutine(Attack());
+                    StartCoroutine(MeleeAttack());
                 }
             }
         }
@@ -52,7 +52,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
         }
     }
 
-    IEnumerator Attack()
+    IEnumerator MeleeAttack()
     {        
         isAttacking = true;
         enemy.anim.applyRootMotion = true;
