@@ -20,6 +20,7 @@ namespace GameSave
     {
         // 캐릭터 데이터 -> 나중에 구조체 및 클래스로 대체
         public string characterName;
+        public JobData jobData;
         public int level;
         public int hp;
         public int exp;
@@ -105,6 +106,17 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
 
     public void SetSelectedCharacterSlotIndex(int index) => gameData.selectedCharacterSlotIndex = index;
 
+
+    // 직업 선택 함수   
+    // UI에서 JobData를 UI와 연결하고
+    // 직업 선택하고 캐릭터 선택시 게임 CreateCharacter 함수와 연결
+
+    public void CreateCharacter(CharacterData characterData, JobData selectedJob)
+    {
+        characterData.jobData = selectedJob;
+        characterData.hp = selectedJob.baseHP;
+        // 나머지 데이터 넣기
+    }
     // 더미 데이터 생성 함수 추가 
     public void CreateDummyData()
     {
