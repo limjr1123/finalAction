@@ -9,24 +9,24 @@ public class PlayerRespawnManager : MonoBehaviour
     public string initialSceneName = "GameScene"; // 저장된 게임이 없을 경우 시작할 기본 씬
 
     private GameObject currentPlayerInstance;
-    //private PlayerHealth currentPlayerHealth;
+    private PlayerHealth currentPlayerHealth;
 
     void Awake()
     {
         // 씬 전환 시에도 파괴되지 않도록 설정 (선택 사항, 필요에 따라)
-        // DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     void OnEnable()
     {
-        // PlayerHealth의 사망 이벤트 구독
-        //PlayerHealth.OnPlayerDied += HandlePlayerDied;
+        //PlayerHealth의 사망 이벤트 구독
+        PlayerHealth.OnPlayerDied += HandlePlayerDied;
     }
 
     void OnDisable()
     {
         // 스크립트 비활성화 시 구독 해제 (메모리 누수 방지)
-        //PlayerHealth.OnPlayerDied -= HandlePlayerDied;
+        PlayerHealth.OnPlayerDied -= HandlePlayerDied;
     }
 
     void Start()
@@ -115,11 +115,11 @@ public class PlayerRespawnManager : MonoBehaviour
             {
                 currentPlayerInstance = Instantiate(playerPrefab, savedPosition, savedRotation);
                 currentPlayerInstance.tag = "Player"; // 태그 설정 (중요!)
-                //currentPlayerHealth = currentPlayerInstance.GetComponent<PlayerHealth>();
-                //if (currentPlayerHealth == null)
-                //{
-                //    Debug.LogError("플레이어 프리팹에 PlayerHealth 스크립트가 없습니다!");
-                //}
+                currentPlayerHealth = currentPlayerInstance.GetComponent<PlayerHealth>();
+                if (currentPlayerHealth == null)
+                {
+                    Debug.LogError("플레이어 프리팹에 PlayerHealth 스크립트가 없습니다!");
+                }
             }
             else
             {
@@ -145,11 +145,11 @@ public class PlayerRespawnManager : MonoBehaviour
         currentPlayerInstance = GameObject.FindGameObjectWithTag("Player");
         if (currentPlayerInstance != null)
         {
-            //currentPlayerHealth = currentPlayerInstance.GetComponent<PlayerHealth>();
-            //if (currentPlayerHealth == null)
-            //{
-            //    Debug.LogError("플레이어 오브젝트에 PlayerHealth 스크립트가 없습니다! 리스폰 기능을 사용할 수 없습니다.");
-            //}
+            currentPlayerHealth = currentPlayerInstance.GetComponent<PlayerHealth>();
+            if (currentPlayerHealth == null)
+            {
+                Debug.LogError("플레이어 오브젝트에 PlayerHealth 스크립트가 없습니다! 리스폰 기능을 사용할 수 없습니다.");
+            }
         }
         else
         {
@@ -163,7 +163,7 @@ public class PlayerRespawnManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F2))
         {
             Debug.Log("강제 사망 테스트!");
-            //currentPlayerHealth?.TakeDamage(currentPlayerHealth.maxHealth); // 강제로 체력 0 만들기
+            currentPlayerHealth?.TakeDamage(currentPlayerHealth.maxHealth); // 강제로 체력 0 만들기
         }
     }
 }
