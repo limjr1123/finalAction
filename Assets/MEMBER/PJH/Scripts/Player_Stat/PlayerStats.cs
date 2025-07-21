@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+[CreateAssetMenu(fileName = "New Character Stats", menuName = "Stats/Character Stats Data")]
+public class CharacterStatsData : ScriptableObject
 {
     [Header("기본 스탯")]
     public Stat maxHealth; // 최대 체력
@@ -35,8 +36,8 @@ public class PlayerStats : MonoBehaviour
     public FloatStat criDamage; // 치명타 피해량
     public FloatStat criResist; // 치명타 저항
 
-    [Header("레벨 관련 스탯")]
-    public Stat level; // 플레이어 레벨
-    public Stat maxEXP; // 최대 경험치
-    public Stat currentEXP; // 현재 경험치
+    //[Header("레벨 관련 스탯")]
+    //public Stat level; // 플레이어 레벨
+    //public Stat maxEXP; // 최대 경험치
+    //public Stat currentEXP; // 현재 경험치
 }

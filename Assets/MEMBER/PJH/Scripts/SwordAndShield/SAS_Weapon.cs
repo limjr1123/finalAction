@@ -8,11 +8,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            IDamageable damageable = other.GetComponent<IDamageable>(); // 인터페이스 붙어있는지 확인
-            if (damageable != null)
-            {
-                damageable.TakeDamage(Damage);
-            }
+            
         }
     }
 }
