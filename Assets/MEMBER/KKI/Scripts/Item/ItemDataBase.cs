@@ -11,7 +11,7 @@ public class ItemDatabase : ScriptableObject
 
     public void Initialize()
     {
-        itemMap = allItems.ToDictionary(item => item.ItemID);
+        itemMap = allItems.ToDictionary(allItems => allItems.ItemID);
     }
 
     public ItemData GetItemData(string itemID)
