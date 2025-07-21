@@ -13,7 +13,7 @@ public class NPCData : ScriptableObject
 {
     public string npcID;
     public string npcName;
-    public string[] dialogueIDs;
+    public string[] dialogueID;
     public NPCType npcType;
 }
 

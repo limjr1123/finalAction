@@ -3,8 +3,8 @@ using System.Linq;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "DialogueDataBase", menuName = "Scriptable Objects/Database/DialogueDataBase")]
-public class DialogueDataBase : ScriptableObject
+[CreateAssetMenu(fileName = "DialogueDatabase", menuName = "Scriptable Objects/Database/DialogueDatabase")]
+public class DialogueDatabase : ScriptableObject
 {
     [SerializeField] private List<DialogueData> allDialogueDatas;
 
