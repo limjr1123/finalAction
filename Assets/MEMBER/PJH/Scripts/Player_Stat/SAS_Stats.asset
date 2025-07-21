@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdd4e959da8457e4f8878d7a0b072c1a, type: 3}
+  m_Name: SAS_Stats
+  m_EditorClassIdentifier: 
+  maxHealth: 500
+  maxMana: 100
+  manaRegen: 10
+  maxStamina: 100
+  staminaRegen: 10
+  defense: 20
+  magicDefense: 20
+  Str: 40
+  Dex: 10
+  Int: 10
+  attackDamage: 20
+  magicDamage: 0
+  moveSpeed: 5
+  sprintSpeed: 10
+  attackSpeed: 1
+  criRate: 20
+  criDamage: 120
+  criResist: 20
+  level: 1
+  maxEXP: 200
+  currentEXP: 0
