@@ -79,7 +79,7 @@ public class PlayerMoveState : PlayerState
     private void Move(float fixedDeltaTime)
     {
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        float currentSpeed = isSprinting ? stateMachine.sprintSpeed : stateMachine.runningSpeed;
+        float currentSpeed = isSprinting ? stateMachine.Stats.sprintSpeed.GetValue() : stateMachine.Stats.moveSpeed.GetValue();
         stateMachine.Rb.MovePosition(stateMachine.Rb.position + stateMachine.MoveDirection * currentSpeed * fixedDeltaTime);
     }
 }

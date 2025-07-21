@@ -12,7 +12,7 @@ public class PlayerDamagedState : PlayerState
         stateMachine.MoveDirection = Vector3.zero;
         stateMachine.Rb.linearVelocity = Vector3.zero;
 
-        //Debug.Log("플레이어 피격");
+      
     }
 
 }

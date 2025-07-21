@@ -5,9 +5,7 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerState currentState;
     private PlayerHealth playerHealth;
     public Animator animator;
-
-    public float runningSpeed = 5f;
-    public float sprintSpeed = 10f;
+    public PlayerStats Stats { get; private set; }
     public float rotationSpeed = 15f;
 
     [Header("공격 관련")]
@@ -26,6 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
+        Stats = GetComponent<PlayerStats>();
 
         playerHealth = GetComponent<PlayerHealth>();
         if (playerHealth != null)
@@ -87,12 +86,12 @@ public class PlayerStateMachine : MonoBehaviour
         ChangeState(new PlayerIdleState(this, gameObject, Animator));
     }
 
-    public void OnEvasionAnimationEnd()
+    public void OnEvasionAnimationEnd() // 회피 애니메이션 종료 후 상태 전환
     {
         ChangeState(new PlayerIdleState(this, gameObject, Animator));
     }
 
-    public void OnParryAnimationEnd()
+    public void OnParryAnimationEnd() // 패링 애니메이션 종료 후 상태 전환
     {
         ChangeState(new PlayerIdleState(this, gameObject, Animator));
     }

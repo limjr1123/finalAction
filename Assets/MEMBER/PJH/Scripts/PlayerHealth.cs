@@ -17,7 +17,6 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         stateMachine = GetComponent<PlayerStateMachine>();
-        //InvokeRepeating(nameof(DamageOverTime), 1f, 1f); // 실험용 필요없으면 각주처리
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,10 +57,5 @@ public class PlayerHealth : MonoBehaviour
 
         OnPlayerDied?.Invoke(); // 사망 이벤트 호출
     }
-
-    //void DamageOverTime() // 사망 실험용
-    //{
-    //    TakeDamage(10f);
-    //}
 
 }
