@@ -1,12 +1,14 @@
+// UI_CharacterServerButton.cs (맨 처음 상태 추정)
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GameSave;
+using System;
+using System.Collections; // ForceUIUpdate 코루틴을 위해 필요
 
 public class UI_CharacterServerButton : MonoBehaviour
 {
-
     [Header("Button Settings")]
     [SerializeField] Button startButton;
     [SerializeField] Button exitButton;
@@ -14,19 +16,16 @@ public class UI_CharacterServerButton : MonoBehaviour
     [SerializeField] Button characterCreationButton;
     [SerializeField] Button characterDeleteButton;
 
-
     [SerializeField] GameObject SelectCharacterWindow;
     [SerializeField] GameObject characterSelectionWindow;
 
-
+    [SerializeField] CharacterInfoToggles characterManager;
 
     private CharacterData selectedCharacterData;
     private int selectedCharacterIndex;
 
-
     void Start()
     {
-
         if (startButton != null)
             startButton.onClick.AddListener(StartGame);
 
@@ -41,8 +40,9 @@ public class UI_CharacterServerButton : MonoBehaviour
 
         if (characterDeleteButton != null)
             characterDeleteButton.onClick.AddListener(CharacterDelete);
-    }
 
+        // Debug.Log("UI_CharacterServerButton Start"); // 이 로그도 없었을 수 있습니다.
+    }
 
     void OnEnable()
     {
@@ -58,41 +58,31 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void OnCharacterSelectedHandler(CharacterData character, int index)
     {
-        // 'OnCharacterSelectedHandler'는 캐릭터가 선택될 때 호출되는 이벤트 핸들러 메서드입니다.
+        // ⭐ 맨 처음에는 characterID 기반의 최신 인스턴스 검색 로직이 없었을 가능성이 높습니다.
+        // 단순히 전달받은 character와 index를 사용했을 것입니다.
         selectedCharacterData = character;
-        // 선택된 캐릭터의 데이터를 'selectedCharacterData' 변수에 할당합니다.
         selectedCharacterIndex = index;
-        // 선택된 캐릭터의 인덱스를 'selectedCharacterIndex' 변수에 할당합니다.
-        Debug.Log($"선택된 캐릭터: {character.characterName}, 인덱스: {index}");
+
+        // Debug.Log($"[UI_CharServerBtn] 캐릭터 선택됨: {selectedCharacterData.characterName} (인덱스: {selectedCharacterIndex})");
+        // GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(selectedCharacterIndex); // 이것도 없었을 수 있습니다.
     }
 
     private void StartGame()
     {
-        // 선택된 캐릭터가 있는지 확인
-        if (selectedCharacterData == null)
-        {
-            selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter();
-            // 'CharacterInfoToggles' 클래스에서 현재 선택된 캐릭터 정보를 가져와 'selectedCharacterData'에 할당합니다.
-        }
+        // selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter(); // 이 로직은 나중에 추가되었을 수 있습니다.
+        // 이미 OnCharacterSelectedHandler에서 할당되므로 이 줄이 없었을 수 있습니다.
 
         if (selectedCharacterData != null)
         {
-            Debug.Log($"게임 시작: {selectedCharacterData.characterName}");
-
-            // 게임 데이터에 선택된 캐릭터 설정 (이미 CharacterInfoToggles에서 설정됨)
-            // GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(selectedCharacterIndex);
-
-            // 게임 씬 로드
-            SceneManager.LoadScene("Field"); // 실제 게임 씬 이름으로 변경
+            // Debug.Log($"게임 시작: {selectedCharacterData.characterName}"); // 이 로그도 없었을 수 있습니다.
+            // GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(selectedCharacterIndex); // 이 라인도 없었을 수 있습니다.
+            SceneManager.LoadScene("Field");
         }
         else
         {
-            // 'selectedCharacterData'가 여전히 null인 경우 (즉, 캐릭터가 선택되지 않은 경우)
             Debug.LogWarning("선택된 캐릭터가 없습니다!");
-            // 디버그 콘솔에 경고 메시지를 출력합니다.
         }
     }
-
 
     private void ExitGame()
     {
@@ -103,12 +93,10 @@ public class UI_CharacterServerButton : MonoBehaviour
 #endif
     }
 
-
     private void ServerChange()
     {
         SceneManager.LoadScene("CKW_TitleScene");
     }
-
 
     private void CharacterCreate()
     {
@@ -116,10 +104,39 @@ public class UI_CharacterServerButton : MonoBehaviour
         characterSelectionWindow.SetActive(true);
     }
 
-
     private void CharacterDelete()
     {
+        if (selectedCharacterData == null)
+        {
+            Debug.LogWarning("삭제할 캐릭터가 선택되지 않았습니다!");
+            return;
+        }
 
+        // Debug.Log($"삭제 요청 - 캐릭터: {selectedCharacterData.characterName}, 저장된 인덱스: {selectedCharacterIndex}"); // 이 로그도 없었을 수 있습니다.
+
+        if (characterManager != null)
+        {
+            var characterToDelete = selectedCharacterData; // 이 변수 할당도 없었을 수 있습니다.
+
+            // DeleteSpecificCharacter에 인덱스만 전달했을 가능성도 있습니다.
+            characterManager.DeleteSpecificCharacter(characterToDelete, selectedCharacterIndex);
+
+            selectedCharacterData = null;
+            selectedCharacterIndex = -1;
+
+            // ForceUIUpdate 코루틴은 나중에 추가되었을 수 있습니다.
+            StartCoroutine(ForceUIUpdate());
+        }
     }
 
+    private System.Collections.IEnumerator ForceUIUpdate()
+    {
+        yield return null;
+        if (characterManager != null)
+        {
+            characterManager.ForceRefresh();
+        }
+        // var gameData = GameDataSaveLoadManager.Instance.GameData; // 이 로그도 없었을 수 있습니다.
+        // Debug.Log($"UI 업데이트 후 확인 - 게임데이터 캐릭터 수: {gameData.characters.Count}"); // 이 로그도 없었을 수 있습니다.
+    }
 }
