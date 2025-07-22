@@ -117,8 +117,12 @@ public class CharacterInfoToggles : MonoBehaviour
         if (toggleUI.characterNameText != null)
             toggleUI.characterNameText.text = $"Lv. {character.level} {character.characterName}";
 
+        if (character.jobData != null)
+            Debug.Log("qweqwe");
+
         if (toggleUI.characterClassText != null)
             toggleUI.characterClassText.text = $"{character.jobData.jobName}";
+
 
         // ⭐ 직업 이미지 설정 추가
         if (toggleUI.characterImage != null && character.jobData != null)

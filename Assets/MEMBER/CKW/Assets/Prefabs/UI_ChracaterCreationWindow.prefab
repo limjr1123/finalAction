@@ -3743,6 +3743,7 @@ MonoBehaviour:
   nicknameWindow: {fileID: 4029149881447967356}
   nicknameButton: {fileID: 7714239170810630980}
   closeButton: {fileID: 3812378068902875247}
+  nicknameInputField: {fileID: 6944759386087370206}
 --- !u!1 &4201659597081940398
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,8 +5237,10 @@ MonoBehaviour:
   archerPanel: {fileID: 7244490891238538815}
   magePanel: {fileID: 5693366017860934070}
   thiefPanel: {fileID: 4201659597081940398}
-  job1: {fileID: 11400000, guid: bc72c6523ae055a458bfb7eccd29f45f, type: 2}
-  job2: {fileID: 11400000, guid: 26d27425e5fdca24e8b4194ae8278933, type: 2}
+  warriorJob: {fileID: 11400000, guid: bc72c6523ae055a458bfb7eccd29f45f, type: 2}
+  archerJob: {fileID: 11400000, guid: 26d27425e5fdca24e8b4194ae8278933, type: 2}
+  mageJob: {fileID: 11400000, guid: 6a566de7af3904f40b1c293889a6b55e, type: 2}
+  thiefJob: {fileID: 11400000, guid: 8fbf4602c4ffd4348ab42310830249ee, type: 2}
   selectionJobButton: {fileID: 5413634451021665563}
   backButton: {fileID: 7888726124581177045}
   selectCharacterWindow: {fileID: 0}
