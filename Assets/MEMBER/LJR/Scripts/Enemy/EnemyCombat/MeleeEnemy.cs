@@ -28,6 +28,8 @@ public class MeleeEnemy : MonoBehaviour
     // 캐릭터의 애니메이터 컴포넌트
     Animator anim;
 
+    public bool isParry { get; set; } = false; // 패링 상태 여부
+
     // 현재 공격 동작(액션) 중인지 여부를 나타냅니다.
     public bool inAction { get; private set; } = false;
     public bool inCounter { get; set; } = false;
@@ -96,7 +98,7 @@ public class MeleeEnemy : MonoBehaviour
                 //if (inCounter) break;
                 if (normalizedTime >= attacks[comboCounter].impactStartTime)
                 {
-                    
+                    isParry = attacks[comboCounter].isParry; // 패링 가능한 공격인지 확인
                     attackState = EnemyAttackStateInfo.Impact;
                     //콜라이더 켜기
                     EnableHitbox(attacks[comboCounter]);
@@ -109,6 +111,7 @@ public class MeleeEnemy : MonoBehaviour
                     attackState = EnemyAttackStateInfo.AttackDelay;
                     //콜라이더 끄기
                     DisableAllCollider();
+                    isParry = false; // 초기화
                 }
             }
             else if (attackState == EnemyAttackStateInfo.AttackDelay)
