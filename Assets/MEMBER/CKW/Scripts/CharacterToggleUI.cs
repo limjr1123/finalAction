@@ -9,6 +9,7 @@ public class CharacterToggleUI : MonoBehaviour
     public Toggle toggle;
 
     [Header("캐릭터 정보 텍스트")]
+    public Image characterImage;
     public TextMeshProUGUI characterNameText;
     public TextMeshProUGUI characterClassText;
 
