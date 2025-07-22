@@ -1656,7 +1656,7 @@ GameObject:
   - component: {fileID: 6711030526590164055}
   m_Layer: 0
   m_Name: Player_SwordAndShield
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -2,7 +2,7 @@
 
 public class EnemyVision : MonoBehaviour
 {
-    [SerializeField] PlayerController target;            // 공격 대상
+    [SerializeField] PlayerStats target;            // 공격 대상
     [SerializeField] SphereCollider sphereCollider;      // 범위 감지용 콜라이더
     [SerializeField] EnemyController enemyController;    // EnemyController에 타겟 설정용도
 
@@ -33,7 +33,7 @@ public class EnemyVision : MonoBehaviour
     {
         if (other == null)
             return;
-        target = other.GetComponent<PlayerController>();
+        target = other.GetComponent<PlayerStats>();
         if (target != null)
             enemyController.target = target.gameObject;
     }
