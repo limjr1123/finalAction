@@ -8,7 +8,6 @@ public class PlayerIdleState : PlayerState
     public override void Enter()
     {
         animator.SetFloat("Speed", 0);
-        Debug.Log("Idle State ¡¯¿‘");
     }
 
     public override void Update()
@@ -43,6 +42,5 @@ public class PlayerIdleState : PlayerState
     }
     public override void Exit()
     {
-        Debug.Log("Idle State ≈ª√‚");
     }
 }

@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 
@@ -8,6 +7,10 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] private DialogueDatabase dialogueDataBase;
     [SerializeField] private DialogueSystem dialoguePanel;
 
+    void Start()
+    {
+        dialoguePanel = FindAnyObjectByType<DialogueSystem>();
+    }
 
     public void StartDialogue(string dialogueID)
     {
