@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using GameSave;
 using UnityEngine;
 
@@ -24,8 +25,8 @@ namespace GameSave
         public int level;
         public int hp;
         public int exp;
-        public InventorySaveData inventoryData = new();
-        public QuestSaveData questData = new();
+        public InventorySaveData inventorySaveData = new();
+        public QuestSaveData questSaveData = new();
         // 추가.
     }
 
@@ -65,6 +66,8 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
 {
     private string savePath;
     private GameData gameData;
+
+    private CharacterFactory characterFactory = new CharacterFactory();
 
 
     // 프로퍼티
@@ -110,13 +113,22 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
     // 직업 선택 함수   
     // UI에서 JobData를 UI와 연결하고
     // 직업 선택하고 캐릭터 선택시 게임 CreateCharacter 함수와 연결
-
-    public void CreateCharacter(CharacterData characterData, JobData selectedJob)
+    public void CreateCharacter(string characterName, JobData selectedJob)
     {
-        characterData.jobData = selectedJob;
-        characterData.hp = selectedJob.baseHP;
-        // 나머지 데이터 넣기
+        // 1. 새 캐릭터 데이터 생성
+        CharacterData newChar = characterFactory.CreateCharacter(characterName, selectedJob);
+
+        // 2. GameData에 추가
+        gameData.characters.Add(newChar);
+        gameData.selectedCharacterSlotIndex = gameData.characters.Count - 1;
+
+        // 3. 저장
+        SaveGame();
+        Debug.Log($"{characterName} 캐릭터 생성 완료!");
+
+        // 4. UI 갱신 등 추가 작업
     }
+
     // 더미 데이터 생성 함수 추가 
     public void CreateDummyData()
     {
@@ -130,7 +142,7 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
             level = 10,
             hp = 120,
             exp = 350,
-            inventoryData = new GameSave.InventorySaveData
+            inventorySaveData = new GameSave.InventorySaveData
             {
                 items = new List<GameSave.InventorySlotSaveData>
                 {
@@ -138,7 +150,7 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
                     new GameSave.InventorySlotSaveData { itemID = "sword", count = 1 }
                 }
             },
-            questData = new GameSave.QuestSaveData
+            questSaveData = new GameSave.QuestSaveData
             {
                 currentQuests = new List<string> { "슬라임 10마리 처치" },
                 completedQuests = new List<string> { "튜토리얼 완료" }
@@ -152,14 +164,14 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
             level = 7,
             hp = 80,
             exp = 140,
-            inventoryData = new GameSave.InventorySaveData
+            inventorySaveData = new GameSave.InventorySaveData
             {
                 items = new List<GameSave.InventorySlotSaveData>
                 {
                     new GameSave.InventorySlotSaveData { itemID = "mana_potion", count = 5 }
                 }
             },
-            questData = new GameSave.QuestSaveData()
+            questSaveData = new GameSave.QuestSaveData()
         });
 
         // 유저 설정
