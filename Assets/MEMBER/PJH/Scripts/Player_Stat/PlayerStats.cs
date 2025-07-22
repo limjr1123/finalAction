@@ -37,7 +37,7 @@ public class PlayerStats : MonoBehaviour
     public FloatStat criDamage; // 치명타 피해량
     public FloatStat criResist; // 치명타 저항
 
-    void Start()
+    void Awake()
     {
         ApplyBaseStats(); // 스탯 초기화
     }
@@ -50,7 +50,6 @@ public class PlayerStats : MonoBehaviour
             return;
         }
 
-        // 초기화
         maxHealth.SetDefaultValue(baseStats.maxHealth);
         currentHealth = baseStats.maxHealth;
         maxMana.SetDefaultValue(baseStats.maxMana);

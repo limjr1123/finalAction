@@ -1767,6 +1767,8 @@ MonoBehaviour:
   weapon: {fileID: 0}
   leftHandCollider: {fileID: 798542307}
   rightHandCollider: {fileID: 2137577305}
+  leftFootCollider: {fileID: 0}
+  rightFootCollider: {fileID: 0}
   attackState: 0
 --- !u!114 &970135095
 MonoBehaviour:
@@ -2065,11 +2067,6 @@ Transform:
   - {fileID: 1199687732}
   m_Father: {fileID: 1637615322}
   m_LocalEulerAnglesHint: {x: -3.903922, y: 6.651696, z: 80.21096}
---- !u!4 &1061889586 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-  m_PrefabInstance: {fileID: 1528798841}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1064199859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,78 +2169,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
   m_PrefabInstance: {fileID: 1528798841}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1093760166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093760159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aaef8f3b6bac664f99a938960c36f22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  currentHealth: 0
-  currentMana: 0
-  currentStamina: 0
-  level: 0
-  currentEXP: 0
-  maxHealth:
-    baseValue: 0
-    modifiers: 
-  maxMana:
-    baseValue: 0
-    modifiers: 
-  manaRegen:
-    baseValue: 0
-    modifiers: 
-  maxStamina:
-    baseValue: 0
-    modifiers: 
-  staminaRegen:
-    baseValue: 0
-    modifiers: 
-  defense:
-    baseValue: 0
-    modifiers: 
-  magicDefense:
-    baseValue: 0
-    modifiers: 
-  Str:
-    baseValue: 0
-    modifiers: 
-  Dex:
-    baseValue: 0
-    modifiers: 
-  Int:
-    baseValue: 0
-    modifiers: 
-  moveSpeed:
-    baseValue: 0
-    modifiers: []
-  sprintSpeed:
-    baseValue: 0
-    modifiers: []
-  attackDamage:
-    baseValue: 0
-    modifiers: 
-  magicDamage:
-    baseValue: 0
-    modifiers: 
-  attackSpeed:
-    baseValue: 0
-    modifiers: []
-  criRate:
-    baseValue: 0
-    modifiers: []
-  criDamage:
-    baseValue: 0
-    modifiers: []
-  criResist:
-    baseValue: 0
-    modifiers: []
 --- !u!1 &1095787235
 GameObject:
   m_ObjectHideFlags: 0
@@ -3053,22 +2978,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 153089505658319531, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 153089505658319531, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 1061889586}
-    - target: {fileID: 297758664085465509, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4379838006469239633, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_Name
       value: Player_SwordAndShield
@@ -3113,65 +3022,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7740473996666576218, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601263434462004989, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.009844639
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.0025894598
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.002589905
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9999127
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.009696197
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.008241481
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.003579228
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -1.108
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.949
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -0.419
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119243131022835790, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1093760166}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
 --- !u!1 &1592454139
 GameObject:
@@ -3485,6 +3339,8 @@ MonoBehaviour:
   weapon: {fileID: 0}
   leftHandCollider: {fileID: 431241458}
   rightHandCollider: {fileID: 2025552263}
+  leftFootCollider: {fileID: 0}
+  rightFootCollider: {fileID: 0}
   attackState: 0
 --- !u!114 &1716507871
 MonoBehaviour:
@@ -4503,7 +4359,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 40, y: 1, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4790,6 +4646,10 @@ PrefabInstance:
       value: Monster_X_Black
       objectReference: {fileID: 0}
     - target: {fileID: 709569845325357249, guid: 017b8b3173c41c94c9c9680590c23221, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6581402703751903522, guid: 017b8b3173c41c94c9c9680590c23221, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
