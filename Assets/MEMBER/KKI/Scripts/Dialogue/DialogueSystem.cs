@@ -21,18 +21,16 @@ public class DialogueSystem : MonoBehaviour
     {
         if (lineIndex < currentDialogue.lines.Length)
         {
-            NPCNameText.text = currentDialogue.NPCName;
-            dialogueText.text = currentDialogue.lines[lineIndex];
+            NPCNameText.text = currentDialogue.npcName;
+            dialogueText.text = currentDialogue.lines[lineIndex].text;
             lineIndex++;
         }
         else
         {
-            // 다음 대화가 있으면 진행
-            if (currentDialogue.nextDialogueId != null)
+            if (!string.IsNullOrEmpty(currentDialogue.nextDialogueID))
             {
-                DialogueManager.Instance.StartDialogue(currentDialogue.nextDialogueId);
+                DialogueManager.Instance.StartDialogue(currentDialogue.nextDialogueID);
             }
-            // 다음 대화가 없으면 종료
             else
             {
                 DialogueManager.Instance.EndDialogue();
