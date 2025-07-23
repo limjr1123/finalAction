@@ -195,7 +195,7 @@ public class CharacterInfoToggles : MonoBehaviour
     public void AddNewCharacter(CharacterData newCharacter)
     {
         GameDataSaveLoadManager.Instance.GameData.characters.Add(newCharacter);
-        GameDataSaveLoadManager.Instance.SaveGame();
+        GameDataSaveLoadManager.Instance.SaveGameDataToJason();
         RefreshCharacterData();
     }
 
@@ -220,7 +220,7 @@ public class CharacterInfoToggles : MonoBehaviour
 
         // ⭐ GameData.characters에서만 삭제 (characterDatas는 다음 RefreshCharacterData에서 자동 갱신됨)
         GameDataSaveLoadManager.Instance.GameData.characters.RemoveAt(index);
-        GameDataSaveLoadManager.Instance.SaveGame();
+        GameDataSaveLoadManager.Instance.SaveGameDataToJason();
 
         Debug.Log($"캐릭터 삭제 완료. 남은 캐릭터 수: {GameDataSaveLoadManager.Instance.GameData.characters.Count}");
 
