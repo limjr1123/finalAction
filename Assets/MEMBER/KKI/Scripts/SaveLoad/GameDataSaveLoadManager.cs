@@ -19,15 +19,9 @@ namespace GameSave
     [System.Serializable]
     public class CharacterData
     {
-        // 캐릭터 데이터 -> 나중에 구조체 및 클래스로 대체
-        public string characterName;
-        public JobData jobData;
-        public int level;
-        public int hp;
-        public int exp;
-        public InventorySaveData inventorySaveData = new();
-        public QuestSaveData questSaveData = new();
-        // 추가.
+        public PlayerSaveData playerSaveData = new();
+        public InventorySaveData inventoryData = new();
+        public QuestSaveData questData = new();
     }
 
     [System.Serializable]
@@ -127,65 +121,6 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
         Debug.Log($"{characterName} 캐릭터 생성 완료!");
 
         // 4. UI 갱신 등 추가 작업
-    }
-
-    // 더미 데이터 생성 함수 추가 
-    public void CreateDummyData()
-    {
-        var data = new GameSave.GameData();
-        data.selectedCharacterSlotIndex = 0;
-
-        // 캐릭터 1
-        data.characters.Add(new GameSave.CharacterData
-        {
-            characterName = "용사A",
-            level = 10,
-            hp = 120,
-            exp = 350,
-            inventorySaveData = new GameSave.InventorySaveData
-            {
-                items = new List<GameSave.InventorySlotSaveData>
-                {
-                    new GameSave.InventorySlotSaveData { itemID = "potion", count = 3 },
-                    new GameSave.InventorySlotSaveData { itemID = "sword", count = 1 }
-                }
-            },
-            questSaveData = new GameSave.QuestSaveData
-            {
-                currentQuests = new List<string> { "슬라임 10마리 처치" },
-                completedQuests = new List<string> { "튜토리얼 완료" }
-            }
-        });
-
-        // 캐릭터 2
-        data.characters.Add(new GameSave.CharacterData
-        {
-            characterName = "마법사B",
-            level = 7,
-            hp = 80,
-            exp = 140,
-            inventorySaveData = new GameSave.InventorySaveData
-            {
-                items = new List<GameSave.InventorySlotSaveData>
-                {
-                    new GameSave.InventorySlotSaveData { itemID = "mana_potion", count = 5 }
-                }
-            },
-            questSaveData = new GameSave.QuestSaveData()
-        });
-
-        // 유저 설정
-        data.userSettings = new GameSave.UserSettings
-        {
-            bgmVolume = 0.7f,
-            sfxVolume = 0.8f,
-            screenResolution = 1080,
-            isFullScreen = true
-        };
-
-        this.gameData = data;
-        SaveGame();
-        Debug.Log("가짜(더미) 테스트 데이터 생성/저장 완료!");
     }
 }
 

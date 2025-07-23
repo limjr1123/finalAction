@@ -32,7 +32,8 @@ public class GameManager : Singleton<GameManager>
             // 플레이어 데이터 인스턴스 생성 및 로드
 
             // 인벤토리 데이터 로드
-            InventoryManager.Instance.LoadInventory(charData.inventorySaveData);
+            // InventoryManager.Instance.LoadInventory(charData.inventorySaveData);
+            InventoryManager.Instance.LoadInventory(charData.inventoryData);
 
             // 퀘스트도 데이터 로드
         }

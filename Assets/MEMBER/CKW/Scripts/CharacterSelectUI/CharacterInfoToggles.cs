@@ -117,23 +117,23 @@ public class CharacterInfoToggles : MonoBehaviour
         if (toggleUI.characterNameText != null)
             toggleUI.characterNameText.text = $"Lv. {character.playerSaveData.level} {character.playerSaveData.characterName}";
 
-        if (character.jobData != null)
+        if (character.playerSaveData.jobData != null)
             Debug.Log("qweqwe");
 
         if (toggleUI.characterClassText != null)
-            toggleUI.characterClassText.text = $"{character.jobData.jobName}";
+            toggleUI.characterClassText.text = $"{character.playerSaveData.jobData.jobName}";
 
 
         // ⭐ 직업 이미지 설정 추가
-        if (toggleUI.characterImage != null && character.jobData != null)
+        if (toggleUI.characterImage != null && character.playerSaveData.jobData != null)
         {
-            if (character.jobData.jobIcon != null)
+            if (character.playerSaveData.jobData.jobIcon != null)
             {
-                toggleUI.characterImage.sprite = character.jobData.jobIcon;
+                toggleUI.characterImage.sprite = character.playerSaveData.jobData.jobIcon;
             }
             else
             {
-                Debug.LogWarning($"캐릭터 {character.characterName}의 직업 이미지가 없습니다!");
+                Debug.LogWarning($"캐릭터 {character.playerSaveData.characterName}의 직업 이미지가 없습니다!");
             }
         }
 

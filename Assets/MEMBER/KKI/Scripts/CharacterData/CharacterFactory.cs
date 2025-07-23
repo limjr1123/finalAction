@@ -6,14 +6,15 @@ public class CharacterFactory
     {
         return new CharacterData
         {
-            characterName = name,
-            jobData = _jobData,
-            level = 1,
-            hp = _jobData.baseHP,
-            exp = 0,
-            inventorySaveData = new InventorySaveData(),
-            questSaveData = new QuestSaveData(),
-            // 나머지
+            playerSaveData = new PlayerSaveData
+            {
+                characterName = name,
+                jobData = _jobData,
+                level = 1,
+                currentEXP = 0,
+                maxHealth = _jobData.baseHP,
+                currentHealth = _jobData.baseHP,
+            }
         };
     }
 }
