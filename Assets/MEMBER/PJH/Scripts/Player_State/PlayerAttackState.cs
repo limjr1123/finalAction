@@ -9,6 +9,7 @@ public class PlayerAttackState : PlayerState
 
     public override void Enter()
     {
+        animator.SetFloat("Speed", 0f);
         stateMachine.lastAttackTime = Time.time;
         stateMachine.comboCount = Mathf.Clamp(stateMachine.comboCount + 1, 1, 4);
 

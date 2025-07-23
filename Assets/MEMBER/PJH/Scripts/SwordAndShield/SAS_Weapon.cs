@@ -1,14 +1,24 @@
 using UnityEngine;
 
-public class PlayerWeapon : MonoBehaviour
+public class SAS_Weapon : MonoBehaviour
 {
-    public int Damage = 10;
+    private PlayerStats playerStats;
+
+    private void Awake()
+    {
+        playerStats = GetComponentInParent<PlayerStats>();
+    }
 
     private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            
+    { 
+        if (other.CompareTag("Enemy"))
+        {      
+            int finalDamage = playerStats.GetAttackDamage();
+
+            if (other.TryGetComponent(out EnemyStat enemyStat))
+            {
+                enemyStat.TakeAttackDamage(finalDamage);
+            }
         }
     }
 }

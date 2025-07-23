@@ -1,6 +1,42 @@
 using System;
 using UnityEngine;
 
+[System.Serializable]
+public struct PlayerDamageRange
+{
+    public int min;
+    public int max;
+
+    public PlayerDamageRange(int damage, float ratio)
+    {
+        min = Mathf.RoundToInt(damage * (1f - ratio));
+        max = Mathf.RoundToInt(damage * (1f + ratio));
+    }
+
+    // 데미지 범위에서 랜덤한 값을 반환(크리티컬 확률을 사용하지 않는 경우 사용 가능)
+    public int GetRandomDamage()
+    {
+        return UnityEngine.Random.Range(min, max + 1);
+    }
+
+    // 치명타 확률과 치명타 피해량 비율을 고려하여 최종 데미지 값을 반환
+    public int CalculateDamage(float criticalChance, float criticalDamageRatio)
+    {
+        int baseDamage = GetRandomDamage();
+        bool isCritical = UnityEngine.Random.Range(0f, 1f) < criticalChance;
+
+        if (isCritical)
+        {
+            int damage = Mathf.RoundToInt(baseDamage * criticalDamageRatio);
+            return damage;
+        }
+        else
+        {
+            return baseDamage;
+        }
+    }
+}
+
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] 
@@ -46,10 +82,22 @@ public class PlayerStats : MonoBehaviour
     public FloatStat criDamage; // 치명타 피해량
     public FloatStat criResist; // 치명타 저항
 
+    public PlayerDamageRange attackDamageRange;   // 공격 피해량 범위
+    public float damageRange = 0.2f;        // 공격 피해량 범위 비율 (20%)
+
+    protected Action OnHealthChanged;
+
     void Awake()
     {
         stateMachine = GetComponent<PlayerStateMachine>();
         ApplyBaseStats(); // 스탯 초기화
+        OnHealthChanged += () => HealthCheck();
+    }
+
+    public int GetAttackDamage()
+    {
+        var currentDamageRange = new PlayerDamageRange(attackDamage.GetValue(), damageRange);
+        return currentDamageRange.CalculateDamage(criRate.GetValue(), criDamage.GetValue());
     }
 
     public void ApplyBaseStats()
@@ -87,46 +135,72 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("HitBox")) // 태그는 실제 사용하는 것으로 변경
+        if (other.CompareTag("HitBox"))
         {
-            Debug.Log("플레이어 피격");
-
-            int exDamage = 20;
-
-            TakeDamage(exDamage);
+           Debug.Log("플레이어 피격");
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakePhysicalDamage(int damage)
     {
-        if (isDead)
-            return;
+        if (isDead) return; // 이미 사망한 경우 무시
+        int finalDamage = CheckTargetArmor(this, damage);
 
-        // 방어력을 적용한 최종 데미지 계산 (최소 1의 데미지는 받도록 설정)
-        currentHealth -= damage;
-        Debug.Log($"{damage}의 데미지를 입었습니다. 현재 체력: {currentHealth}");
+        DecreaseHealth(finalDamage);
 
-        if (currentHealth > 0)
+        OnHealthChanged?.Invoke();
+        Debug.Log($"플레이어가 {finalDamage}의 물리 피해를 받았습니다. 현재 체력: {currentHealth}");
+    }
+
+
+    public void TakeMagicalDamage(int damage)
+    {
+        if (isDead) return; // 이미 사망한 경우 무시
+        int finalDamage = CheckTargetMagicArmor(this, damage);
+
+        DecreaseHealth(finalDamage);
+
+        OnHealthChanged?.Invoke();
+        Debug.Log($"플레이어가 {finalDamage}의 마법 피해를 받았습니다. 현재 체력: {currentHealth}");
+    }
+
+    private void HealthCheck()
+    {
+        if (currentHealth <= 0)
         {
-            // 아직 살아있다면 피격 상태로 전환
-            stateMachine?.GetDamage();
-        }
-        else
-        {
-            // 체력이 0 이하면 사망 처리
-            PlayerDie();
+            Die();
         }
     }
 
-    private void PlayerDie()
+    protected virtual int DecreaseHealth(int finalDamage)
+    {
+        currentHealth = Mathf.Max(0, currentHealth - finalDamage);
+        return currentHealth;
+    }
+
+    protected virtual int CheckTargetArmor(PlayerStats target, int _damage)
+    {
+        // 방어력에 따른 피해 감소 로직
+        int reducedDamage = _damage - target.defense.GetValue();
+        return Mathf.Max(reducedDamage, 1); // 피해가 1 이하로 떨어지지 않도록 보정
+    }
+
+    protected virtual int CheckTargetMagicArmor(PlayerStats target, int _damage)
+    {
+        // 방어력에 따른 피해 감소 로직
+        int reducedDamage = _damage - target.magicDefense.GetValue();
+        return Mathf.Max(reducedDamage, 1); // 피해가 1 이하로 떨어지지 않도록 보정
+    }
+
+    private void Die()
     {
         if (isDead) return; // 중복 실행 방지
 
         isDead = true;
-        currentHealth = 0;
         stateMachine?.Die();
         OnPlayerDied?.Invoke(); // 사망이벤트 호출
     }
+
 
     public void LoadData(PlayerSaveData data)
     {
@@ -165,4 +239,5 @@ public class PlayerStats : MonoBehaviour
 
         Debug.Log($"데이터 적용 완료.");
     }
+
 }
