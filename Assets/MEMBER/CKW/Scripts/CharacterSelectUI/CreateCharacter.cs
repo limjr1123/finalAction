@@ -21,7 +21,7 @@ public class CreateCharacter : MonoBehaviour
 
     private void CreateCharacters()
     {
-        GameDataSaveLoadManager.Instance.CreateDummyData();
+        //GameDataSaveLoadManager.Instance.CreateDummyData(); //함수 삭제로 인한 주석처리
     }
 
 

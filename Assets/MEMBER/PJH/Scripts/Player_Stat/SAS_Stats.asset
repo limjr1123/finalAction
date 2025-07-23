@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd4e959da8457e4f8878d7a0b072c1a, type: 3}
   m_Name: SAS_Stats
   m_EditorClassIdentifier: 
-  maxHealth: 500
+  maxHealth: 100
   maxMana: 100
   manaRegen: 10
   maxStamina: 100

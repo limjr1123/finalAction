@@ -120,10 +120,10 @@ public class CharacterInfoToggles : MonoBehaviour
     private void UpdateToggleUI(CharacterToggleUI toggleUI, CharacterData character)
     {
         if (toggleUI.characterNameText != null)
-            toggleUI.characterNameText.text = $"Lv. {character.level} {character.characterName}";
+            toggleUI.characterNameText.text = $"Lv. {character.playerSaveData.level} {character.playerSaveData.characterName}";
 
         if (toggleUI.characterClassText != null)
-            toggleUI.characterClassText.text = $"{character.level}"; // class text에 레벨 표시
+            toggleUI.characterClassText.text = $"{character.playerSaveData.maxHealth}"; // class text에 레벨 표시
     }
 
     private void OnToggleValueChanged(Toggle toggle, CharacterData character, int index)
@@ -146,9 +146,9 @@ public class CharacterInfoToggles : MonoBehaviour
             selectedCharacterPanel.SetActive(true);
 
         if (selectedCharacterName != null)
-            selectedCharacterName.text = selectedCharacter.characterName;
+            selectedCharacterName.text = selectedCharacter.playerSaveData.characterName;
         if (selectedCharacterClass != null)
-            selectedCharacterClass.text = $"레벨: {selectedCharacter.level}";
+            selectedCharacterClass.text = $"레벨: {selectedCharacter.playerSaveData.level}";
     }
 
     public CharacterData GetSelectedCharacter()

@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
     private PlayerState currentState;
-    private PlayerHealth playerHealth;
     public Animator animator;
     public PlayerStats Stats { get; private set; }
     public float rotationSpeed = 15f;
@@ -26,10 +25,9 @@ public class PlayerStateMachine : MonoBehaviour
         Animator = GetComponent<Animator>();
         Stats = GetComponent<PlayerStats>();
 
-        playerHealth = GetComponent<PlayerHealth>();
-        if (playerHealth != null)
+        if (Stats != null)
         {
-            PlayerHealth.OnPlayerDied += Die;
+            PlayerStats.OnPlayerDied += Die;
         }
 
 
@@ -105,9 +103,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     void OnDisable()
     {
-        if (playerHealth != null)
+        if (Stats != null)
         {
-            PlayerHealth.OnPlayerDied -= Die;
+            PlayerStats.OnPlayerDied -= Die;
         }
     }
 

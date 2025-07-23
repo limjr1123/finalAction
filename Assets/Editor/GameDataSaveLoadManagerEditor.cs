@@ -11,7 +11,7 @@ public class GameDataSaveLoadManagerEditor : Editor
         GameDataSaveLoadManager mgr = (GameDataSaveLoadManager)target;
         if (GUILayout.Button("더미 데이터 생성"))
         {
-            mgr.CreateDummyData();
+           // mgr.CreateDummyData(); 함수 삭제로 인한 주석처리
         }
     }
 }
