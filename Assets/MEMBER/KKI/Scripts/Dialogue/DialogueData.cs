@@ -1,17 +1,22 @@
-
-
 using System.Collections.Generic;
 
-namespace DialogueEvent
+public enum DialogueTriggerType
 {
-
+    None,
+    OpenShop,
+    AcceptQuest,
+    GiveItem,
 }
+
 
 [System.Serializable]
 public class DialogueLine
 {
     public string text;
-    // public string quest;
+    public DialogueTriggerType triggerType;
+    public string triggerParam;
+    public string requiredQuest;
+    public bool requireComplete;
 }
 
 [System.Serializable]
