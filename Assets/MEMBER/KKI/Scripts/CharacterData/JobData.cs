@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "JobData", menuName = "Scriptable Objects/JobData")]
 public class JobData : ScriptableObject
 {
-    public string jobID;
     public string jobName;
+    public Sprite jobIcon;
     public int baseHP;
     public int baseMP;
     public int baseAttack;

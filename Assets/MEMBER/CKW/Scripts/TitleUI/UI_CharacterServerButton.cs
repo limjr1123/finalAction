@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GameSave;
-using System;
 using System.Collections; // ForceUIUpdate 코루틴을 위해 필요
 
 public class UI_CharacterServerButton : MonoBehaviour
@@ -69,13 +68,13 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void StartGame()
     {
-        // selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter(); // 이 로직은 나중에 추가되었을 수 있습니다.
+        selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter(); // 이 로직은 나중에 추가되었을 수 있습니다.
         // 이미 OnCharacterSelectedHandler에서 할당되므로 이 줄이 없었을 수 있습니다.
 
         if (selectedCharacterData != null)
         {
             // Debug.Log($"게임 시작: {selectedCharacterData.characterName}"); // 이 로그도 없었을 수 있습니다.
-            // GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(selectedCharacterIndex); // 이 라인도 없었을 수 있습니다.
+            GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(selectedCharacterIndex); // 이 라인도 없었을 수 있습니다.
             SceneManager.LoadScene("Field");
         }
         else
@@ -129,7 +128,7 @@ public class UI_CharacterServerButton : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator ForceUIUpdate()
+    private IEnumerator ForceUIUpdate()
     {
         yield return null;
         if (characterManager != null)
