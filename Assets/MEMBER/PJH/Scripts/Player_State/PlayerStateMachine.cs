@@ -109,4 +109,13 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HitBox"))
+        {
+            GetDamage();
+        }
+    }
 }
+
+

@@ -27,8 +27,8 @@ MonoBehaviour:
   moveSpeed: 5
   sprintSpeed: 10
   attackSpeed: 1
-  criRate: 20
-  criDamage: 120
+  criRate: 0.2
+  criDamage: 1.5
   criResist: 20
   level: 1
   maxEXP: 200
