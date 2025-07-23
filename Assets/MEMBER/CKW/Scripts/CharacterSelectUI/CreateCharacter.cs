@@ -49,6 +49,7 @@ public class CreateCharacter : MonoBehaviour
         // 생성 완료 후 창 닫기 및 초기화
         CloseNickname();
         ResetCharacterCreation();
+
     }
 
 

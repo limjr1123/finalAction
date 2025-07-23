@@ -44,11 +44,11 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            Die();
+            PlayerDie();
         }
     }
 
-    void Die()
+    void PlayerDie()
     {
         isDead = true;
         currentHealth = 0f;

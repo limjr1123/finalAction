@@ -1,8 +1,16 @@
+using System;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private PlayerStatsData baseStats;
+    [SerializeField] 
+    private PlayerStatsData baseStats;
+    public static event Action OnPlayerDied; // 플레이어 사망 이벤트
+    private PlayerStateMachine stateMachine;
+    private bool isDead = false;
+
+    public string characterName;
+    public JobData jobData;
 
     [Header("현재상태")]
     public int currentHealth; // 현재 체력
@@ -17,6 +25,7 @@ public class PlayerStats : MonoBehaviour
     public Stat manaRegen; // 마나 회복 속도
     public Stat maxStamina; // 최대 스태미나
     public Stat staminaRegen; // 스태미나 회복 속도
+    public Stat maxEXP; // 최대 경험치
     public Stat defense; // 방어력
     public Stat magicDefense; // 마법 방어력
     public Stat Str; // 힘
@@ -39,6 +48,7 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        stateMachine = GetComponent<PlayerStateMachine>();
         ApplyBaseStats(); // 스탯 초기화
     }
 
@@ -49,7 +59,9 @@ public class PlayerStats : MonoBehaviour
             Debug.LogError("Base Stats 데이터 필요");
             return;
         }
-
+        level = 1;
+        maxEXP.SetDefaultValue(baseStats.maxEXP);
+        currentEXP = 0;
         maxHealth.SetDefaultValue(baseStats.maxHealth);
         currentHealth = baseStats.maxHealth;
         maxMana.SetDefaultValue(baseStats.maxMana);
@@ -73,5 +85,84 @@ public class PlayerStats : MonoBehaviour
         Int.SetDefaultValue(baseStats.Int);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HitBox")) // 태그는 실제 사용하는 것으로 변경
+        {
+            Debug.Log("플레이어 피격");
 
+            int exDamage = 20;
+
+            TakeDamage(exDamage);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isDead)
+            return;
+
+        // 방어력을 적용한 최종 데미지 계산 (최소 1의 데미지는 받도록 설정)
+        currentHealth -= damage;
+        Debug.Log($"{damage}의 데미지를 입었습니다. 현재 체력: {currentHealth}");
+
+        if (currentHealth > 0)
+        {
+            // 아직 살아있다면 피격 상태로 전환
+            stateMachine?.GetDamage();
+        }
+        else
+        {
+            // 체력이 0 이하면 사망 처리
+            PlayerDie();
+        }
+    }
+
+    private void PlayerDie()
+    {
+        if (isDead) return; // 중복 실행 방지
+
+        isDead = true;
+        currentHealth = 0;
+        stateMachine?.Die();
+        OnPlayerDied?.Invoke(); // 사망이벤트 호출
+    }
+
+    public void LoadData(PlayerSaveData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+        this.characterName = data.characterName;
+        this.jobData = data.jobData;
+
+        this.level = data.level;
+        this.currentEXP = data.currentEXP;
+        this.currentHealth = data.currentHealth;
+        this.currentMana = data.currentMana;
+        this.currentStamina = data.currentStamina;
+
+        maxHealth.SetDefaultValue(data.maxHealth);
+        maxMana.SetDefaultValue(data.maxMana);
+        manaRegen.SetDefaultValue(data.manaRegen);
+        maxStamina.SetDefaultValue(data.maxStamina);
+        staminaRegen.SetDefaultValue(data.staminaRegen);
+        maxEXP.SetDefaultValue(data.maxEXP);
+        defense.SetDefaultValue(data.defense);
+        magicDefense.SetDefaultValue(data.magicDefense);
+        Str.SetDefaultValue(data.Str);
+        Dex.SetDefaultValue(data.Dex);
+        Int.SetDefaultValue(data.Int);
+        moveSpeed.SetDefaultValue(data.moveSpeed);
+        sprintSpeed.SetDefaultValue(data.sprintSpeed);
+        attackDamage.SetDefaultValue(data.attackDamage);
+        magicDamage.SetDefaultValue(data.magicDamage);
+        attackSpeed.SetDefaultValue(data.attackSpeed);
+        criRate.SetDefaultValue(data.criRate);
+        criDamage.SetDefaultValue(data.criDamage);
+        criResist.SetDefaultValue(data.criResist);
+
+        Debug.Log($"데이터 적용 완료.");
+    }
 }
