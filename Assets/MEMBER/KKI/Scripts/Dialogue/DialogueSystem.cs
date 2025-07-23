@@ -28,7 +28,7 @@ public class DialogueSystem : MonoBehaviour
             // 조건부 대사 처리
             if (!string.IsNullOrEmpty(line.requiredQuest))
             {
-                // bool questDone = QuestManager.Instance.IsQuestCompleted(line.requiredQuest);
+                bool questDone = QuestManager.Instance.IsQuestCompleted(line.requiredQuest);
                 // if (line.requireComplete && !questDone)
                 // {
                 //     lineIndex ++;
