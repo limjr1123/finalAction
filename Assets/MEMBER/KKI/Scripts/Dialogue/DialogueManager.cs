@@ -31,7 +31,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void StartDialogue(string dialogueID)
     {
-        if (dialoguePanel == null) return;
+        if (dialoguePanel == null)
+            dialoguePanel = FindAnyObjectByType<DialogueSystem>(FindObjectsInactive.Include);
 
         if (!dialogueMap.TryGetValue(dialogueID, out DialogueData data)) return;
 
