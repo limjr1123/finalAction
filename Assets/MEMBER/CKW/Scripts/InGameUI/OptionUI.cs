@@ -26,6 +26,9 @@ public class OptionUI : BaseUI
     }
 
 
+
+
+
     private void MoveCharacterSelect()
     {
         SceneManager.LoadScene(1);
