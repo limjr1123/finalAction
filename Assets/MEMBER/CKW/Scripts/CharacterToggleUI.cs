@@ -9,7 +9,34 @@ public class CharacterToggleUI : MonoBehaviour
     public Toggle toggle;
 
     [Header("캐릭터 정보 텍스트")]
+    public Image characterImage;
     public TextMeshProUGUI characterNameText;
     public TextMeshProUGUI characterClassText;
+
+    [Header("Toggle Color")]
+    public Image toggleImage;
+    public Color32 selectedColor = new Color32(100, 100, 100, 255);
+    public Color normalColor = Color.white;
+
+
+
+    void Start()
+    {
+        toggle.onValueChanged.AddListener(OnToggleChange);
+        UpdateColor();
+    }
+
+
+    void OnToggleChange(bool isSelected)
+    {
+        UpdateColor();
+    }
+
+
+    void UpdateColor()
+    {
+        toggleImage.color = toggle.isOn ? selectedColor : normalColor;
+    }
+
 
 }

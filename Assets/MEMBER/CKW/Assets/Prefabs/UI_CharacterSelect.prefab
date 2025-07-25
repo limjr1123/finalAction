@@ -237,6 +237,9 @@ MonoBehaviour:
   characterTogglePrefab: {fileID: 3512291576816728966, guid: 3b46994ab02ba4041ab8ea0e0e102d8d, type: 3}
   toggleParent: {fileID: 2660905531828012488}
   toggleGroup: {fileID: 1360874363141627773}
+  selectedCharacterPanel: {fileID: 0}
+  selectedCharacterName: {fileID: 0}
+  selectedCharacterClass: {fileID: 0}
 --- !u!1 &1536678972462732434
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +990,7 @@ MonoBehaviour:
   characterDeleteButton: {fileID: 5616168570146349832}
   SelectCharacterWindow: {fileID: 7463882639272413460}
   characterSelectionWindow: {fileID: 0}
+  characterManager: {fileID: 3071282971293773090}
 --- !u!1 &6108768148496896285
 GameObject:
   m_ObjectHideFlags: 0

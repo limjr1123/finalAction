@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +9,7 @@ public enum EnemyStates
     Run,
     Battle,
     Attack,
-    getHit,
+    GetHit,
     Dead,
 }
 
@@ -42,10 +41,9 @@ public class EnemyController : MonoBehaviour
         stateDict[EnemyStates.Battle] = GetComponent<EnemyBattleState>();
         stateDict[EnemyStates.Attack] = GetComponent<EnemyAttackState>();
         stateDict[EnemyStates.Dead] = GetComponent<EnemyDeadState>();
-        stateDict[EnemyStates.getHit] = GetComponent<EnemyGetHitState>();
+        stateDict[EnemyStates.GetHit] = GetComponent<EnemyGetHitState>();
 
         stateMachine = new EnemyStateMachine<EnemyController>(this);
-
         // Idle 상태로 시작
         stateMachine.ChangeState(stateDict[EnemyStates.Idle]);
     }
@@ -64,6 +62,15 @@ public class EnemyController : MonoBehaviour
         prevPos = transform.position; // 현재 위치 저장
     }
 
+    // HitBox와 충돌했을 때 호출되는 메서드.
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HitBox"))
+        {
+            Debug.Log("타격 성공");
+            stateMachine.ChangeState(stateDict[EnemyStates.GetHit]);
+        }
+    }
 
     public GameObject FindTarget()
     {
@@ -89,14 +96,6 @@ public class EnemyController : MonoBehaviour
     public bool IsInState(EnemyStates states)
     {
         return stateMachine.currentState == stateDict[states];
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("HitBox"))
-        {
-            Debug.Log("타격 성공");
-        }
     }
 
 }

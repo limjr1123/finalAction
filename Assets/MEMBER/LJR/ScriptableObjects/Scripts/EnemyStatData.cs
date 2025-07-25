@@ -20,4 +20,4 @@ public class EnemyStatData : ScriptableObject
     public float attackInterval;  //공격 주기
     public float criticalChance;  //치명타 확률
     public float criticalDamage;  //치명타 피해량
-}                               
+}

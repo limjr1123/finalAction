@@ -183,9 +183,9 @@ public class InventoryManager : Singleton<InventoryManager>
 
     #region 아이템 저장 및 로드
 
-    public InventorySaveData GetInventorySaveData()
+    public InventorySaveData SaveInventoryData()
     {
-        InventorySaveData data = new();
+        InventorySaveData data = new InventorySaveData();
         foreach (var slot in inventory)
         {
             data.items.Add(new InventorySlotSaveData { itemID = slot.data.ItemID, count = slot.count });
@@ -193,7 +193,7 @@ public class InventoryManager : Singleton<InventoryManager>
         return data;
     }
 
-    public void LoadInventory(InventorySaveData inventorySaveData)
+    public void LoadInventoryData(InventorySaveData inventorySaveData)
     {
         inventory.Clear();
         foreach (var item in inventorySaveData.items)
