@@ -19,6 +19,14 @@ public class ToggleManager : Singleton<ToggleManager>
             toggle.transition = Selectable.Transition.None;
             Image toggleImage = toggle.GetComponent<Image>();
 
+
+            if (toggleImage == null)
+            {
+                Debug.LogWarning($"Toggle '{toggle.name}'에 Image 컴포넌트가 없습니다.");
+                continue;
+            }
+
+
             UpdateColor(toggle, toggleImage);
 
             toggle.onValueChanged.AddListener((bool isSelected) =>
@@ -30,6 +38,7 @@ public class ToggleManager : Singleton<ToggleManager>
 
     void UpdateColor(Toggle toggle, Image toggleImage)
     {
-        toggleImage.color = toggle.isOn ? selectedColor : normalColor;
+        if (toggleImage != null)
+            toggleImage.color = toggle.isOn ? selectedColor : normalColor;
     }
 }
