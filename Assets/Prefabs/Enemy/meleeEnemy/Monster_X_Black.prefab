@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 757208833039159969}
   - component: {fileID: 5777403954847690664}
   - component: {fileID: 8039194898401538339}
+  - component: {fileID: 4307540989664989314}
   m_Layer: 10
   m_Name: LeftHandCollider
   m_TagString: HitBox
@@ -81,6 +82,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &4307540989664989314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235641288449263756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &382398675638657887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,9 +1367,13 @@ MonoBehaviour:
   criticalChance:
     baseValue: 0
     modifiers: []
-  criticalDamage:
+  criticalMultiplier:
     baseValue: 0
     modifiers: []
+  attackDamageRange:
+    min: 0
+    max: 0
+  damageRange: 0.2
 --- !u!114 &330682113295680070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1437,6 +1454,8 @@ MonoBehaviour:
   weapon: {fileID: 0}
   leftHandCollider: {fileID: 5777403954847690664}
   rightHandCollider: {fileID: 31434779713841624}
+  leftFootCollider: {fileID: 0}
+  rightFootCollider: {fileID: 0}
   attackState: 0
 --- !u!195 &377341934141518851
 NavMeshAgent:
@@ -1457,7 +1476,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -2
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &6874009220207545457
@@ -1584,6 +1603,7 @@ GameObject:
   - component: {fileID: 7651336416322748872}
   - component: {fileID: 31434779713841624}
   - component: {fileID: 7808651909347006472}
+  - component: {fileID: 4681431221096593810}
   m_Layer: 10
   m_Name: RightHandCollider
   m_TagString: HitBox
@@ -1654,6 +1674,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &4681431221096593810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462185667681684092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7520912671846791982
 GameObject:
   m_ObjectHideFlags: 0
