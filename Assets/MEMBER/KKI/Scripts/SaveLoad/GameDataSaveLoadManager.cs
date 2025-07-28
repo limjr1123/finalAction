@@ -20,8 +20,8 @@ namespace GameSave
     public class CharacterData
     {
         public PlayerSaveData playerSaveData = new();
-        public InventorySaveData inventoryData = new();
-        public QuestSaveData questData = new();
+        public InventorySaveData inventorySaveData = new();
+        public QuestSaveData questSaveData = new();
     }
 
     [System.Serializable]
@@ -73,13 +73,13 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
         // Application.persistentDataPath: 유니티에서 제공하는 특수한 폴더 경로를 반환하는 프로퍼티로 각 OS별로 유저 데이터를 저장하기에 안전한 전용 폴더 경로를 알려줌.
         savePath = Application.persistentDataPath + "/gamedata.json";
 
-        gameData = LoadGame();
+        gameData = LoadGameDataFromJason();
         if (gameData == null)
             gameData = new GameData();
     }
 
     // 게임 데이터 전체 저장 -> 전체 데이터 덮어쓰기
-    public void SaveGame()
+    public void SaveGameDataToJason()
     {
         string json = JsonUtility.ToJson(gameData, true);
         File.WriteAllText(savePath, json);
@@ -87,7 +87,7 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
     }
 
     // 게임 데이터 전체 로드
-    public GameData LoadGame()
+    public GameData LoadGameDataFromJason()
     {
         if (!File.Exists(savePath))
         {
@@ -117,10 +117,14 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
         gameData.selectedCharacterSlotIndex = gameData.characters.Count - 1;
 
         // 3. 저장
-        SaveGame();
+        SaveGameDataToJason();
         Debug.Log($"{characterName} 캐릭터 생성 완료!");
 
         // 4. UI 갱신 등 추가 작업
     }
+
+
+    // 게임 저장을 눌렀을 때
+
 }
 

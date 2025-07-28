@@ -621,6 +621,22 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 136407696156743977, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
+      propertyPath: mageJob
+      value: 
+      objectReference: {fileID: 11400000, guid: 6a566de7af3904f40b1c293889a6b55e, type: 2}
+    - target: {fileID: 136407696156743977, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
+      propertyPath: thiefJob
+      value: 
+      objectReference: {fileID: 11400000, guid: 8fbf4602c4ffd4348ab42310830249ee, type: 2}
+    - target: {fileID: 136407696156743977, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
+      propertyPath: archerJob
+      value: 
+      objectReference: {fileID: 11400000, guid: 26d27425e5fdca24e8b4194ae8278933, type: 2}
+    - target: {fileID: 136407696156743977, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
+      propertyPath: warriorJob
+      value: 
+      objectReference: {fileID: 11400000, guid: bc72c6523ae055a458bfb7eccd29f45f, type: 2}
+    - target: {fileID: 136407696156743977, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
       propertyPath: selectCharacterWindow
       value: 
       objectReference: {fileID: 1069133415}

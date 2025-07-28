@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameSave;
 using UnityEngine;
 
 public class QuestManager : Singleton<QuestManager>
@@ -56,8 +57,32 @@ public class QuestManager : Singleton<QuestManager>
         return true;
     }
 
+    public bool IsQuestCompleted(string quest)
+    {
+
+        return true;
+    }
+
     private void OnEnemyKilled(string enemyId)
     {
         UpdateObjective(enemyId, ObjectiveType.Kill);
     }
+
+
+    #region 퀘스트 데이터 저장 및 로드
+
+    public QuestSaveData SaveQuestData()
+    {
+        QuestSaveData questSaveData = new QuestSaveData();
+
+
+        return questSaveData;
+    }
+
+    public void LoadQuestData(QuestSaveData questSaveData)
+    {
+
+    }
+
+    #endregion
 }
