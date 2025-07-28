@@ -14,6 +14,8 @@ public enum EnemyAttackStateInfo
 
 public class MeleeEnemy : MonoBehaviour
 {
+    EnemyController enemyController;
+
     // 공격 애니메이션과 관련된 데이터
     [SerializeField] List<EnemyAttackData> attacks;
     [SerializeField] GameObject weapon;

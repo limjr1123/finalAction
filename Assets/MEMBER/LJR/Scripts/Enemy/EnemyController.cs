@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
     public NavMeshAgent navAgent { get; private set; }
     public EnemyVision visionSensor { get; internal set; }
     public MeleeEnemy meleeEnemy { get; private set; }
+    public List<string> getHitAnimations { get; set; } = new List<string>();
 
     Vector3 prevPos;
 
@@ -46,6 +47,9 @@ public class EnemyController : MonoBehaviour
         stateMachine = new EnemyStateMachine<EnemyController>(this);
         // Idle 상태로 시작
         stateMachine.ChangeState(stateDict[EnemyStates.Idle]);
+        CacheGetHitAnimations();
+
+        navAgent.speed = stats.moveSpeed.GetValue(); // 초기 이동 속도 설정
     }
 
     void Update()
@@ -60,6 +64,22 @@ public class EnemyController : MonoBehaviour
         // magnitude로 이동속도 벡터의 크기를 가져와서 실제 설정된Speed에 맞게 비율을 계산(0~1)
         anim.SetFloat("forwardSpeed", forwardSpeed / navAgent.speed, 0.2f, Time.deltaTime); // 애니메이터의 이동 속도 설정
         prevPos = transform.position; // 현재 위치 저장
+    }
+
+    // GetHit 애니메이션을 캐시하는 메서드.
+    void CacheGetHitAnimations()
+    {
+        RuntimeAnimatorController controller = anim.runtimeAnimatorController;
+        if (controller != null)
+        {
+            foreach (AnimationClip clip in controller.animationClips)
+            {
+                if (clip.name.StartsWith("GetHit"))
+                {
+                    getHitAnimations.Add(clip.name);
+                }
+            }
+        }
     }
 
     // HitBox와 충돌했을 때 호출되는 메서드.
