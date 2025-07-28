@@ -29,7 +29,7 @@ public class InventorySlot
     }
 }
 
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : Singleton<InventoryManager>, IInventory
 {
     [SerializeField] private ItemDatabase itemDatabase;
     [SerializeField] private List<InventorySlot> inventory = new();

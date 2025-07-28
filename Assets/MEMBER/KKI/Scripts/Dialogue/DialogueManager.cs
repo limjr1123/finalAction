@@ -17,8 +17,10 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void LoadDatabase()
     {
+        // 리소스 파일에서 json 파일인 "dialogues"를 가져오기
         TextAsset jsonText = Resources.Load<TextAsset>("dialogues");
         var db = JsonUtility.FromJson<DialogueDatabase>(jsonText.text);
+        // db 다이어로그 데이터 형태로 딕셔너리로 변환
         dialogueMap = db.dialogues.ToDictionary(d => d.dialogueID);
     }
 
@@ -46,4 +48,5 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         dialoguePanel.gameObject.SetActive(false);
     }
+
 }
