@@ -14,32 +14,37 @@ public class PlayerIdleState : PlayerState
     {
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) // 이동상태 전환
         {
-            stateMachine.ChangeState(new PlayerMoveState(stateMachine, player, animator));
-            return;
+            stateMachine.ChangeState(stateMachine.MoveState);
         }
-
-        if (Input.GetKeyDown(KeyCode.Space)) // 회피상태 전환
-        {
-            stateMachine.ChangeState(new PlayerEvasionState(stateMachine, player, animator));
-        }
-
-        //if (Input.GetKeyDown(KeyCode.Tab)) // 가드상태 전환
-        //{
-        //    stateMachine.ChangeState(new PlayerGuardState(stateMachine, player, animator));
-        //}
-
-        if (Input.GetKeyDown(KeyCode.LeftControl)) // 패링상태 전환
-        {
-            stateMachine.ChangeState(new PlayerParryingState(stateMachine, player, animator));
-        }
-
-        if (Input.GetMouseButtonDown(0))  // 공격상태 전환
-        {
-            stateMachine.ChangeState(new PlayerAttackState(stateMachine, player, animator));
-        }
-
-
     }
+
+    public override void OnAttack()
+    {
+        stateMachine.ChangeState(stateMachine.AttackState);
+    }
+
+    public override void OnDodge()
+    {
+        stateMachine.ChangeState(stateMachine.EvasionState);
+    }
+
+    public override void OnParry()
+    {
+        stateMachine.ChangeState(stateMachine.ParryingState);
+    }
+
+    public override void OnJump()
+    {
+        stateMachine.ChangeState(stateMachine.JumpState);
+    }
+
+    public override void OnGuard()
+    {
+        stateMachine.ChangeState(stateMachine.GuardState);
+    }
+
+
+
     public override void Exit()
     {
     }
