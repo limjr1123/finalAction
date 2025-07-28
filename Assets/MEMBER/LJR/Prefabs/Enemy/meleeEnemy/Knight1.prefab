@@ -5377,6 +5377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2764337786764382439}
   - component: {fileID: 1964890573938975946}
+  - component: {fileID: 4691456919191793271}
   m_Layer: 10
   m_Name: RightFootCollider
   m_TagString: HitBox
@@ -5420,6 +5421,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4691456919191793271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6651147912766037509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7220286321481275768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5665,7 +5678,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &48100047721050166
@@ -6241,6 +6254,7 @@ GameObject:
   - component: {fileID: 456910310642489257}
   - component: {fileID: 5999314989064251553}
   - component: {fileID: 6818118017921856531}
+  - component: {fileID: 5012068798692959212}
   m_Layer: 10
   m_Name: Branch
   m_TagString: HitBox
@@ -6337,6 +6351,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005237955, y: 0.0027139327, z: 0.10159259}
   m_Center: {x: -0.00089510286, y: -0.00009749885, z: -0.0035991857}
+--- !u!114 &5012068798692959212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444970341482108102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8770727035520049887
 GameObject:
   m_ObjectHideFlags: 0

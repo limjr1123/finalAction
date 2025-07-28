@@ -29,17 +29,19 @@ public class PlayerAttackState : PlayerState
 
     public override void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
-        {
-            isComboInputPossible = true;
-        }
+     
+    }
 
-        if (isComboInputPossible && Input.GetMouseButtonDown(0))
+    public override void OnAttack()
+    {
+        if (isComboInputPossible && stateMachine.comboCount < 4)
         {
-            if (stateMachine.comboCount < 4)
-            {
-                stateMachine.ChangeState(new PlayerAttackState(stateMachine, player, animator));
-            }
+            stateMachine.ChangeState(stateMachine.AttackState);
         }
+    }
+
+    public override void AllowCombo()
+    {
+        isComboInputPossible = true;
     }
 }
