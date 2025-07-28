@@ -5,12 +5,21 @@ public class PlayerEvasionState : PlayerState
     private float evasionForce = 8f;
     private Vector3 evasionDirection;
 
+    private readonly int _originalLayer;
+    private readonly int _dodgingLayer;
+
     public PlayerEvasionState(PlayerStateMachine stateMachine, GameObject player, Animator animator)
-        : base(stateMachine, player, animator) { }
+        : base(stateMachine, player, animator)
+    {
+        _originalLayer = player.layer;
+        _dodgingLayer = LayerMask.NameToLayer("PlayerDodge");
+    }
 
     public override void Enter()
     {
         animator.SetTrigger("Evasion");
+
+        SetLayerRecursively(player, _dodgingLayer);
 
         if (stateMachine.InputX != 0 || stateMachine.InputY != 0)
         {
@@ -24,7 +33,6 @@ public class PlayerEvasionState : PlayerState
         stateMachine.Rb.AddForce(evasionDirection * evasionForce, ForceMode.Impulse);
         // 스태미나를 소모 로직 추가
 
-        Debug.Log("플레이어 회피");
     }
 
     public override void FixedUpdate()
@@ -34,6 +42,20 @@ public class PlayerEvasionState : PlayerState
 
     public override void Exit()
     {
+        SetLayerRecursively(player, _originalLayer);
+   
         stateMachine.Rb.linearVelocity = Vector3.zero;
+    }
+
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null) continue;
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 }

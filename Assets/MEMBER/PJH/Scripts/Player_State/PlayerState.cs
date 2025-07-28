@@ -17,4 +17,10 @@ public abstract class PlayerState
     public virtual void Update() { }
     public virtual void FixedUpdate() { }
     public virtual void Exit() { }
+    public virtual void OnAttack() { }
+    public virtual void OnJump() { }
+    public virtual void OnDodge() { }
+    public virtual void OnParry() { }
+    public virtual void OnGuard() { }
+    public virtual void AllowCombo() { }
 }
