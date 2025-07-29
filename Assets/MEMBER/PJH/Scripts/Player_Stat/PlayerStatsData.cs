@@ -4,29 +4,29 @@ using UnityEngine;
 public class PlayerStatsData : ScriptableObject
 {
     [Header("int stat")]
-    public int maxHealth; // ÃÖ´ë Ã¼·Â
-    public int maxMana; // ÃÖ´ë ¸¶³ª
-    public int manaRegen; // ¸¶³ª È¸º¹ ¼Óµµ
-    public int maxStamina; // ÃÖ´ë ½ºÅÂ¹Ì³ª
-    public int staminaRegen; // ½ºÅÂ¹Ì³ª È¸º¹ ¼Óµµ
-    public int defense; // ¹æ¾î·Â
-    public int magicDefense; // ¸¶¹ý ¹æ¾î·Â
-    public int Str; // Èû
-    public int Dex; // ¹ÎÃ¸
-    public int Int; // Áö´É
-    public int attackDamage; // ¹°¸® °ø°Ý·Â
-    public int magicDamage; // ¸¶¹ý °ø°Ý·Â
+    public int maxHealth; // ï¿½Ö´ï¿½ Ã¼ï¿½ï¿½
+    public int maxMana; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int manaRegen; // ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½
+    public int maxStamina; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Â¹Ì³ï¿½
+    public int staminaRegen; // ï¿½ï¿½ï¿½Â¹Ì³ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½
+    public int defense; // ï¿½ï¿½ï¿½ï¿½
+    public int magicDefense; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int Str; // ï¿½ï¿½
+    public int Dex; // ï¿½ï¿½Ã¸
+    public int Int; // ï¿½ï¿½ï¿½ï¿½
+    public int attackDamage; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
+    public int magicDamage; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
 
     [Header("float stat")]
-    public float moveSpeed; // ±âº» ÀÌµ¿¼Óµµ
-    public float sprintSpeed; // ´Þ¸®±â ¼Óµµ
-    public float attackSpeed; // °ø°Ý ¼Óµµ
-    public float criRate; // Ä¡¸íÅ¸ È®·ü
-    public float criDamage; // Ä¡¸íÅ¸ ÇÇÇØ·®
-    public float criResist; // Ä¡¸íÅ¸ ÀúÇ×
+    public float moveSpeed; // ï¿½âº» ï¿½Ìµï¿½ï¿½Óµï¿½
+    public float sprintSpeed; // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+    public float attackSpeed; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+    public float criRate; // Ä¡ï¿½ï¿½Å¸ È®ï¿½ï¿½
+    public float criDamage; // Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½Ø·ï¿½
+    public float criResist; // Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½
 
-    [Header("·¹º§ °ü·Ã ½ºÅÈ")]
-    public int level; // ÇÃ·¹ÀÌ¾î ·¹º§
-    public int maxEXP; // ÃÖ´ë °æÇèÄ¡
-    public int currentEXP; // ÇöÀç °æÇèÄ¡
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public int level; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int maxEXP; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
+    public int currentEXP; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
 }

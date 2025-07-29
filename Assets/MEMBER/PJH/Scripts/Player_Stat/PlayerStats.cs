@@ -13,13 +13,13 @@ public struct PlayerDamageRange
         max = Mathf.RoundToInt(damage * (1f + ratio));
     }
 
-    // µ¥¹ÌÁö ¹üÀ§¿¡¼­ ·£´ýÇÑ °ªÀ» ¹ÝÈ¯(Å©¸®Æ¼ÄÃ È®·üÀ» »ç¿ëÇÏÁö ¾Ê´Â °æ¿ì »ç¿ë °¡´É)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯(Å©ï¿½ï¿½Æ¼ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     public int GetRandomDamage()
     {
         return UnityEngine.Random.Range(min, max + 1);
     }
 
-    // Ä¡¸íÅ¸ È®·ü°ú Ä¡¸íÅ¸ ÇÇÇØ·® ºñÀ²À» °í·ÁÇÏ¿© ÃÖÁ¾ µ¥¹ÌÁö °ªÀ» ¹ÝÈ¯
+    // Ä¡ï¿½ï¿½Å¸ È®ï¿½ï¿½ï¿½ï¿½ Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½Ø·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     public int CalculateDamage(float criticalChance, float criticalDamageRatio)
     {
         int baseDamage = GetRandomDamage();
@@ -39,58 +39,62 @@ public struct PlayerDamageRange
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private PlayerStatsData baseStats;
-    public static event Action OnPlayerDied; // ÇÃ·¹ÀÌ¾î »ç¸Á ÀÌº¥Æ®
+    public static event Action OnPlayerDied; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®
     private PlayerStateMachine stateMachine;
     private bool isDead = false;
 
     public string characterName;
     public JobData jobData;
 
-    [Header("ÇöÀç»óÅÂ")]
-    public int currentHealth; // ÇöÀç Ã¼·Â
-    public int currentMana; // ÇöÀç ¸¶³ª
-    public int currentStamina; // ÇöÀç ½ºÅÂ¹Ì³ª
-    public int level; // ÇÃ·¹ÀÌ¾î ·¹º§
-    public int currentEXP; // ÇöÀç °æÇèÄ¡
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    public int currentHealth; // ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½
+    public int currentMana; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int currentStamina; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¹Ì³ï¿½
+    public int level; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int currentEXP; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
 
-    [Header("±âº» ½ºÅÈ")]
-    public Stat maxHealth; // ÃÖ´ë Ã¼·Â
-    public Stat maxMana; // ÃÖ´ë ¸¶³ª
-    public Stat manaRegen; // ¸¶³ª È¸º¹ ¼Óµµ
-    public Stat maxStamina; // ÃÖ´ë ½ºÅÂ¹Ì³ª
-    public Stat staminaRegen; // ½ºÅÂ¹Ì³ª È¸º¹ ¼Óµµ
-    public Stat maxEXP; // ÃÖ´ë °æÇèÄ¡
-    public Stat defense; // ¹æ¾î·Â
-    public Stat magicDefense; // ¸¶¹ý ¹æ¾î·Â
-    public Stat Str; // Èû
-    public Stat Dex; // ¹ÎÃ¸
-    public Stat Int; // Áö´É
+    [Header("ï¿½âº» ï¿½ï¿½ï¿½ï¿½")]
+    public Stat maxHealth; // ï¿½Ö´ï¿½ Ã¼ï¿½ï¿½
+    public Stat maxMana; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Stat manaRegen; // ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½
+    public Stat maxStamina; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Â¹Ì³ï¿½
+    public Stat staminaRegen; // ï¿½ï¿½ï¿½Â¹Ì³ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½
+    public Stat maxEXP; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
+    public Stat defense; // ï¿½ï¿½ï¿½ï¿½
+    public Stat magicDefense; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Stat Str; // ï¿½ï¿½
+    public Stat Dex; // ï¿½ï¿½Ã¸
+    public Stat Int; // ï¿½ï¿½ï¿½ï¿½
 
-    [Header("ÀÌµ¿ °ü·Ã ½ºÅÈ")]
-    public FloatStat moveSpeed; // ±âº» ÀÌµ¿¼Óµµ
-    public FloatStat sprintSpeed; // ´Þ¸®±â ¼Óµµ
+    [Header("ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public FloatStat moveSpeed; // ï¿½âº» ï¿½Ìµï¿½ï¿½Óµï¿½
+    public FloatStat sprintSpeed; // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½Óµï¿½
 
-    [Header("°ø°Ý °ü·Ã ½ºÅÈ")]
-    public Stat attackDamage; // ¹°¸® °ø°Ý·Â
-    public Stat magicDamage; // ¸¶¹ý °ø°Ý·Â
-    public FloatStat attackSpeed; // °ø°Ý ¼Óµµ
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public Stat attackDamage; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
+    public Stat magicDamage; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
+    public FloatStat attackSpeed; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
 
-    [Header("Ä¡¸íÅ¸ °ü·Ã ½ºÅÈ")]
-    public FloatStat criRate; // Ä¡¸íÅ¸ È®·ü
-    public FloatStat criDamage; // Ä¡¸íÅ¸ ÇÇÇØ·®
-    public FloatStat criResist; // Ä¡¸íÅ¸ ÀúÇ×
+    [Header("Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public FloatStat criRate; // Ä¡ï¿½ï¿½Å¸ È®ï¿½ï¿½
+    public FloatStat criDamage; // Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½Ø·ï¿½
+    public FloatStat criResist; // Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½
 
-    public PlayerDamageRange attackDamageRange;   // °ø°Ý ÇÇÇØ·® ¹üÀ§
-    public float damageRange = 0.2f;        // °ø°Ý ÇÇÇØ·® ¹üÀ§ ºñÀ² (20%)
+    public PlayerDamageRange attackDamageRange;   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø·ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float damageRange = 0.2f;        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (20%)
+
+
+    public Vector3 currentPos;
+
 
     protected Action OnHealthChanged;
 
     void Awake()
     {
         stateMachine = GetComponent<PlayerStateMachine>();
-        ApplyBaseStats(); // ½ºÅÈ ÃÊ±âÈ­
+        ApplyBaseStats(); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         OnHealthChanged += () => HealthCheck();
     }
 
@@ -104,7 +108,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (baseStats == null)
         {
-            Debug.LogError("Base Stats µ¥ÀÌÅÍ ÇÊ¿ä");
+            Debug.LogError("Base Stats ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½");
             return;
         }
         level = 1;
@@ -137,31 +141,31 @@ public class PlayerStats : MonoBehaviour
     {
         if (other.CompareTag("HitBox"))
         {
-           Debug.Log("ÇÃ·¹ÀÌ¾î ÇÇ°Ý");
+            Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ç°ï¿½");
         }
     }
 
     public void TakePhysicalDamage(int damage)
     {
-        if (isDead) return; // ÀÌ¹Ì »ç¸ÁÇÑ °æ¿ì ¹«½Ã
+        if (isDead) return; // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int finalDamage = CheckTargetArmor(this, damage);
 
         DecreaseHealth(finalDamage);
 
         OnHealthChanged?.Invoke();
-        Debug.Log($"ÇÃ·¹ÀÌ¾î°¡ {finalDamage}ÀÇ ¹°¸® ÇÇÇØ¸¦ ¹Þ¾Ò½À´Ï´Ù. ÇöÀç Ã¼·Â: {currentHealth}");
+        Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾î°¡ {finalDamage}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½Þ¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½: {currentHealth}");
     }
 
 
     public void TakeMagicalDamage(int damage)
     {
-        if (isDead) return; // ÀÌ¹Ì »ç¸ÁÇÑ °æ¿ì ¹«½Ã
+        if (isDead) return; // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int finalDamage = CheckTargetMagicArmor(this, damage);
 
         DecreaseHealth(finalDamage);
 
         OnHealthChanged?.Invoke();
-        Debug.Log($"ÇÃ·¹ÀÌ¾î°¡ {finalDamage}ÀÇ ¸¶¹ý ÇÇÇØ¸¦ ¹Þ¾Ò½À´Ï´Ù. ÇöÀç Ã¼·Â: {currentHealth}");
+        Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾î°¡ {finalDamage}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½Þ¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½: {currentHealth}");
     }
 
     private void HealthCheck()
@@ -180,25 +184,25 @@ public class PlayerStats : MonoBehaviour
 
     protected virtual int CheckTargetArmor(PlayerStats target, int _damage)
     {
-        // ¹æ¾î·Â¿¡ µû¸¥ ÇÇÇØ °¨¼Ò ·ÎÁ÷
+        // ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int reducedDamage = _damage - target.defense.GetValue();
-        return Mathf.Max(reducedDamage, 1); // ÇÇÇØ°¡ 1 ÀÌÇÏ·Î ¶³¾îÁöÁö ¾Êµµ·Ï º¸Á¤
+        return Mathf.Max(reducedDamage, 1); // ï¿½ï¿½ï¿½Ø°ï¿½ 1 ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     protected virtual int CheckTargetMagicArmor(PlayerStats target, int _damage)
     {
-        // ¹æ¾î·Â¿¡ µû¸¥ ÇÇÇØ °¨¼Ò ·ÎÁ÷
+        // ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int reducedDamage = _damage - target.magicDefense.GetValue();
-        return Mathf.Max(reducedDamage, 1); // ÇÇÇØ°¡ 1 ÀÌÇÏ·Î ¶³¾îÁöÁö ¾Êµµ·Ï º¸Á¤
+        return Mathf.Max(reducedDamage, 1); // ï¿½ï¿½ï¿½Ø°ï¿½ 1 ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     private void Die()
     {
-        if (isDead) return; // Áßº¹ ½ÇÇà ¹æÁö
+        if (isDead) return; // ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         isDead = true;
         stateMachine?.Die();
-        OnPlayerDied?.Invoke(); // »ç¸ÁÀÌº¥Æ® È£Ãâ
+        OnPlayerDied?.Invoke(); // ï¿½ï¿½ï¿½ï¿½Ìºï¿½Æ® È£ï¿½ï¿½
     }
 
 
@@ -237,7 +241,8 @@ public class PlayerStats : MonoBehaviour
         criDamage.SetDefaultValue(data.criDamage);
         criResist.SetDefaultValue(data.criResist);
 
-        Debug.Log($"µ¥ÀÌÅÍ Àû¿ë ¿Ï·á.");
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Å±ï¿½ï¿½
+        transform.position = data.savePos;
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½.");
     }
-
 }
