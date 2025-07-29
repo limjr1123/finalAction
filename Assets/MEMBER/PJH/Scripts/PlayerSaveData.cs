@@ -6,14 +6,14 @@ public class PlayerSaveData
     public string characterName;
     public JobData jobData;
 
-    // ÇöÀç »óÅÂ
+    // í˜„ì¬ ìƒíƒœ
     public int currentHealth;
     public int currentMana;
     public int currentStamina;
     public int level;
     public int currentEXP;
 
-    // ±âº» ½ºÅÈ
+    // ê¸°ë³¸ ìŠ¤íƒ¯
     public int maxHealth;
     public int maxMana;
     public int manaRegen;
@@ -26,19 +26,22 @@ public class PlayerSaveData
     public int Dex;
     public int Int;
 
-    // ÀÌµ¿ °ü·Ã ½ºÅÈ
+    // ì´ë™ ê´€ë ¨ ìŠ¤íƒ¯
     public float moveSpeed;
     public float sprintSpeed;
 
-    // °ø°İ °ü·Ã ½ºÅÈ
+    // ê³µê²© ê´€ë ¨ ìŠ¤íƒ¯
     public int attackDamage;
     public int magicDamage;
     public float attackSpeed;
 
-    // Ä¡¸íÅ¸ °ü·Ã ½ºÅÈ
+    // ì¹˜ëª…íƒ€ ê´€ë ¨ ìŠ¤íƒ¯
     public float criRate;
     public float criDamage;
     public float criResist;
+
+    // ìºë¦­í„° ì„¸ì´ë¸Œ ìœ„ì¹˜
+    public Vector3 savePos;
 
     public PlayerSaveData() { }
 
@@ -47,14 +50,14 @@ public class PlayerSaveData
         characterName = playerStats.characterName;
         jobData = playerStats.jobData;
 
-        // ÇöÀç »óÅÂ °ªµéÀ» Á÷Á¢ º¹»ç
+        // í˜„ì¬ ìƒíƒœ ê°’ë“¤ì„ ì§ì ‘ ë³µì‚¬
         currentHealth = playerStats.currentHealth;
         currentMana = playerStats.currentMana;
         currentStamina = playerStats.currentStamina;
         level = playerStats.level;
         currentEXP = playerStats.currentEXP;
 
-        // Stat ¶Ç´Â FloatStat Å¸ÀÔ º¯¼öµéÀº GetValue() ÅëÇØ °¡Á®¿È
+        // Stat ë˜ëŠ” FloatStat íƒ€ì… ë³€ìˆ˜ë“¤ì€ GetValue() í†µí•´ ê°€ì ¸ì˜´
         maxHealth = playerStats.maxHealth.GetValue();
         maxMana = playerStats.maxMana.GetValue();
         manaRegen = playerStats.manaRegen.GetValue();
@@ -78,7 +81,9 @@ public class PlayerSaveData
         criDamage = playerStats.criDamage.GetValue();
         criResist = playerStats.criResist.GetValue();
 
-        // ¾ÀÀÌ³ª À§Ä¡ °°Àº Á¤º¸´Â ÃßÈÄ °áÁ¤
-
+        // ì”¬ì´ë‚˜ ìœ„ì¹˜ ê°™ì€ ì •ë³´ëŠ” ì¶”í›„ ê²°ì •
+        savePos = playerStats.transform.position;
     }
+
+
 }
