@@ -23,7 +23,6 @@ public class UI_CharacterServerButton : MonoBehaviour
     private CharacterData selectedCharacterData; // 현재 선택된 캐릭터 데이터
     private int selectedCharacterIndex; // 현재 선택된 캐릭터 인덱스
 
-
     void Start() // Unity의 Start 메서드 - 객체가 활성화될 때 한 번 실행
     {
         if (startButton != null) // 시작 버튼이 존재하면
@@ -78,10 +77,8 @@ public class UI_CharacterServerButton : MonoBehaviour
             GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(currentIndex);
             Debug.Log("GameManager.LoadGame() 호출 전");
 
-            GameManager.Instance.LoadGame();
-
-            Debug.Log("GameManager.LoadGame() 호출 후 - Field 씬 로드 시작");
-            SceneManager.LoadScene("Field");
+            // 이부분에서 씬 이동
+            SceneLoader.LoadSceneAsync("Field");
         }
         else
         {

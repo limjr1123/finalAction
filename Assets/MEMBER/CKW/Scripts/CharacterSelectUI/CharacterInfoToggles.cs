@@ -117,24 +117,21 @@ public class CharacterInfoToggles : MonoBehaviour
         if (toggleUI.characterNameText != null) // 캐릭터 이름 텍스트가 있는 경우
             toggleUI.characterNameText.text = $"Lv. {character.playerSaveData.level} {character.playerSaveData.characterName}"; // 레벨과 이름을 표시
 
-        if (character.playerSaveData.jobData != null) // 캐릭터의 직업 데이터가 있는 경우
-            Debug.Log("qweqwe"); // 디버그 로그 출력 (테스트용)
-
         if (toggleUI.characterClassText != null) // 캐릭터 클래스 텍스트가 있는 경우
-            toggleUI.characterClassText.text = $"{character.playerSaveData.jobData.jobName}"; // 직업 이름을 표시
+            toggleUI.characterClassText.text = $"{character.playerSaveData.characterJob}"; // 직업 이름을 표시
 
-        // ⭐ 직업 이미지 설정 추가
-        if (toggleUI.characterImage != null && character.playerSaveData.jobData != null) // 캐릭터 이미지와 직업 데이터가 있는 경우
-        {
-            if (character.playerSaveData.jobData.jobIcon != null) // 직업 아이콘이 있는 경우
-            {
-                toggleUI.characterImage.sprite = character.playerSaveData.jobData.jobIcon; // 토글 UI의 이미지를 직업 아이콘으로 설정
-            }
-            else // 직업 아이콘이 없는 경우
-            {
-                Debug.LogWarning($"캐릭터 {character.playerSaveData.characterName}의 직업 이미지가 없습니다!"); // 경고 로그 출력
-            }
-        }
+        // // ⭐ 직업 이미지 설정 추가
+        // if (toggleUI.characterImage != null && character.playerSaveData.jobData != null) // 캐릭터 이미지와 직업 데이터가 있는 경우
+        // {
+        //     if (character.playerSaveData.jobData.jobIcon != null) // 직업 아이콘이 있는 경우
+        //     {
+        //         toggleUI.characterImage.sprite = character.playerSaveData.jobData.jobIcon; // 토글 UI의 이미지를 직업 아이콘으로 설정
+        //     }
+        //     else // 직업 아이콘이 없는 경우
+        //     {
+        //         Debug.LogWarning($"캐릭터 {character.playerSaveData.characterName}의 직업 이미지가 없습니다!"); // 경고 로그 출력
+        //     }
+        // }
     }
 
 

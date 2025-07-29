@@ -13,13 +13,13 @@ public struct PlayerDamageRange
         max = Mathf.RoundToInt(damage * (1f + ratio));
     }
 
-    // ������ �������� ������ ���� ��ȯ(ũ��Ƽ�� Ȯ���� ������� �ʴ� ��� ��� ����)
+    // 랜덤한 데미지를 계산해 반환 (퀄리티 확인용으로 변경하지 않는 한 그대로 사용)
     public int GetRandomDamage()
     {
         return UnityEngine.Random.Range(min, max + 1);
     }
 
-    // ġ��Ÿ Ȯ���� ġ��Ÿ ���ط� ������ �����Ͽ� ���� ������ ���� ��ȯ
+    // 크리티컬 확률과 크리티컬 데미지 배율을 고려하여 최종 데미지를 반환
     public int CalculateDamage(float criticalChance, float criticalDamageRatio)
     {
         int baseDamage = GetRandomDamage();
@@ -41,60 +41,58 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField]
     private PlayerStatsData baseStats;
-    public static event Action OnPlayerDied; // �÷��̾� ��� �̺�Ʈ
+    public static event Action OnPlayerDied; // 플레이어 사망 이벤트
     private PlayerStateMachine stateMachine;
     private bool isDead = false;
 
     public string characterName;
-    public JobData jobData;
+    public string characterJob;
 
-    [Header("�������")]
-    public int currentHealth; // ���� ü��
-    public int currentMana; // ���� ����
-    public int currentStamina; // ���� ���¹̳�
-    public int level; // �÷��̾� ����
-    public int currentEXP; // ���� ����ġ
+    [Header("현재 상태")]
+    public int currentHealth; // 현재 체력
+    public int currentMana; // 현재 마나
+    public int currentStamina; // 현재 스태미나
+    public int level; // 플레이어 레벨
+    public int currentEXP; // 현재 경험치
 
-    [Header("�⺻ ����")]
-    public Stat maxHealth; // �ִ� ü��
-    public Stat maxMana; // �ִ� ����
-    public Stat manaRegen; // ���� ȸ�� �ӵ�
-    public Stat maxStamina; // �ִ� ���¹̳�
-    public Stat staminaRegen; // ���¹̳� ȸ�� �ӵ�
-    public Stat maxEXP; // �ִ� ����ġ
-    public Stat defense; // ����
-    public Stat magicDefense; // ���� ����
-    public Stat Str; // ��
-    public Stat Dex; // ��ø
-    public Stat Int; // ����
+    [Header("기본 능력치")]
+    public Stat maxHealth; // 최대 체력
+    public Stat maxMana; // 최대 마나
+    public Stat manaRegen; // 마나 회복 속도
+    public Stat maxStamina; // 최대 스태미나
+    public Stat staminaRegen; // 스태미나 회복 속도
+    public Stat maxEXP; // 최대 경험치
+    public Stat defense; // 방어력
+    public Stat magicDefense; // 마법 방어력
+    public Stat Str; // 힘
+    public Stat Dex; // 민첩
+    public Stat Int; // 지능
 
-    [Header("�̵� ���� ����")]
-    public FloatStat moveSpeed; // �⺻ �̵��ӵ�
-    public FloatStat sprintSpeed; // �޸��� �ӵ�
+    [Header("이동 관련 능력치")]
+    public FloatStat moveSpeed; // 기본 이동속도
+    public FloatStat sprintSpeed; // 달리기 속도
 
-    [Header("���� ���� ����")]
-    public Stat attackDamage; // ���� ���ݷ�
-    public Stat magicDamage; // ���� ���ݷ�
-    public FloatStat attackSpeed; // ���� �ӵ�
+    [Header("전투 관련 능력치")]
+    public Stat attackDamage; // 물리 공격력
+    public Stat magicDamage; // 마법 공격력
+    public FloatStat attackSpeed; // 공격 속도
 
-    [Header("ġ��Ÿ ���� ����")]
-    public FloatStat criRate; // ġ��Ÿ Ȯ��
-    public FloatStat criDamage; // ġ��Ÿ ���ط�
-    public FloatStat criResist; // ġ��Ÿ ����
+    [Header("크리티컬 관련 능력치")]
+    public FloatStat criRate; // 크리티컬 확률
+    public FloatStat criDamage; // 크리티컬 데미지 배율
+    public FloatStat criResist; // 크리티컬 저항
 
-    public PlayerDamageRange attackDamageRange;   // ���� ���ط� ����
-    public float damageRange = 0.2f;        // ���� ���ط� ���� ���� (20%)
-
+    public PlayerDamageRange attackDamageRange; // 물리 공격 데미지 범위
+    public float damageRange = 0.2f; // 데미지 편차 범위 (20%)
 
     public Vector3 currentPos;
-
 
     protected Action OnHealthChanged;
 
     void Awake()
     {
         stateMachine = GetComponent<PlayerStateMachine>();
-        ApplyBaseStats(); // ���� �ʱ�ȭ
+        ApplyBaseStats(); // 기본 스탯 초기화
         OnHealthChanged += () => HealthCheck();
     }
 
@@ -108,7 +106,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (baseStats == null)
         {
-            Debug.LogError("Base Stats ������ �ʿ�");
+            Debug.LogError("Base Stats 데이터가 필요합니다.");
             return;
         }
         level = 1;
@@ -141,31 +139,30 @@ public class PlayerStats : MonoBehaviour
     {
         if (other.CompareTag("HitBox"))
         {
-            Debug.Log("�÷��̾� �ǰ�");
+            Debug.Log("플레이어 피격!");
         }
     }
 
     public void TakePhysicalDamage(int damage)
     {
-        if (isDead) return; // �̹� ����� ��� ����
+        if (isDead) return; // 이미 사망한 경우 무시
         int finalDamage = CheckTargetArmor(this, damage);
 
         DecreaseHealth(finalDamage);
 
         OnHealthChanged?.Invoke();
-        Debug.Log($"�÷��̾ {finalDamage}�� ���� ���ظ� �޾ҽ��ϴ�. ���� ü��: {currentHealth}");
+        Debug.Log($"플레이어가 {finalDamage}의 물리 피해를 입었습니다. 현재 체력: {currentHealth}");
     }
-
 
     public void TakeMagicalDamage(int damage)
     {
-        if (isDead) return; // �̹� ����� ��� ����
+        if (isDead) return; // 이미 사망한 경우 무시
         int finalDamage = CheckTargetMagicArmor(this, damage);
 
         DecreaseHealth(finalDamage);
 
         OnHealthChanged?.Invoke();
-        Debug.Log($"�÷��̾ {finalDamage}�� ���� ���ظ� �޾ҽ��ϴ�. ���� ü��: {currentHealth}");
+        Debug.Log($"플레이어가 {finalDamage}의 마법 피해를 입었습니다. 현재 체력: {currentHealth}");
     }
 
     private void HealthCheck()
@@ -184,27 +181,26 @@ public class PlayerStats : MonoBehaviour
 
     protected virtual int CheckTargetArmor(PlayerStats target, int _damage)
     {
-        // ���¿� ���� ���� ���� ����
+        // 대상의 방어력을 고려해 최종 데미지 계산
         int reducedDamage = _damage - target.defense.GetValue();
-        return Mathf.Max(reducedDamage, 1); // ���ذ� 1 ���Ϸ� �������� �ʵ��� ����
+        return Mathf.Max(reducedDamage, 1); // 최소 1의 피해는 들어가도록 보정
     }
 
     protected virtual int CheckTargetMagicArmor(PlayerStats target, int _damage)
     {
-        // ���¿� ���� ���� ���� ����
+        // 대상의 마법 방어력을 고려해 최종 데미지 계산
         int reducedDamage = _damage - target.magicDefense.GetValue();
-        return Mathf.Max(reducedDamage, 1); // ���ذ� 1 ���Ϸ� �������� �ʵ��� ����
+        return Mathf.Max(reducedDamage, 1); // 최소 1의 피해는 들어가도록 보정
     }
 
     private void Die()
     {
-        if (isDead) return; // �ߺ� ���� ����
+        if (isDead) return; // 중복 사망 방지
 
         isDead = true;
         stateMachine?.Die();
-        OnPlayerDied?.Invoke(); // ����̺�Ʈ ȣ��
+        OnPlayerDied?.Invoke(); // 사망 이벤트 호출
     }
-
 
     public void LoadData(PlayerSaveData data)
     {
@@ -212,9 +208,8 @@ public class PlayerStats : MonoBehaviour
         {
             return;
         }
-        this.characterName = data.characterName;
-        this.jobData = data.jobData;
 
+        this.characterName = data.characterName;
         this.level = data.level;
         this.currentEXP = data.currentEXP;
         this.currentHealth = data.currentHealth;
@@ -241,8 +236,7 @@ public class PlayerStats : MonoBehaviour
         criDamage.SetDefaultValue(data.criDamage);
         criResist.SetDefaultValue(data.criResist);
 
-        // ����� ��ġ�� �ű��
         transform.position = data.savePos;
-        Debug.Log($"������ ���� �Ϸ�.");
+        Debug.Log($"캐릭터 데이터 로드 완료!");
     }
 }
