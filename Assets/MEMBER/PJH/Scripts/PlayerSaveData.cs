@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerSaveData
 {
     public string characterName;
-    public JobData jobData;
+    public string characterJob;
 
     // 현재 상태
     public int currentHealth;
@@ -48,7 +48,7 @@ public class PlayerSaveData
     public PlayerSaveData(PlayerStats playerStats)
     {
         characterName = playerStats.characterName;
-        jobData = playerStats.jobData;
+        characterJob = playerStats.characterJob;
 
         // 현재 상태 값들을 직접 복사
         currentHealth = playerStats.currentHealth;

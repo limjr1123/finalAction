@@ -1,11 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
-using GameSave;
 
 public class PlayerDataManager : Singleton<PlayerDataManager>
 {
+    [SerializeField] private GameObject WarriorPrefab;
+    [SerializeField] private GameObject archerPrefab;
+    [SerializeField] private GameObject magePrefab;
+    [SerializeField] private GameObject thiefPrefab;
+
+    private Dictionary<string, GameObject> prefabMap;
+
+
     protected override void Awake()
     {
         base.Awake();
+
+        prefabMap = new Dictionary<string, GameObject>();
+
+        prefabMap.Add("전사", WarriorPrefab);
+        prefabMap.Add("궁수", archerPrefab);
+        prefabMap.Add("마법사", magePrefab);
+        prefabMap.Add("도적", thiefPrefab);
     }
 
     public PlayerSaveData SaveChracterData()
@@ -22,13 +37,15 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
 
     public void LoadCharacterSaveData(PlayerSaveData playerSaveData)
     {
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        if (playerObject == null) return;
+        // 캐릭터 인스턴스 생성 후에 데이터 로드하기
 
-        PlayerStats playerStats = playerObject.GetComponent<PlayerStats>();
-        if (playerStats == null) return;
+        // 1. 플레이어 인스턴스 생성하기
+        Debug.Log("이름 : " + playerSaveData.characterJob);
+        GameObject player = prefabMap[playerSaveData.characterJob];
+        Instantiate(player);
 
-        // PlayerStats의 LoadData 함수를 호출하여 데이터를 적용합니다.
+        // 2. 데이터 로드하기
+        var playerStats = player.GetComponent<PlayerStats>();
         playerStats.LoadData(playerSaveData);
     }
 
