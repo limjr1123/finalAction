@@ -11,8 +11,6 @@ public class PlayerDamagedState : PlayerState
 
         stateMachine.MoveDirection = Vector3.zero;
         stateMachine.Rb.linearVelocity = Vector3.zero;
-
-      
     }
 
 }

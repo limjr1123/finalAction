@@ -18,6 +18,8 @@ public class SAS_Weapon : MonoBehaviour
             if (other.TryGetComponent(out EnemyStat enemyStat))
             {
                 enemyStat.TakeAttackDamage(finalDamage);
+                HitStop.Instance.StopTime();
+                Debug.Log("hitstop");
             }
         }
     }
