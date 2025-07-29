@@ -3,9 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    public static UIManager Instance;
 
     [Header("UI Manager Settings")]
     public bool handelEscapeInput = true;     // ESC키 입력 처리 여부를 설정하는 변수
@@ -18,19 +17,8 @@ public class UIManager : MonoBehaviour
     // private List<BaseUI> openedUI = new List<BaseUI>(); // uiStack으로 충분하므로 List는 제거 가능성이 높음
 
 
-    void Awake()
+    protected override void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-            Instance = this;
-        }
-
         SceneManager.sceneLoaded += OnSceneLoaded;
         RegisterAllUI(); // 씬 로드 시 모든 BaseUI 컴포넌트들을 찾아서 딕셔너리에 등록
     }
