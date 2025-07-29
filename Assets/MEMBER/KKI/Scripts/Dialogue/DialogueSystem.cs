@@ -1,7 +1,5 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.Analytics;
-using Unity.VisualScripting;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -11,17 +9,19 @@ public class DialogueSystem : MonoBehaviour
 
     private DialogueData currentDialogue;
     private int lineIndex = 0;
+    private int length = 0;
 
     public void StartDialogue(DialogueData data)
     {
         currentDialogue = data;
         lineIndex = 0;
+        length = currentDialogue.lines.Length;
         ShowNextLine();
     }
 
     public void ShowNextLine()
     {
-        if (lineIndex < currentDialogue.lines.Length)
+        if (lineIndex < length)
         {
             DialogueLine line = currentDialogue.lines[lineIndex];
 
@@ -29,11 +29,17 @@ public class DialogueSystem : MonoBehaviour
             if (!string.IsNullOrEmpty(line.requiredQuest))
             {
                 bool questDone = QuestManager.Instance.IsQuestCompleted(line.requiredQuest);
-                // if (line.requireComplete && !questDone)
-                // {
-                //     lineIndex ++;
-                //     // 조건 불만족
-                // }
+
+                if (questDone == true)
+                {
+                    lineIndex++;
+                }
+                else
+                {
+                    // 다르게 대화 진행
+                    return; // 이렇게 함수 스택이 계속 쌓임.
+                }
+
             }
 
             npcNameText.text = currentDialogue.npcName;
@@ -59,6 +65,11 @@ public class DialogueSystem : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 대화 내용에서 나타나는 트리거에 라인이 있는지 확인하는 함수
+    /// </summary>
+    /// <param name="line"></param>
     void HandleTrigger(DialogueLine line)
     {
         switch (line.triggerType)

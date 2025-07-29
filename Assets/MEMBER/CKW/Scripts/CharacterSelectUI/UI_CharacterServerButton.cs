@@ -1,4 +1,4 @@
-// UI_CharacterServerButton.cs (맨 처음 상태 추정)
+﻿// UI_CharacterServerButton.cs (맨 처음 상태 추정)
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -64,16 +64,28 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void StartGame() // 게임 시작 버튼 클릭 시 호출되는 메서드
     {
-        selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter(); // 현재 선택된 캐릭터 데이터 가져오기
+        selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter();
+        Debug.Log($"selectedCharacterData: {(selectedCharacterData != null ? selectedCharacterData.playerSaveData.characterName : "NULL")}");
 
-        if (selectedCharacterData != null) // 선택된 캐릭터가 있는 경우
+        if (selectedCharacterData != null)
         {
-            GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(selectedCharacterIndex); // 게임 데이터 매니저에 선택된 캐릭터 인덱스 저장
-            SceneManager.LoadScene("Field"); // "Field" 씬 로드
+            var characterToggles = FindAnyObjectByType<CharacterInfoToggles>();
+            int currentIndex = characterToggles?.GetSelectedCharacterIndex() ?? -1;
+
+            Debug.Log($"현재 선택된 캐릭터 인덱스: {currentIndex}");
+            Debug.Log($"선택된 캐릭터 이름: {selectedCharacterData.playerSaveData.characterName}");
+
+            GameDataSaveLoadManager.Instance.SetSelectedCharacterSlotIndex(currentIndex);
+            Debug.Log("GameManager.LoadGame() 호출 전");
+
+            GameManager.Instance.LoadGame();
+
+            Debug.Log("GameManager.LoadGame() 호출 후 - Field 씬 로드 시작");
+            SceneManager.LoadScene("Field");
         }
-        else // 선택된 캐릭터가 없는 경우
+        else
         {
-            Debug.LogWarning("선택된 캐릭터가 없습니다!"); // 경고 로그 출력
+            Debug.LogWarning("선택된 캐릭터가 없습니다!");
         }
     }
 

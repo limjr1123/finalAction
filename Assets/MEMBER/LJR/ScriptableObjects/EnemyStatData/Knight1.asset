@@ -16,7 +16,7 @@ MonoBehaviour:
   magicDamage: 0
   maxHealth: 150
   defense: 10
-  magicDefense: 0
+  magicDefense: 5
   mana: 0
   manaRegen: 0
   aggroRange: 5

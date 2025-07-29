@@ -23,6 +23,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
         enemy = owner;
         distanceToStand = enemy.stats.attackRange.GetValue(); // 공격 범위에 따라 거리 설정
         enemy.navAgent.stoppingDistance = distanceToStand; // NavMeshAgent의 정지 거리 설정
+        enemy.anim.SetBool("BattleState", true);
     }
 
     public override void Execute()

@@ -10,11 +10,10 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
 
     public PlayerSaveData SaveChracterData()
     {
-        // 1. ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ µ¥ÀÌÅÍ ½º³À¼¦À» °¡Á®¿É´Ï´Ù.
         PlayerSaveData currentCharacterData = GetChracterSaveData();
         if (currentCharacterData == null)
         {
-            Debug.LogError("µ¥ÀÌÅÍ ½º³À¼¦ »ı¼º¿¡ ½ÇÆĞÇÏ¿© ÀúÀåÀ» Áß´ÜÇÕ´Ï´Ù.");
+            Debug.LogError("ë°ì´í„° ìŠ¤ëƒ…ìƒ· ìƒì„±ì— ì‹¤íŒ¨í•˜ì—¬ ì €ì¥ì„ ì¤‘ë‹¨í•©ë‹ˆë‹¤.");
             return null;
         }
 
@@ -29,7 +28,7 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
         PlayerStats playerStats = playerObject.GetComponent<PlayerStats>();
         if (playerStats == null) return;
 
-        // PlayerStatsÀÇ LoadData ÇÔ¼ö¸¦ È£ÃâÇÏ¿© µ¥ÀÌÅÍ¸¦ Àû¿ëÇÕ´Ï´Ù.
+        // PlayerStatsì˜ LoadData í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì—¬ ë°ì´í„°ë¥¼ ì ìš©í•©ë‹ˆë‹¤.
         playerStats.LoadData(playerSaveData);
     }
 
@@ -49,7 +48,7 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
             return null;
         }
 
-        // PlayerStats¸¦ ÀÌ¿ëÇØ PlayerSaveData ½º³À¼¦À» ¸¸µì´Ï´Ù.
+        // PlayerStatsë¥¼ ì´ìš©í•´ PlayerSaveData ìŠ¤ëƒ…ìƒ·ì„ ë§Œë“­ë‹ˆë‹¤.
         PlayerSaveData newPlayerSaveData = new PlayerSaveData(playerStats);
 
         return newPlayerSaveData;
