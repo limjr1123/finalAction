@@ -1,20 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
-using GameSave;
 
 public class PlayerDataManager : Singleton<PlayerDataManager>
 {
+    [SerializeField] private GameObject WarriorPrefab;
+    [SerializeField] private GameObject archerPrefab;
+    [SerializeField] private GameObject magePrefab;
+    [SerializeField] private GameObject thiefPrefab;
+
+    private Dictionary<string, GameObject> prefabMap;
+
+
     protected override void Awake()
     {
         base.Awake();
+
+        prefabMap = new Dictionary<string, GameObject>();
+
+        prefabMap.Add("ì „ì‚¬", WarriorPrefab);
+        prefabMap.Add("ê¶ìˆ˜", archerPrefab);
+        prefabMap.Add("ë§ˆë²•ì‚¬", magePrefab);
+        prefabMap.Add("ë„ì ", thiefPrefab);
     }
 
     public PlayerSaveData SaveChracterData()
     {
-        // 1. ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ µ¥ÀÌÅÍ ½º³À¼¦À» °¡Á®¿É´Ï´Ù.
         PlayerSaveData currentCharacterData = GetChracterSaveData();
         if (currentCharacterData == null)
         {
-            Debug.LogError("µ¥ÀÌÅÍ ½º³À¼¦ »ı¼º¿¡ ½ÇÆĞÇÏ¿© ÀúÀåÀ» Áß´ÜÇÕ´Ï´Ù.");
+            Debug.LogError("ë°ì´í„° ìŠ¤ëƒ…ìƒ· ìƒì„±ì— ì‹¤íŒ¨í•˜ì—¬ ì €ì¥ì„ ì¤‘ë‹¨í•©ë‹ˆë‹¤.");
             return null;
         }
 
@@ -23,13 +37,15 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
 
     public void LoadCharacterSaveData(PlayerSaveData playerSaveData)
     {
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        if (playerObject == null) return;
+        // ìºë¦­í„° ì¸ìŠ¤í„´ìŠ¤ ìƒì„± í›„ì— ë°ì´í„° ë¡œë“œí•˜ê¸°
 
-        PlayerStats playerStats = playerObject.GetComponent<PlayerStats>();
-        if (playerStats == null) return;
+        // 1. í”Œë ˆì´ì–´ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±í•˜ê¸°
+        Debug.Log("ì´ë¦„ : " + playerSaveData.characterJob);
+        GameObject player = prefabMap[playerSaveData.characterJob];
+        Instantiate(player);
 
-        // PlayerStatsÀÇ LoadData ÇÔ¼ö¸¦ È£ÃâÇÏ¿© µ¥ÀÌÅÍ¸¦ Àû¿ëÇÕ´Ï´Ù.
+        // 2. ë°ì´í„° ë¡œë“œí•˜ê¸°
+        var playerStats = player.GetComponent<PlayerStats>();
         playerStats.LoadData(playerSaveData);
     }
 
@@ -49,7 +65,7 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
             return null;
         }
 
-        // PlayerStats¸¦ ÀÌ¿ëÇØ PlayerSaveData ½º³À¼¦À» ¸¸µì´Ï´Ù.
+        // PlayerStatsë¥¼ ì´ìš©í•´ PlayerSaveData ìŠ¤ëƒ…ìƒ·ì„ ë§Œë“­ë‹ˆë‹¤.
         PlayerSaveData newPlayerSaveData = new PlayerSaveData(playerStats);
 
         return newPlayerSaveData;

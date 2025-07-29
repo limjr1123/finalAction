@@ -6,14 +6,18 @@ public class CharacterFactory
     {
         return new CharacterData
         {
+            // 캐릭터 생성시에 처음 데이터를 여기서 넣어주기.
             playerSaveData = new PlayerSaveData
             {
                 characterName = name,
-                jobData = _jobData,
+                characterJob = _jobData.jobName,
                 level = 1,
                 currentEXP = 0,
+
                 maxHealth = _jobData.baseHP,
                 currentHealth = _jobData.baseHP,
+                attackDamage = _jobData.baseAttack,
+                defense = _jobData.baseDefance
             }
         };
     }

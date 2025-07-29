@@ -3,30 +3,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewPlayerStats", menuName = "PlayerStatSetting/PlayerStatsData")]
 public class PlayerStatsData : ScriptableObject
 {
-    [Header("int stat")]
-    public int maxHealth; // ÃÖ´ë Ã¼·Â
-    public int maxMana; // ÃÖ´ë ¸¶³ª
-    public int manaRegen; // ¸¶³ª È¸º¹ ¼Óµµ
-    public int maxStamina; // ÃÖ´ë ½ºÅÂ¹Ì³ª
-    public int staminaRegen; // ½ºÅÂ¹Ì³ª È¸º¹ ¼Óµµ
-    public int defense; // ¹æ¾î·Â
-    public int magicDefense; // ¸¶¹ı ¹æ¾î·Â
-    public int Str; // Èû
-    public int Dex; // ¹ÎÃ¸
-    public int Int; // Áö´É
-    public int attackDamage; // ¹°¸® °ø°İ·Â
-    public int magicDamage; // ¸¶¹ı °ø°İ·Â
+    [Header("ì •ìˆ˜í˜• ìŠ¤íƒ¯")]
+    public int maxHealth;         // ìµœëŒ€ ì²´ë ¥
+    public int maxMana;           // ìµœëŒ€ ë§ˆë‚˜
+    public int manaRegen;         // ë§ˆë‚˜ íšŒë³µ ì†ë„
+    public int maxStamina;        // ìµœëŒ€ ìŠ¤íƒœë¯¸ë‚˜
+    public int staminaRegen;      // ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ ì†ë„
+    public int defense;           // ë¬¼ë¦¬ ë°©ì–´ë ¥
+    public int magicDefense;      // ë§ˆë²• ë°©ì–´ë ¥
+    public int Str;               // í˜
+    public int Dex;               // ë¯¼ì²©
+    public int Int;               // ì§€ëŠ¥
+    public int attackDamage;      // ë¬¼ë¦¬ ê³µê²©ë ¥
+    public int magicDamage;       // ë§ˆë²• ê³µê²©ë ¥
 
-    [Header("float stat")]
-    public float moveSpeed; // ±âº» ÀÌµ¿¼Óµµ
-    public float sprintSpeed; // ´Ş¸®±â ¼Óµµ
-    public float attackSpeed; // °ø°İ ¼Óµµ
-    public float criRate; // Ä¡¸íÅ¸ È®·ü
-    public float criDamage; // Ä¡¸íÅ¸ ÇÇÇØ·®
-    public float criResist; // Ä¡¸íÅ¸ ÀúÇ×
+    [Header("ì‹¤ìˆ˜í˜• ìŠ¤íƒ¯")]
+    public float moveSpeed;       // ê¸°ë³¸ ì´ë™ ì†ë„
+    public float sprintSpeed;     // ë‹¬ë¦¬ê¸° ì†ë„
+    public float attackSpeed;     // ê³µê²© ì†ë„
+    public float criRate;         // í¬ë¦¬í‹°ì»¬ í™•ë¥ 
+    public float criDamage;       // í¬ë¦¬í‹°ì»¬ í”¼í•´ ë°°ìœ¨
+    public float criResist;       // í¬ë¦¬í‹°ì»¬ ì €í•­
 
-    [Header("·¹º§ °ü·Ã ½ºÅÈ")]
-    public int level; // ÇÃ·¹ÀÌ¾î ·¹º§
-    public int maxEXP; // ÃÖ´ë °æÇèÄ¡
-    public int currentEXP; // ÇöÀç °æÇèÄ¡
+    [Header("ê²½í—˜ì¹˜ ë° ë ˆë²¨")]
+    public int level;             // í”Œë ˆì´ì–´ ë ˆë²¨
+    public int maxEXP;            // ìµœëŒ€ ê²½í—˜ì¹˜
+    public int currentEXP;        // í˜„ì¬ ê²½í—˜ì¹˜
 }

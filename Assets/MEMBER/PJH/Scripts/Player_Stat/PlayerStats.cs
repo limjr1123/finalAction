@@ -13,13 +13,13 @@ public struct PlayerDamageRange
         max = Mathf.RoundToInt(damage * (1f + ratio));
     }
 
-    // µ¥¹ÌÁö ¹üÀ§¿¡¼­ ·£´ıÇÑ °ªÀ» ¹İÈ¯(Å©¸®Æ¼ÄÃ È®·üÀ» »ç¿ëÇÏÁö ¾Ê´Â °æ¿ì »ç¿ë °¡´É)
+    // ëœë¤í•œ ë°ë¯¸ì§€ë¥¼ ê³„ì‚°í•´ ë°˜í™˜ (í€„ë¦¬í‹° í™•ì¸ìš©ìœ¼ë¡œ ë³€ê²½í•˜ì§€ ì•ŠëŠ” í•œ ê·¸ëŒ€ë¡œ ì‚¬ìš©)
     public int GetRandomDamage()
     {
         return UnityEngine.Random.Range(min, max + 1);
     }
 
-    // Ä¡¸íÅ¸ È®·ü°ú Ä¡¸íÅ¸ ÇÇÇØ·® ºñÀ²À» °í·ÁÇÏ¿© ÃÖÁ¾ µ¥¹ÌÁö °ªÀ» ¹İÈ¯
+    // í¬ë¦¬í‹°ì»¬ í™•ë¥ ê³¼ í¬ë¦¬í‹°ì»¬ ë°ë¯¸ì§€ ë°°ìœ¨ì„ ê³ ë ¤í•˜ì—¬ ìµœì¢… ë°ë¯¸ì§€ë¥¼ ë°˜í™˜
     public int CalculateDamage(float criticalChance, float criticalDamageRatio)
     {
         int baseDamage = GetRandomDamage();
@@ -39,58 +39,60 @@ public struct PlayerDamageRange
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private PlayerStatsData baseStats;
-    public static event Action OnPlayerDied; // ÇÃ·¹ÀÌ¾î »ç¸Á ÀÌº¥Æ®
+    public static event Action OnPlayerDied; // í”Œë ˆì´ì–´ ì‚¬ë§ ì´ë²¤íŠ¸
     private PlayerStateMachine stateMachine;
     private bool isDead = false;
 
     public string characterName;
-    public JobData jobData;
+    public string characterJob;
 
-    [Header("ÇöÀç»óÅÂ")]
-    public int currentHealth; // ÇöÀç Ã¼·Â
-    public int currentMana; // ÇöÀç ¸¶³ª
-    public int currentStamina; // ÇöÀç ½ºÅÂ¹Ì³ª
-    public int level; // ÇÃ·¹ÀÌ¾î ·¹º§
-    public int currentEXP; // ÇöÀç °æÇèÄ¡
+    [Header("í˜„ì¬ ìƒíƒœ")]
+    public int currentHealth; // í˜„ì¬ ì²´ë ¥
+    public int currentMana; // í˜„ì¬ ë§ˆë‚˜
+    public int currentStamina; // í˜„ì¬ ìŠ¤íƒœë¯¸ë‚˜
+    public int level; // í”Œë ˆì´ì–´ ë ˆë²¨
+    public int currentEXP; // í˜„ì¬ ê²½í—˜ì¹˜
 
-    [Header("±âº» ½ºÅÈ")]
-    public Stat maxHealth; // ÃÖ´ë Ã¼·Â
-    public Stat maxMana; // ÃÖ´ë ¸¶³ª
-    public Stat manaRegen; // ¸¶³ª È¸º¹ ¼Óµµ
-    public Stat maxStamina; // ÃÖ´ë ½ºÅÂ¹Ì³ª
-    public Stat staminaRegen; // ½ºÅÂ¹Ì³ª È¸º¹ ¼Óµµ
-    public Stat maxEXP; // ÃÖ´ë °æÇèÄ¡
-    public Stat defense; // ¹æ¾î·Â
-    public Stat magicDefense; // ¸¶¹ı ¹æ¾î·Â
-    public Stat Str; // Èû
-    public Stat Dex; // ¹ÎÃ¸
-    public Stat Int; // Áö´É
+    [Header("ê¸°ë³¸ ëŠ¥ë ¥ì¹˜")]
+    public Stat maxHealth; // ìµœëŒ€ ì²´ë ¥
+    public Stat maxMana; // ìµœëŒ€ ë§ˆë‚˜
+    public Stat manaRegen; // ë§ˆë‚˜ íšŒë³µ ì†ë„
+    public Stat maxStamina; // ìµœëŒ€ ìŠ¤íƒœë¯¸ë‚˜
+    public Stat staminaRegen; // ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ ì†ë„
+    public Stat maxEXP; // ìµœëŒ€ ê²½í—˜ì¹˜
+    public Stat defense; // ë°©ì–´ë ¥
+    public Stat magicDefense; // ë§ˆë²• ë°©ì–´ë ¥
+    public Stat Str; // í˜
+    public Stat Dex; // ë¯¼ì²©
+    public Stat Int; // ì§€ëŠ¥
 
-    [Header("ÀÌµ¿ °ü·Ã ½ºÅÈ")]
-    public FloatStat moveSpeed; // ±âº» ÀÌµ¿¼Óµµ
-    public FloatStat sprintSpeed; // ´Ş¸®±â ¼Óµµ
+    [Header("ì´ë™ ê´€ë ¨ ëŠ¥ë ¥ì¹˜")]
+    public FloatStat moveSpeed; // ê¸°ë³¸ ì´ë™ì†ë„
+    public FloatStat sprintSpeed; // ë‹¬ë¦¬ê¸° ì†ë„
 
-    [Header("°ø°İ °ü·Ã ½ºÅÈ")]
-    public Stat attackDamage; // ¹°¸® °ø°İ·Â
-    public Stat magicDamage; // ¸¶¹ı °ø°İ·Â
-    public FloatStat attackSpeed; // °ø°İ ¼Óµµ
+    [Header("ì „íˆ¬ ê´€ë ¨ ëŠ¥ë ¥ì¹˜")]
+    public Stat attackDamage; // ë¬¼ë¦¬ ê³µê²©ë ¥
+    public Stat magicDamage; // ë§ˆë²• ê³µê²©ë ¥
+    public FloatStat attackSpeed; // ê³µê²© ì†ë„
 
-    [Header("Ä¡¸íÅ¸ °ü·Ã ½ºÅÈ")]
-    public FloatStat criRate; // Ä¡¸íÅ¸ È®·ü
-    public FloatStat criDamage; // Ä¡¸íÅ¸ ÇÇÇØ·®
-    public FloatStat criResist; // Ä¡¸íÅ¸ ÀúÇ×
+    [Header("í¬ë¦¬í‹°ì»¬ ê´€ë ¨ ëŠ¥ë ¥ì¹˜")]
+    public FloatStat criRate; // í¬ë¦¬í‹°ì»¬ í™•ë¥ 
+    public FloatStat criDamage; // í¬ë¦¬í‹°ì»¬ ë°ë¯¸ì§€ ë°°ìœ¨
+    public FloatStat criResist; // í¬ë¦¬í‹°ì»¬ ì €í•­
 
-    public PlayerDamageRange attackDamageRange;   // °ø°İ ÇÇÇØ·® ¹üÀ§
-    public float damageRange = 0.2f;        // °ø°İ ÇÇÇØ·® ¹üÀ§ ºñÀ² (20%)
+    public PlayerDamageRange attackDamageRange; // ë¬¼ë¦¬ ê³µê²© ë°ë¯¸ì§€ ë²”ìœ„
+    public float damageRange = 0.2f; // ë°ë¯¸ì§€ í¸ì°¨ ë²”ìœ„ (20%)
+
+    public Vector3 currentPos;
 
     protected Action OnHealthChanged;
 
     void Awake()
     {
         stateMachine = GetComponent<PlayerStateMachine>();
-        ApplyBaseStats(); // ½ºÅÈ ÃÊ±âÈ­
+        ApplyBaseStats(); // ê¸°ë³¸ ìŠ¤íƒ¯ ì´ˆê¸°í™”
         OnHealthChanged += () => HealthCheck();
     }
 
@@ -104,7 +106,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (baseStats == null)
         {
-            Debug.LogError("Base Stats µ¥ÀÌÅÍ ÇÊ¿ä");
+            Debug.LogError("Base Stats ë°ì´í„°ê°€ í•„ìš”í•©ë‹ˆë‹¤.");
             return;
         }
         level = 1;
@@ -137,31 +139,30 @@ public class PlayerStats : MonoBehaviour
     {
         if (other.CompareTag("HitBox"))
         {
-           Debug.Log("ÇÃ·¹ÀÌ¾î ÇÇ°İ");
+            Debug.Log("í”Œë ˆì´ì–´ í”¼ê²©!");
         }
     }
 
     public void TakePhysicalDamage(int damage)
     {
-        if (isDead) return; // ÀÌ¹Ì »ç¸ÁÇÑ °æ¿ì ¹«½Ã
+        if (isDead) return; // ì´ë¯¸ ì‚¬ë§í•œ ê²½ìš° ë¬´ì‹œ
         int finalDamage = CheckTargetArmor(this, damage);
 
         DecreaseHealth(finalDamage);
 
         OnHealthChanged?.Invoke();
-        Debug.Log($"ÇÃ·¹ÀÌ¾î°¡ {finalDamage}ÀÇ ¹°¸® ÇÇÇØ¸¦ ¹Ş¾Ò½À´Ï´Ù. ÇöÀç Ã¼·Â: {currentHealth}");
+        Debug.Log($"í”Œë ˆì´ì–´ê°€ {finalDamage}ì˜ ë¬¼ë¦¬ í”¼í•´ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤. í˜„ì¬ ì²´ë ¥: {currentHealth}");
     }
-
 
     public void TakeMagicalDamage(int damage)
     {
-        if (isDead) return; // ÀÌ¹Ì »ç¸ÁÇÑ °æ¿ì ¹«½Ã
+        if (isDead) return; // ì´ë¯¸ ì‚¬ë§í•œ ê²½ìš° ë¬´ì‹œ
         int finalDamage = CheckTargetMagicArmor(this, damage);
 
         DecreaseHealth(finalDamage);
 
         OnHealthChanged?.Invoke();
-        Debug.Log($"ÇÃ·¹ÀÌ¾î°¡ {finalDamage}ÀÇ ¸¶¹ı ÇÇÇØ¸¦ ¹Ş¾Ò½À´Ï´Ù. ÇöÀç Ã¼·Â: {currentHealth}");
+        Debug.Log($"í”Œë ˆì´ì–´ê°€ {finalDamage}ì˜ ë§ˆë²• í”¼í•´ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤. í˜„ì¬ ì²´ë ¥: {currentHealth}");
     }
 
     private void HealthCheck()
@@ -180,27 +181,26 @@ public class PlayerStats : MonoBehaviour
 
     protected virtual int CheckTargetArmor(PlayerStats target, int _damage)
     {
-        // ¹æ¾î·Â¿¡ µû¸¥ ÇÇÇØ °¨¼Ò ·ÎÁ÷
+        // ëŒ€ìƒì˜ ë°©ì–´ë ¥ì„ ê³ ë ¤í•´ ìµœì¢… ë°ë¯¸ì§€ ê³„ì‚°
         int reducedDamage = _damage - target.defense.GetValue();
-        return Mathf.Max(reducedDamage, 1); // ÇÇÇØ°¡ 1 ÀÌÇÏ·Î ¶³¾îÁöÁö ¾Êµµ·Ï º¸Á¤
+        return Mathf.Max(reducedDamage, 1); // ìµœì†Œ 1ì˜ í”¼í•´ëŠ” ë“¤ì–´ê°€ë„ë¡ ë³´ì •
     }
 
     protected virtual int CheckTargetMagicArmor(PlayerStats target, int _damage)
     {
-        // ¹æ¾î·Â¿¡ µû¸¥ ÇÇÇØ °¨¼Ò ·ÎÁ÷
+        // ëŒ€ìƒì˜ ë§ˆë²• ë°©ì–´ë ¥ì„ ê³ ë ¤í•´ ìµœì¢… ë°ë¯¸ì§€ ê³„ì‚°
         int reducedDamage = _damage - target.magicDefense.GetValue();
-        return Mathf.Max(reducedDamage, 1); // ÇÇÇØ°¡ 1 ÀÌÇÏ·Î ¶³¾îÁöÁö ¾Êµµ·Ï º¸Á¤
+        return Mathf.Max(reducedDamage, 1); // ìµœì†Œ 1ì˜ í”¼í•´ëŠ” ë“¤ì–´ê°€ë„ë¡ ë³´ì •
     }
 
     private void Die()
     {
-        if (isDead) return; // Áßº¹ ½ÇÇà ¹æÁö
+        if (isDead) return; // ì¤‘ë³µ ì‚¬ë§ ë°©ì§€
 
         isDead = true;
         stateMachine?.Die();
-        OnPlayerDied?.Invoke(); // »ç¸ÁÀÌº¥Æ® È£Ãâ
+        OnPlayerDied?.Invoke(); // ì‚¬ë§ ì´ë²¤íŠ¸ í˜¸ì¶œ
     }
-
 
     public void LoadData(PlayerSaveData data)
     {
@@ -208,9 +208,8 @@ public class PlayerStats : MonoBehaviour
         {
             return;
         }
-        this.characterName = data.characterName;
-        this.jobData = data.jobData;
 
+        this.characterName = data.characterName;
         this.level = data.level;
         this.currentEXP = data.currentEXP;
         this.currentHealth = data.currentHealth;
@@ -237,7 +236,7 @@ public class PlayerStats : MonoBehaviour
         criDamage.SetDefaultValue(data.criDamage);
         criResist.SetDefaultValue(data.criResist);
 
-        Debug.Log($"µ¥ÀÌÅÍ Àû¿ë ¿Ï·á.");
+        transform.position = data.savePos;
+        Debug.Log($"ìºë¦­í„° ë°ì´í„° ë¡œë“œ ì™„ë£Œ!");
     }
-
 }
