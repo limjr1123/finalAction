@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a80cb3768252f6429678a5758f29184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatabase: {fileID: 11400000, guid: b12c8ed125e7f5c44a8b03422792886b, type: 2}
+  itemDatabase: {fileID: 0}
 --- !u!114 &541436631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,6 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba033ab4c270af45b5dede55edd5726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questDatabase: {fileID: 11400000, guid: 1cf9b5276e402af47816c3330f7a4533, type: 2}
 --- !u!114 &541436635
 MonoBehaviour:
   m_ObjectHideFlags: 0

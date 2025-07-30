@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/MEMBER/CKW/Scenes/CKW_GameStartSequenceScene.unity
+    guid: 49b8cf1316daee4428f7cebac53531c7
+  - enabled: 1
     path: Assets/MEMBER/CKW/Scenes/CKW_TitleScene.unity
     guid: 134d832e32f015e4a8c9c43c08a5bdaa
   - enabled: 1
