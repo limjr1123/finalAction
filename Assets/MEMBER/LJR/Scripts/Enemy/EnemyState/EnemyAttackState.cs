@@ -34,14 +34,29 @@ public class EnemyAttackState : EnemyState<EnemyController>
             {
                 float dot = Vector3.Dot(enemy.transform.forward, directionToPlayer);
 
-                if (dot < 0.9f)
+                if (enemy.enemyType == EnemyType.Melee)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                    if (dot < 0.9f)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                    }
+                    else
+                    {
+                        StartCoroutine(MeleeAttack());
+                    }
                 }
-                else
+                else if (enemy.enemyType == EnemyType.Range)
                 {
-                    StartCoroutine(MeleeAttack());
+                    if (dot != 1f)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                    }
+                    else
+                    {
+                        StartCoroutine(RangeAttack());
+                    }
                 }
             }
         }
@@ -53,7 +68,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
     }
 
     IEnumerator MeleeAttack()
-    {        
+    {
         isAttacking = true;
         enemy.anim.applyRootMotion = true;
         enemy.meleeEnemy.TryToAttack();
@@ -64,6 +79,21 @@ public class EnemyAttackState : EnemyState<EnemyController>
         enemy.navAgent.isStopped = false;
         isAttacking = false;
 
+        if (enemy.IsInState(EnemyStates.Attack))
+            enemy.ChangeState(EnemyStates.Battle);
+    }
+
+    IEnumerator RangeAttack()
+    {
+        isAttacking = true;
+        enemy.anim.applyRootMotion = true;
+        enemy.rangeEnemy.TryToAttack();
+        enemy.navAgent.isStopped = true;
+        yield return new WaitUntil(() => enemy.rangeEnemy.attackState == EnemyAttackStateInfo.Idle);
+        
+        enemy.anim.applyRootMotion = false;
+        enemy.navAgent.isStopped = false;
+        isAttacking = false;
         if (enemy.IsInState(EnemyStates.Attack))
             enemy.ChangeState(EnemyStates.Battle);
     }

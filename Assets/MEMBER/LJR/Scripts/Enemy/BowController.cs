@@ -32,8 +32,6 @@ public class BowController : MonoBehaviour
     {
         anim.SetBool("Draw", false);
         anim.SetBool("Shoot", true);
-
-
     }
 
 }

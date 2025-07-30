@@ -17,6 +17,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
     [SerializeField] float adjustDistanceThreshold = 0.1f;    // 거리 조정 허용 오차
 
     float timer = 0;
+    float walkSpeed = 0;
 
     public override void Enter(EnemyController owner)
     {
@@ -24,6 +25,19 @@ public class EnemyBattleState : EnemyState<EnemyController>
         distanceToStand = enemy.stats.attackRange.GetValue(); // 공격 범위에 따라 거리 설정
         enemy.navAgent.stoppingDistance = distanceToStand; // NavMeshAgent의 정지 거리 설정
         enemy.anim.SetBool("BattleState", true);
+        
+        // 이동 속도
+        if (enemy.enemyType == EnemyType.Melee)
+        {
+            walkSpeed = 0.8f * enemy.stats.moveSpeed.GetValue(); 
+        }
+        else if (enemy.enemyType == EnemyType.Range)
+        {
+            walkSpeed = 0.6f * enemy.stats.moveSpeed.GetValue();
+        }
+
+        enemy.navAgent.speed = walkSpeed; // NavMeshAgent의 속도 설정
+
     }
 
     public override void Execute()
@@ -55,31 +69,17 @@ public class EnemyBattleState : EnemyState<EnemyController>
             }
             else
             {
-                // 공격 범위 내에서는 플레이어 주변을 맴도는 목적지 설정
-                Vector3 directionToPlayer = (enemy.target.transform.position - transform.position).normalized;
-                Vector3 orbitPosition = enemy.target.transform.position - directionToPlayer * (enemy.stats.attackRange.GetValue() - 0.1f);
-
-                enemy.navAgent.SetDestination(orbitPosition);
-
-                // 수동 회전 처리
-                directionToPlayer.y = 0;
-
-                if (directionToPlayer != Vector3.zero)
-                {
-                    float dot = Vector3.Dot(enemy.transform.forward, directionToPlayer);
-
-                    if (dot < 0.9f)
-                    {
-                        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
-                    }
-                }
+                MeleeEnemyIdlePattern();
             }
         }
         else if (state == AIBattleState.Chase)
         {
             if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) <= distanceToStand + adjustDistanceThreshold)
             {
+                if(enemy.enemyType == EnemyType.Range)
+                {
+                    enemy.rangeEnemy.bow.DrawBow(); // 원거리 적의 경우 활을 당김
+                }
                 enemy.ChangeState(EnemyStates.Attack);
                 
                 // 공격 후 대기 상태로 전환
@@ -94,6 +94,31 @@ public class EnemyBattleState : EnemyState<EnemyController>
             timer -= Time.deltaTime;
         }
     }
+
+    private void MeleeEnemyIdlePattern()
+    {
+        // 공격 범위 내에서는 플레이어 주변을 맴도는 목적지 설정
+        Vector3 directionToPlayer = (enemy.target.transform.position - transform.position).normalized;
+        Vector3 orbitPosition = enemy.target.transform.position - directionToPlayer * (enemy.stats.attackRange.GetValue() - 0.1f);
+
+        enemy.navAgent.SetDestination(orbitPosition);
+
+        // 수동 회전 처리
+        directionToPlayer.y = 0;
+
+        if (directionToPlayer != Vector3.zero)
+        {
+            float dot = Vector3.Dot(enemy.transform.forward, directionToPlayer);
+
+            if (dot < 0.9f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+            }
+        }
+    }
+
+
 
     // 대기 상태 시작
     private void StartIdle()
