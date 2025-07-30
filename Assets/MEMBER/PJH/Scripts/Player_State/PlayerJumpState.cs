@@ -21,6 +21,7 @@ public class PlayerJumpState : PlayerState
     {
         animator.SetBool("IsGrounded", false);
         animator.SetTrigger("Jump");
+        Debug.Log("มกวม");
         _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
     }
 
@@ -31,7 +32,7 @@ public class PlayerJumpState : PlayerState
 
     public override void Update()
     {
-        if (_rigidbody.linearVelocity.y < 0f && IsGrounded())
+        if (_rigidbody.linearVelocity.y < 0f && stateMachine.IsGrounded())
         {
             animator.SetBool("IsGrounded", true);
 
@@ -57,10 +58,7 @@ public class PlayerJumpState : PlayerState
         _rigidbody.linearVelocity = newVelocity;
     }
 
-    private bool IsGrounded()
-    {
-        return Physics.Raycast(player.transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
-    }
+    
 }
 
 

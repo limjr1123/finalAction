@@ -35,7 +35,10 @@ public class PlayerIdleState : PlayerState
 
     public override void OnJump()
     {
-        stateMachine.ChangeState(stateMachine.JumpState);
+        if (stateMachine.IsGrounded())
+        {
+            stateMachine.ChangeState(stateMachine.JumpState);
+        }
     }
 
     public override void OnGuard()
