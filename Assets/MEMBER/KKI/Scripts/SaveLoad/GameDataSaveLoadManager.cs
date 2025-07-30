@@ -122,8 +122,5 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
         // 4. UI 갱신 등 추가 작업
     }
 
-
-    // 게임 저장을 눌렀을 때
-
 }
 

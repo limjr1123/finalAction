@@ -16,3 +16,4 @@ MonoBehaviour:
   <hitboxToUse>k__BackingField: 3
   <impactStartTime>k__BackingField: 0.29
   <impactEndTime>k__BackingField: 0.58
+  <isParry>k__BackingField: 1
