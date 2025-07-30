@@ -1,6 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/MEMBER/KKI/Scripts/Shop.meta
-guid: 42606ca6f521c8e4b881bb50ac16ccb0
+guid: 8fd5009f00507b6468e467e806b6e74f
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
@@ -9,7 +8,6 @@ guid: de3fc8bdbf6919f4c9fe1f6ae712fdb3
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
->>>>>>>> test:Assets/MEMBER/PJH/SwordAndShield/Animation/Sword And Shield Jump.anim.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 
