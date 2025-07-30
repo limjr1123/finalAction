@@ -13,10 +13,7 @@ public enum DialogueTriggerType
 public class DialogueLine
 {
     public string text;
-    public DialogueTriggerType triggerType;
-    public string triggerParam;
-    public string requiredQuest;
-    public bool requireComplete;
+    // 후에 추가.
 }
 
 [System.Serializable]
