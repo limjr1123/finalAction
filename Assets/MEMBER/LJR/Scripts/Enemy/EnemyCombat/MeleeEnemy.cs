@@ -3,14 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// EnemyAttackStateInfo : 적의 공격 상태를 정의하는 열거형
-public enum EnemyAttackStateInfo
-{
-    Idle,           // 대기 상태
-    Windup,         // 공격 준비(선딜레이)
-    Impact,         // 타격 판정 구간
-    AttackDelay     // 후딜레이
-}
 
 public class MeleeEnemy : MonoBehaviour
 {
@@ -81,7 +73,7 @@ public class MeleeEnemy : MonoBehaviour
         }
         string animName = attacks[comboCounter].animName;
 
-        anim.CrossFade(animName,0.2f);
+        anim.CrossFade(animName, 0.2f);
         yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
 
         //GetNextAnimatorStateInfo 애니매이션 상태 정보를 가져옵니다.
@@ -165,10 +157,10 @@ public class MeleeEnemy : MonoBehaviour
                 weaponCollider.enabled = true;
                 break;
             case AttackHitbox.LeftFoot:
-                    leftFootCollider.enabled = true;
+                leftFootCollider.enabled = true;
                 break;
             case AttackHitbox.RightFoot:
-                    rightFootCollider.enabled = true;
+                rightFootCollider.enabled = true;
                 break;
             default:
                 break;
