@@ -7,6 +7,11 @@ public class ToggleManager : Singleton<ToggleManager>
     public Color32 selectedColor = new Color32(100, 100, 100, 255);
     public Color normalColor = Color.white;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     void Start()
     {
         Toggle[] allToggles = FindObjectsByType<Toggle>(FindObjectsInactive.Include, FindObjectsSortMode.None);
