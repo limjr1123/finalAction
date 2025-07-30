@@ -15,10 +15,8 @@ public class NPC : MonoBehaviour, INPCInteractable
         isInteract = true;
 
         // 상호작용 : 기본 대화, 상점, 퀘스트 수락 등 NPCType에 따라 처리
-        // 1. 대화 데이터 및 다른 데이터 보내기.
-        // 1-1. 처음에 필요한 대화 데이터만 보내고, 나머지는 대화 박스(UI)에 넣어두기.
+        // 대화 데이터 보내기
         DialogueManager.Instance.StartDialogue(startDialogueID);
-        // 2. UI 켜기
     }
 
     public virtual void EndInteraction()
