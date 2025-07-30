@@ -27,7 +27,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Header("점프 관련")]
     public float jumpForce = 5f;
-    public float groundCheckDistance = 0.1f;
+    public float groundCheckDistance = 1.1f;
     public LayerMask groundLayer;
 
     [Header("이동 관련")]
@@ -175,7 +175,6 @@ public class PlayerStateMachine : MonoBehaviour
             GetDamage();
         }
     }
-
     private void CalculateMoveDirection()
     {
         Vector3 camForward = mainCamera.forward;
@@ -189,11 +188,6 @@ public class PlayerStateMachine : MonoBehaviour
     public void AnimationEvent_AllowCombo()
     {
         currentState?.AllowCombo();
-    }
-
-    public bool IsGrounded()
-    {
-        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
     }
 }
 

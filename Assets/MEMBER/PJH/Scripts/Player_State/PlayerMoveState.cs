@@ -34,10 +34,7 @@ public class PlayerMoveState : PlayerState
     }
     public override void OnJump()
     {
-        if (stateMachine.IsGrounded())
-        {
-            stateMachine.ChangeState(stateMachine.JumpState);
-        }
+        stateMachine.ChangeState(stateMachine.JumpState);
     }
 
     public override void OnDodge()
