@@ -150,8 +150,13 @@ public class QuestManager : Singleton<QuestManager>
         QuestSaveData questSaveData = new QuestSaveData();
         // QuestID로 저장
         questSaveData.completedQuests = new List<string>();
-        questSaveData.currentQuests = new List<string>();
+        questSaveData.activeQuests = new List<string>();
 
+        // 만약 완료된 퀘스트도 저장한다면 똑같이 하기.
+        foreach (var questProgress in activeQuests)
+        {
+            questSaveData.activeQuests.Add(questProgress.questData.questID);
+        }
 
 
         return questSaveData;
@@ -159,6 +164,16 @@ public class QuestManager : Singleton<QuestManager>
 
     public void LoadQuestData(QuestSaveData questSaveData)
     {
+        activeQuests.Clear();
+
+        foreach (var questID in questSaveData.activeQuests)
+        {
+            var questData = questDatabase.GetQuestByID(questID);
+            if (questData != null)
+            {
+                AddQuest(questData);
+            }
+        }
 
     }
 
