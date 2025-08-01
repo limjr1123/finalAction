@@ -38,8 +38,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
                 {
                     if (dot < 0.9f)
                     {
-                        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                        enemy.TargetChaseDirection(directionToPlayer);
                     }
                     else
                     {
@@ -48,10 +47,9 @@ public class EnemyAttackState : EnemyState<EnemyController>
                 }
                 else if (enemy.enemyType == EnemyType.Range)
                 {
-                    if (dot != 1f)
+                    if (dot < 0.98f)
                     {
-                        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                        enemy.TargetChaseDirection(directionToPlayer);
                     }
                     else
                     {
