@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UI;
 
 public class InventoryUI : BaseUI
@@ -8,7 +9,6 @@ public class InventoryUI : BaseUI
     [SerializeField] Toggle EquipmentTabToggle;
     [SerializeField] Toggle ConsumableTabToggle;
     [SerializeField] Toggle EtcTabToggle;
-
 
     [Header("Inventory Buttons")]
     [SerializeField] Button closeButton;
@@ -25,6 +25,5 @@ public class InventoryUI : BaseUI
     {
         CloseUI();
     }
-
 
 }
