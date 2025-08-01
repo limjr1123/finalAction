@@ -29,6 +29,11 @@ public class VolumeSettings
     public float bgmVolume = 1f;
     public float skillSFXVolume = 1f;
     public float uiSFXVolume = 1f;
+
+    public bool masterMute = false;
+    public bool bgmMute = false;
+    public bool skillSFXMute = false;
+    public bool uiSFXMute = false;
 }
 public class SoundManager : Singleton<SoundManager>
 {
@@ -46,6 +51,8 @@ public class SoundManager : Singleton<SoundManager>
     private string currentScene;
     private AudioClip currentBGM;
 
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -56,7 +63,9 @@ public class SoundManager : Singleton<SoundManager>
         {
             bgmSource.loop = true;
             bgmSource.playOnAwake = true;
-            bgmSource.volume = volumeSettings.bgmVolume * volumeSettings.masterVolume;
+            // 초기 볼륨 설정 시 음소거 상태 고려
+            float finalVolume = volumeSettings.masterMute || volumeSettings.bgmMute ? 0f : volumeSettings.bgmVolume * volumeSettings.masterVolume;
+            bgmSource.volume = finalVolume;
         }
 
         if (skillSFXSource != null)
@@ -65,7 +74,10 @@ public class SoundManager : Singleton<SoundManager>
             {
                 skillSFXSource[i].loop = false;
                 skillSFXSource[i].playOnAwake = false;
-                skillSFXSource[i].volume = volumeSettings.skillSFXVolume * volumeSettings.masterVolume;
+                // 초기 볼륨 설정 시 음소거 상태 고려
+                float finalVolume = volumeSettings.masterMute || volumeSettings.skillSFXMute ? 0f :
+                                   volumeSettings.skillSFXVolume * volumeSettings.masterVolume;
+                skillSFXSource[i].volume = finalVolume;
             }
         }
 
@@ -73,7 +85,10 @@ public class SoundManager : Singleton<SoundManager>
         {
             uiSFXSource.loop = false;
             uiSFXSource.playOnAwake = false;
-            uiSFXSource.volume = volumeSettings.uiSFXVolume * volumeSettings.masterVolume;
+            // 초기 볼륨 설정 시 음소거 상태 고려
+            float finalVolume = volumeSettings.masterMute || volumeSettings.uiSFXMute ? 0f :
+                               volumeSettings.uiSFXVolume * volumeSettings.masterVolume;
+            uiSFXSource.volume = finalVolume;
         }
     }
 
@@ -134,21 +149,38 @@ public class SoundManager : Singleton<SoundManager>
     }
 
 
+    public void ForceUpdateAllVolumes()
+    {
+        UpdateAllVolumes();
+        Debug.Log("볼륨 강제 업데이트 완료");
+    }
+
+
     void UpdateAllVolumes()
     {
         if (bgmSource != null)
-            bgmSource.volume = volumeSettings.bgmVolume * volumeSettings.masterVolume;
+        {
+            float finalVolume = volumeSettings.masterMute || volumeSettings.bgmMute ? 0f :
+                               volumeSettings.bgmVolume * volumeSettings.masterVolume;
+            bgmSource.volume = finalVolume;
+        }
 
         if (skillSFXSource != null)
         {
+            float finalVolume = volumeSettings.masterMute || volumeSettings.skillSFXMute ? 0f :
+                               volumeSettings.skillSFXVolume * volumeSettings.masterVolume;
             for (int i = 0; i < skillSFXSource.Length; i++)
             {
-                skillSFXSource[i].volume = volumeSettings.skillSFXVolume * volumeSettings.masterVolume;
+                skillSFXSource[i].volume = finalVolume;
             }
         }
 
         if (uiSFXSource != null)
-            uiSFXSource.volume = volumeSettings.uiSFXVolume * volumeSettings.masterVolume;
+        {
+            float finalVolume = volumeSettings.masterMute || volumeSettings.uiSFXMute ? 0f :
+                               volumeSettings.uiSFXVolume * volumeSettings.masterVolume;
+            uiSFXSource.volume = finalVolume;
+        }
     }
 
 
@@ -261,5 +293,41 @@ public class SoundManager : Singleton<SoundManager>
     public float GetSkillSFXVolume() => volumeSettings.skillSFXVolume;
     public float GetUISFXVolume() => volumeSettings.uiSFXVolume;
 
+    #endregion
+
+    #region 음소거 설정 함수
+    public void SetMasterMute(bool isMuted)
+    {
+        volumeSettings.masterMute = isMuted;
+        UpdateAllVolumes();
+        SaveVolumeSettings();
+    }
+
+    public void SetBGMMute(bool isMuted)
+    {
+        volumeSettings.bgmMute = isMuted;
+        UpdateAllVolumes();
+        SaveVolumeSettings();
+    }
+
+    public void SetSkillSFXMute(bool isMuted)
+    {
+        volumeSettings.skillSFXMute = isMuted;
+        UpdateAllVolumes();
+        SaveVolumeSettings();
+    }
+
+    public void SetUISFXMute(bool isMuted)
+    {
+        volumeSettings.uiSFXMute = isMuted;
+        UpdateAllVolumes();
+        SaveVolumeSettings();
+    }
+
+    // 음소거 상태 가져오기 함수들
+    public bool GetMasterMute() => volumeSettings.masterMute;
+    public bool GetBGMMute() => volumeSettings.bgmMute;
+    public bool GetSkillSFXMute() => volumeSettings.skillSFXMute;
+    public bool GetUISFXMute() => volumeSettings.uiSFXMute;
     #endregion
 }
