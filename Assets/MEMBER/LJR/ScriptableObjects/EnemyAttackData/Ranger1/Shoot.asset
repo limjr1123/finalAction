@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe4ea36dde9057458c07a96f161dcab, type: 3}
   m_Name: Shoot
   m_EditorClassIdentifier: 
-  <animName>k__BackingField: 
+  <animName>k__BackingField: Attack_AimRecoil
   <hitboxToUse>k__BackingField: 0
   <impactStartTime>k__BackingField: 0
-  <impactEndTime>k__BackingField: 0
+  <impactEndTime>k__BackingField: 0.683
   <isParry>k__BackingField: 0

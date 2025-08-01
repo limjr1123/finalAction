@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RangeEnemy : MonoBehaviour
 {
-    EnemyController enemyController;
+    EnemyController enemy;
 
     [SerializeField] GameObject weaponObj;      // 원거리 공격에 사용할 무기 오브젝트
     [SerializeField] public BowController bow;  // bow 컨트롤러
@@ -16,13 +15,13 @@ public class RangeEnemy : MonoBehaviour
 
     public bool inAction { get; private set; } = false; // 현재 공격 동작 중인지 여부  
     public bool inGetHit { get; set; } = false; // 현재 피격 상태인지 여부
-    public bool isReloading { get; set; } = false; // 재장전 완료 여부
+    public bool isShooting { get; set; } = false; // 공격 중인 상태인지 여부
 
     public EnemyAttackStateInfo attackState;
 
     private void Awake()
     {
-        enemyController = GetComponent<EnemyController>();
+        enemy = GetComponent<EnemyController>();
         anim = GetComponent<Animator>();
     }
 
@@ -31,11 +30,16 @@ public class RangeEnemy : MonoBehaviour
         WeaponSetting();
     }
 
+    private void Update()
+    {
+        if(attackState == EnemyAttackStateInfo.Windup)
+            enemy.TargetChaseDirection(enemy.target.transform.position - transform.position);
+    }
     public void TryToAttack()
     {
         if (!inAction && !inGetHit)
         {
-            StartCoroutine(ShootArrow());
+            StartCoroutine(RangeAttack());
             inAction = true;
         }
     }
@@ -49,36 +53,44 @@ public class RangeEnemy : MonoBehaviour
         }
     }
 
-    IEnumerator ShootArrow(Vector3? attackDir = null)
+    IEnumerator RangeAttack(Vector3? attackDir = null)
     {
+        Debug.Log("RangeEnemy Attack Start");
         inAction = true;
+        isShooting = true; // 공격 중인 상태로 설정
 
-        if (draw != null)
-        {
-            if (!isReloading)
-            {
-                isReloading = true;
-                bow.DrawBow(); // 활을 당기는 애니메이션 실행
-            }
-            anim.CrossFade(draw.animName, 0.2f);    
-            yield return new WaitUntil(() => isReloading);
-            attackState = EnemyAttackStateInfo.Windup;
-        }
+        if (draw == null)
+            attackState = EnemyAttackStateInfo.Impact;
         else
-        {
             attackState = EnemyAttackStateInfo.Windup;
-        }
 
-        anim.CrossFade(shoot.animName, 0.2f);
-        yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
-
-        var animState = anim.GetNextAnimatorStateInfo(1);
-
-        float timer = 0f;
-        while (timer < animState.length)
+        while (isShooting)
         {
-            timer += Time.deltaTime;
-            yield return null; // 다음 프레임까지 대기
+            if (attackState == EnemyAttackStateInfo.Windup)
+            {
+                anim.CrossFade(draw.animName, 0.2f);
+
+                yield return new WaitForSeconds(draw.impactStartTime);
+                bow.DrawBow(); // 활을 당기는 애니메이션 실행
+
+                yield return new WaitForSeconds(draw.impactEndTime - draw.impactStartTime);
+                attackState = EnemyAttackStateInfo.AttackDelay; // 애니메이션이 끝나면 Impact 상태로 변경
+            }
+            else if (attackState == EnemyAttackStateInfo.AttackDelay)
+            {
+                yield return new WaitForSeconds(0.25f);
+                attackState = EnemyAttackStateInfo.Impact;
+            }
+            else if (attackState == EnemyAttackStateInfo.Impact)
+            {
+                bow.ShootArrow();
+                anim.CrossFade(shoot.animName, 0.2f);
+
+                yield return new WaitForSeconds(shoot.impactEndTime);
+                isShooting = false; // 공격상태 종료
+            }
         }
+        attackState = EnemyAttackStateInfo.Idle;
+        inAction = false;
     }
 }

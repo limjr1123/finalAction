@@ -133,6 +133,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void TargetChaseDirection(Vector3 _direction)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(_direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+    }
+
     public GameObject FindTarget()
     {
         if (target == null)

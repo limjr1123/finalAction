@@ -76,10 +76,6 @@ public class EnemyBattleState : EnemyState<EnemyController>
         {
             if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) <= distanceToStand + adjustDistanceThreshold)
             {
-                if(enemy.enemyType == EnemyType.Range)
-                {
-                    enemy.rangeEnemy.bow.DrawBow(); // 원거리 적의 경우 활을 당김
-                }
                 enemy.ChangeState(EnemyStates.Attack);
                 
                 // 공격 후 대기 상태로 전환
