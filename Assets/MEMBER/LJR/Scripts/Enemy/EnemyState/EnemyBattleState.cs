@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum AIBattleState
 {
     Idle,
     Chase,
+    Circling,
     Attack
 }
 

@@ -24,7 +24,7 @@ public class BossController : MonoBehaviour
     public bool isAttacking { get; set; } = false;
     [field: SerializeField] public GameObject target { get; set; } = null;
     public NavMeshAgent navAgent { get; private set; }
-    public EnemyVision visionSensor { get; internal set; }
+    public EnemyVision enemyVision { get; internal set; }
 
     public MeleeEnemy meleeEnemy { get; private set; }
 
@@ -34,15 +34,21 @@ public class BossController : MonoBehaviour
     {
         stats = GetComponent<EnemyStat>();
         anim = GetComponent<Animator>();
-        visionSensor = GetComponentInChildren<EnemyVision>();
-        navAgent = GetComponent<NavMeshAgent>();    // NavMeshAgent 컴포넌트 가져오기
+        enemyVision = GetComponentInChildren<EnemyVision>();
+        navAgent = GetComponent<NavMeshAgent>();
         meleeEnemy = GetComponent<MeleeEnemy>();
 
         stateDict = new Dictionary<BossStates, EnemyState<BossController>>();
         stateDict[BossStates.Idle] = GetComponent<BossIdleState>();
         stateDict[BossStates.Battle] = GetComponent<BossBattleState>();
         stateDict[BossStates.Attack] = GetComponent<BossAttackState>();
+        //EnemyVision OnTargetDetected에 타겟 설정 매서드 구독
+        enemyVision.OnTargetDetected += SetTarget;
+        enemyVision.SetAggroRange(stats.aggroRange.GetValue()); // 어그로 범위 설정
 
+        stateMachine = new EnemyStateMachine<BossController>(this);
+
+        stateMachine.ChangeState(stateDict[BossStates.Idle]);
     }
 
     // Update is called once per frame
@@ -63,6 +69,17 @@ public class BossController : MonoBehaviour
         anim.SetFloat("strafeAmount", strafeSpeed, 0.2f, Time.deltaTime); // 애니메이터의 측면 이동 속도 설정
 
         prevPos = transform.position; // 현재 위치 저장
+    }
+
+    // 타겟 설정 메서드(enemyVision함수에 의해 호출됨)
+    public void SetTarget(GameObject newTarget)
+    {
+        target = newTarget;
+    }
+    public void TargetChaseDirection(Vector3 _direction)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(_direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
     }
 
     public GameObject FindTarget()

@@ -34,7 +34,7 @@ public class EnemyController : MonoBehaviour
     public bool isAttacking { get; set; } = false;
     [field: SerializeField] public GameObject target { get; set; } = null;
     public NavMeshAgent navAgent { get; private set; }
-    public EnemyVision visionSensor { get; internal set; }
+    public EnemyVision enemyVision { get; internal set; }
     public MeleeEnemy meleeEnemy { get; private set; }
     public RangeEnemy rangeEnemy { get; private set; }
     [field: SerializeField] public EnemyType enemyType { get; set; }
@@ -61,10 +61,8 @@ public class EnemyController : MonoBehaviour
     {
         stats = GetComponent<EnemyStat>();
         anim = GetComponent<Animator>();
-        visionSensor = GetComponentInChildren<EnemyVision>();
+        enemyVision = GetComponentInChildren<EnemyVision>();
         navAgent = GetComponent<NavMeshAgent>();    // NavMeshAgent 컴포넌트 가져오기
-
-
 
         stateDict = new Dictionary<EnemyStates, EnemyState<EnemyController>>();
         stateDict[EnemyStates.Idle] = GetComponent<EnemyIdleState>();
@@ -72,6 +70,10 @@ public class EnemyController : MonoBehaviour
         stateDict[EnemyStates.Attack] = GetComponent<EnemyAttackState>();
         stateDict[EnemyStates.Dead] = GetComponent<EnemyDeadState>();
         stateDict[EnemyStates.GetHit] = GetComponent<EnemyGetHitState>();
+        
+        //EnemyVision OnTargetDetected에 타겟 설정 매서드 구독
+        enemyVision.OnTargetDetected += SetTarget;
+        enemyVision.SetAggroRange(stats.aggroRange.GetValue()); // 어그로 범위 설정
 
         stateMachine = new EnemyStateMachine<EnemyController>(this);
         // Idle 상태로 시작
@@ -106,6 +108,12 @@ public class EnemyController : MonoBehaviour
 
         prevPos = transform.position; // 현재 위치 저장
     }
+
+    public void SetTarget(GameObject newTarget)
+    {
+        target = newTarget;
+    }
+
 
     // GetHit 애니메이션을 캐시하는 메서드.
     void CacheGetHitAnimations()

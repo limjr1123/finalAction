@@ -19,8 +19,8 @@ MonoBehaviour:
   magicDefense: 5
   mana: 0
   manaRegen: 0
-  aggroRange: 7
-  attackRange: 6
+  aggroRange: 11
+  attackRange: 10
   moveSpeed: 4
   attackSpeed: 1
   attackInterval: 2.5
