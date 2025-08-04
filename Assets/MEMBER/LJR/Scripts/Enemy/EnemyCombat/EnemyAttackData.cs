@@ -6,8 +6,8 @@ public class EnemyAttackData : ScriptableObject
 {
     [field: SerializeField] public string animName { get; private set; }
     [field: SerializeField] public AttackHitbox hitboxToUse { get; private set; }
-    [field: SerializeField] public float impactStartTime { get; private set; }
-    [field: SerializeField] public float impactEndTime { get; private set; }
+    [field: SerializeField] public float impactStartTime { get; private set; }  // 타격 판정이 시작되는 시간 (원거리 공격의 경우 사용되지 않음)
+    [field: SerializeField] public float impactEndTime { get; private set; }    // 타격 판정이 끝나는 시간 (원거리 공격의 경우 애니메이션 종료 시간을 입력)
     [field: SerializeField] public bool isParry { get; private set; } // 패링 가능한 공격인지 여부
 }
 

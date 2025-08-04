@@ -26,7 +26,9 @@ namespace GameSave
     [System.Serializable]
     public class InventorySaveData
     {
-        public List<InventorySlotSaveData> items = new();
+        public List<InventorySlotSaveData> equipSlotSaveData = new();
+        public List<InventorySlotSaveData> consumableSlotSaveData = new();
+        public List<InventorySlotSaveData> etcSlotSaveData = new();
     }
 
     [System.Serializable]
@@ -40,7 +42,7 @@ namespace GameSave
     public class QuestSaveData
     {
         public List<string> completedQuests = new();
-        public List<string> currentQuests = new();
+        public List<string> activeQuests = new();
         // 필요한 정보 추가
     }
 
