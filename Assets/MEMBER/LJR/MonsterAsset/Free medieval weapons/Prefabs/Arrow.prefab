@@ -254,6 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowHead: {fileID: 4668755794025904}
   arrowTail: {fileID: 4561127497884747516}
+  arrowSpeed: 8
 --- !u!65 &4697617653675939943
 BoxCollider:
   m_ObjectHideFlags: 0

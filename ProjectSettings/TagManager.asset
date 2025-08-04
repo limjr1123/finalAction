@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - PlayerGuard
   - PlayerParry
+  - Ground
   layers:
   - Default
   - TransparentFX

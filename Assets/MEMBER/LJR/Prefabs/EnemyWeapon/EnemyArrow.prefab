@@ -232,7 +232,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4668755794025904}
@@ -255,7 +255,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowHead: {fileID: 4668755794025904}
   arrowTail: {fileID: 4561127497884747516}
-  arrowSpeed: 8
+  arrowSpeed: 50
+  hitBox: {fileID: 4697617653675939943}
+  rb: {fileID: 1773152214476729123}
+  bow: {fileID: 0}
+  damage: 0
+  pullBackDistance: 1
 --- !u!65 &4697617653675939943
 BoxCollider:
   m_ObjectHideFlags: 0
