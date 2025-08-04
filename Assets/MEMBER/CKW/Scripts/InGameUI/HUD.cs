@@ -4,11 +4,12 @@ using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     [Header("Skiil Buttons")]
+    [SerializeField] Button jumpButton;
+    [SerializeField] Button evasionButton;
+    [SerializeField] Button counterButton;
+    [SerializeField] Button attackButton;
     [SerializeField] Button skill_1;
     [SerializeField] Button skill_2;
-    [SerializeField] Button skill_3;
-    [SerializeField] Button skill_4;
-    [SerializeField] Button attackButton;
 
 
     [Header("Consume Quick Slot")]
@@ -20,16 +21,18 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
+        if (jumpButton != null)
+            jumpButton.onClick.AddListener(OnJumpButton);
+        if (evasionButton != null)
+            evasionButton.onClick.AddListener(OnEvasionButton);
+        if (counterButton != null)
+            counterButton.onClick.AddListener(OnCounterButton);
+        if (attackButton != null)
+            attackButton.onClick.AddListener(OnAttackButton);
         if (skill_1 != null)
             skill_1.onClick.AddListener(OnSkillButton1);
         if (skill_2 != null)
             skill_2.onClick.AddListener(OnSkillButton2);
-        if (skill_3 != null)
-            skill_3.onClick.AddListener(OnSkillButton3);
-        if (skill_4 != null)
-            skill_4.onClick.AddListener(OnSkillButton4);
-        if (attackButton != null)
-            attackButton.onClick.AddListener(OnAttackButton);
 
 
 
@@ -40,6 +43,30 @@ public class HUD : MonoBehaviour
     }
 
     // 스킬 & 공격 버튼 눌렀을 때
+    private void OnJumpButton()
+    {
+
+    }
+
+
+    private void OnEvasionButton()
+    {
+
+    }
+
+
+    private void OnCounterButton()
+    {
+
+    }
+
+
+    private void OnAttackButton()
+    {
+
+    }
+
+
     private void OnSkillButton1()
     {
 
@@ -47,24 +74,6 @@ public class HUD : MonoBehaviour
 
 
     private void OnSkillButton2()
-    {
-
-    }
-
-
-    private void OnSkillButton3()
-    {
-
-    }
-
-
-    private void OnSkillButton4()
-    {
-
-    }
-
-
-    private void OnAttackButton()
     {
 
     }
