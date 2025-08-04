@@ -3,10 +3,12 @@ using UnityEngine;
 public class SAS_Weapon : MonoBehaviour
 {
     private PlayerStats playerStats;
+    private PlayerStateMachine stateMachine;
 
     private void Awake()
     {
         playerStats = GetComponentInParent<PlayerStats>();
+        stateMachine = GetComponentInParent<PlayerStateMachine>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,7 +21,6 @@ public class SAS_Weapon : MonoBehaviour
             {
                 enemyStat.TakeAttackDamage(finalDamage);
                 HitStop.Instance.StopTime();
-                Debug.Log("hitstop");
             }
         }
     }

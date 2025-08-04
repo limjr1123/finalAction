@@ -25,7 +25,10 @@ public class PlayerIdleState : PlayerState
 
     public override void OnDodge()
     {
-        stateMachine.ChangeState(stateMachine.EvasionState);
+        if (stateMachine.Stats.TryUseStamina(stateMachine.dodgeStaminaCost))
+        {
+            stateMachine.ChangeState(stateMachine.EvasionState);
+        }
     }
 
     public override void OnParry()
@@ -43,6 +46,13 @@ public class PlayerIdleState : PlayerState
         stateMachine.ChangeState(stateMachine.GuardState);
     }
 
+    public override void OnSkill(int slotIndex)
+    {
+        if (stateMachine.TryUseSkill(slotIndex))
+        {
+            stateMachine.ChangeState(stateMachine.SkillState);
+        }
+    }
 
 
     public override void Exit()

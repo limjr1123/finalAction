@@ -22,5 +22,7 @@ public abstract class PlayerState
     public virtual void OnDodge() { }
     public virtual void OnParry() { }
     public virtual void OnGuard() { }
+    public virtual void OnGuardUp() { }
     public virtual void AllowCombo() { }
+    public virtual void OnSkill(int slotIndex) { }
 }
