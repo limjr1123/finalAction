@@ -57,8 +57,8 @@ MonoBehaviour:
   uiSFXSource: {fileID: 3597375905587382212}
   bgmClips:
   - {fileID: 8300000, guid: 006336b5d13d5b7409640b7e58581916, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: f9371e5b4991208459d9ddefce684ff5, type: 3}
+  - {fileID: 8300000, guid: e92396fb344edb74fbcec607dcae9db2, type: 3}
   uiSFXClips:
   - {fileID: 0}
   - {fileID: 0}
