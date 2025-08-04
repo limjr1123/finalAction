@@ -31,7 +31,6 @@ public class PlayerEvasionState : PlayerState
         }
 
         stateMachine.Rb.AddForce(evasionDirection * evasionForce, ForceMode.Impulse);
-        // 스태미나를 소모 로직 추가
 
     }
 

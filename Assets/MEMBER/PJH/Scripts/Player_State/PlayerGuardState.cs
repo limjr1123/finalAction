@@ -2,26 +2,29 @@ using UnityEngine;
 
 public class PlayerGuardState : PlayerState
 {
+
     public PlayerGuardState(PlayerStateMachine stateMachine, GameObject player, Animator animator) 
         : base(stateMachine, player, animator) {}
 
     public override void Enter()
     {
-        animator.SetTrigger("Blocking");
+        animator.SetBool("IsBlocking", true);
+    
+    }
 
+    public override void FixedUpdate()
+    {
         stateMachine.MoveDirection = Vector3.zero;
         stateMachine.Rb.linearVelocity = Vector3.zero;
+    }
 
-        Debug.Log("°¡µå");
+    public override void OnGuardUp()
+    {
+        stateMachine.ChangeState(stateMachine.IdleState);
     }
 
     public override void Exit()
     {
-        base.Exit();
-    }
-
-    public override void Update()
-    {
-        base.Update();
+        animator.SetBool("IsBlocking", false);
     }
 }
