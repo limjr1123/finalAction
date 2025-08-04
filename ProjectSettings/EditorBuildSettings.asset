@@ -10,19 +10,19 @@ EditorBuildSettings:
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/CKW_GameStartSequenceScene.unity
-    guid: aa220ecb9d1bb184e9c9bbc6be3b2fd2
+    guid: 85ae264bfcc830e44b178ae1f26d64fb
   - enabled: 1
     path: Assets/Scenes/CKW_TitleScene.unity
-    guid: ce92659cc49913746a9425820099dfae
+    guid: 52895dd39582c5148b4ea1872c38c4df
   - enabled: 1
     path: Assets/Scenes/CKW_CharacterSelectScene.unity
-    guid: 5ea0d95b7f503764c8036b63e5479ba5
+    guid: 90f512cb9f111fe4e990e5a006637f6c
   - enabled: 1
     path: Assets/Scenes/Field.unity
-    guid: 323ebeb4af73bf4478274593e31cc04b
+    guid: 9cc9053653916554584b1fcc5568a75a
   - enabled: 1
     path: Assets/Scenes/Dungeon.unity
-    guid: e4019e65148d7fb448c124e6031cadfb
+    guid: c245244786bd55b47bc0228b5429e5d5
   - enabled: 0
     path: Assets/MEMBER/NSW/Scene/Dungeon 1.unity
     guid: 9a18cc5d35536fd428eb6e90b3402589
