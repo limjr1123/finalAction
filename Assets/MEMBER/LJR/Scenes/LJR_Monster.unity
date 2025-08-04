@@ -3248,9 +3248,11 @@ GameObject:
   - component: {fileID: 2092698912}
   - component: {fileID: 2092698911}
   - component: {fileID: 2092698915}
+  - component: {fileID: 95036879724964658}
   - component: {fileID: 2092698916}
   - component: {fileID: 95036879724964655}
   - component: {fileID: 95036879724964656}
+  - component: {fileID: 95036879724964657}
   m_Layer: 0
   m_Name: OrkAssasin_Boss
   m_TagString: Untagged
@@ -7955,6 +7957,37 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &95036879724964657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637584240210684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869bb8cba212bad498e9436fe14c6d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attacks: []
+  weapon: {fileID: 0}
+  leftHandCollider: {fileID: 0}
+  rightHandCollider: {fileID: 0}
+  leftFootCollider: {fileID: 0}
+  rightFootCollider: {fileID: 0}
+  attackState: 0
+--- !u!114 &95036879724964658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637584240210684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7162883426991b846bb9a8c04db93f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &137017200024249926
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
