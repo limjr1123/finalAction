@@ -36,11 +36,11 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
     private List<InventorySlot> consumableInventroy = new();
     private List<InventorySlot> etcInventroy = new();
 
-    // 슬롯 20개.
+    // 각각 슬롯 20개.
 
     public List<InventorySlot> GetAllEquipmentInventory => equipmentInventroy;
-    public List<InventorySlot> GetAllConsumorInventory => consumableInventroy;
-    public List<InventorySlot> GetAllEtcInventroy => etcInventroy;
+    public List<InventorySlot> GetAllConsumableInventory => consumableInventroy;
+    public List<InventorySlot> GetAllEtcInventory => etcInventroy;
 
 
 
