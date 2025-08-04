@@ -1843,6 +1843,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handelEscapeInput: 1
   optionUI: {fileID: 0}
+  hudController: {fileID: 0}
+  mainMenuController: {fileID: 0}
 --- !u!1001 &8099934662288157921
 PrefabInstance:
   m_ObjectHideFlags: 0

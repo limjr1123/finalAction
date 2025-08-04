@@ -87,6 +87,24 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
         Debug.Log("게임 데이터 저장 완료! : " + savePath);
     }
 
+
+    // 특정 인덱스의 캐릭터 데이터 가져오기
+    public CharacterData GetCharacterData(int index)
+    {
+        if (gameData.characters.Count == 0)
+        {
+            Debug.LogWarning("저장된 캐릭터가 없습니다!");
+            return null;
+        }
+
+        if (index < 0 || index >= gameData.characters.Count)
+        {
+            Debug.LogWarning($"잘못된 캐릭터 인덱스: {index}");
+            return null;
+        }
+
+        return gameData.characters[index];
+    }
     // 게임 데이터 전체 로드
     public GameData LoadGameDataFromJason()
     {
@@ -104,6 +122,11 @@ public class GameDataSaveLoadManager : Singleton<GameDataSaveLoadManager>
 
     public void SetSelectedCharacterSlotIndex(int index) => gameData.selectedCharacterSlotIndex = index;
 
+    // 선택된 캐릭터 슬롯 인덱스 가져오기 (누락된 메서드 추가)
+    public int GetSelectedCharacterSlotIndex()
+    {
+        return gameData.selectedCharacterSlotIndex;
+    }
 
     // 직업 선택 함수   
     // UI에서 JobData를 UI와 연결하고

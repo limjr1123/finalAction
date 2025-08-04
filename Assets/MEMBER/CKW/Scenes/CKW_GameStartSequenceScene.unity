@@ -446,14 +446,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
-      propertyPath: 'bgmClips.Array.data[1]'
-      value: 
-      objectReference: {fileID: 8300000, guid: f9371e5b4991208459d9ddefce684ff5, type: 3}
-    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
-      propertyPath: 'bgmClips.Array.data[2]'
-      value: 
-      objectReference: {fileID: 8300000, guid: e92396fb344edb74fbcec607dcae9db2, type: 3}
     - target: {fileID: 6472799724841850286, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
       propertyPath: m_Name
       value: SoundManager

@@ -76,5 +76,62 @@ public class GameManager : Singleton<GameManager>
 
         // 퀘스트도 데이터 로드
         QuestManager.Instance.LoadQuestData(charData.questSaveData);
+
+        // 게임 로드 완료 후 HUD와 MainMenu 활성화
+        ActivateGameUI();
+
+        // 캐릭터 데이터를 HUD에 반영
+        OnCharacterLoadCompleted();
+    }
+
+    private void ActivateGameUI()
+    {
+        // UIManager 아래에서 HUD와 MainMenu UI 찾기
+        var uiManager = UIManager.Instance;
+        if (uiManager != null)
+        {
+            // HUD UI 찾아서 활성화
+            var hudUI = uiManager.transform.Find("UI_HUD(Heads-Up Display)");  // 또는 정확한 경로
+            if (hudUI != null)
+            {
+                hudUI.gameObject.SetActive(true);
+                Debug.Log("HUD UI 활성화 완료!");
+            }
+            else
+            {
+                Debug.LogWarning("HUD UI를 찾을 수 없습니다!");
+            }
+
+            // MainMenu UI 찾아서 활성화
+            var mainMenuUI = uiManager.transform.Find("UI_MainMenu");  // 또는 정확한 경로
+            if (mainMenuUI != null)
+            {
+                mainMenuUI.gameObject.SetActive(true);
+                Debug.Log("MainMenu UI 활성화 완료!");
+            }
+            else
+            {
+                Debug.LogWarning("MainMenu UI를 찾을 수 없습니다!");
+            }
+        }
+        else
+        {
+            Debug.LogError("UIManager를 찾을 수 없습니다!");
+        }
+    }
+
+    private void OnCharacterLoadCompleted()
+    {
+        Debug.Log("캐릭터 로드 완료! UIManager에 알림");
+
+        // UIManager에 캐릭터 로드 완료 알림
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.OnCharacterLoaded();
+        }
+        else
+        {
+            Debug.LogError("UIManager 인스턴스를 찾을 수 없습니다!");
+        }
     }
 }
