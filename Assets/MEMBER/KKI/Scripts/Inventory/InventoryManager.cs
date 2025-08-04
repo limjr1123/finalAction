@@ -43,6 +43,16 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
     public List<InventorySlot> GetAllEtcInventory => etcInventroy;
 
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            AddItem("Sword");
+            AddItem("Axe");
+            AddItem("Cheese");
+            Debug.Log("아이템 추가");
+        }
+    }
 
     #region 인벤토리 전용 함수(아이템 추가/삭제)
     public void AddItem(string itemID, int amount = 1)
@@ -80,8 +90,8 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
         }
 
 
-        // UI 최신화
-        if (remaining > 0) Debug.LogWarning($"{remaining}개는 추가되지 않음");
+        // // UI 최신화
+        // if (remaining > 0) Debug.LogWarning($"{remaining}개는 추가되지 않음");
     }
 
 

@@ -16,15 +16,15 @@ public class QuestDatabase : ScriptableObject
     [SerializeField] private List<QuestDatas> quests = new();
     private Dictionary<string, QuestDatas> questDict;
 
-    public void Init()
+    public void Initialize()
     {
         questDict = quests.ToDictionary(quests => quests.questData.questID);
     }
 
-    public QuestData GetQuestByID(string id)
+    public QuestData GetQuestByID(string questID)
     {
         if (questDict == null)
-            Init();
-        return questDict.TryGetValue(id, out var quest) ? quest.questData : null;
+            Initialize();
+        return questDict.TryGetValue(questID, out var quest) ? quest.questData : null;
     }
 }

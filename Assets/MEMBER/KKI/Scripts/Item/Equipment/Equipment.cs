@@ -2,14 +2,11 @@ using UnityEngine;
 
 public enum EquipType
 {
-    Head,
     Body,
-    Gloves,
-    Pants,
-    Boots,
-    Weapon
+    Weapon,
+    Accessory,
 }
-
+[CreateAssetMenu(fileName = "Equipmentata", menuName = "Scriptable Objects/Item/Equipment/Equipment")]
 public class Equipment : ItemData, IEquipable
 {
     public EquipType equipType;

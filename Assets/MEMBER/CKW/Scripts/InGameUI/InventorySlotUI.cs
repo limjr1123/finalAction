@@ -34,7 +34,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
         if (itemData != null && toolTipUI != null)
         {
             toolTipUI.Set(itemData);
-            toolTipUI.transform.position = eventData.position; // 터치/클릭 위치에 표시
+            // toolTipUI.transform.position = eventData.position; // 터치/클릭 위치에 표시
         }
     }
 }
