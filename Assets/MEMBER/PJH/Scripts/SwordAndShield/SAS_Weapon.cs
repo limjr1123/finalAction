@@ -1,3 +1,4 @@
+﻿using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class SAS_Weapon : MonoBehaviour
@@ -20,6 +21,8 @@ public class SAS_Weapon : MonoBehaviour
             if (other.TryGetComponent(out EnemyStat enemyStat))
             {
                 enemyStat.TakeAttackDamage(finalDamage);
+                MonsterHPUI.Instance.SetTarget(enemyStat);
+                MonsterHPUI.Instance.UpdateHP(enemyStat.currentHealth);
                 HitStop.Instance.StopTime();
             }
         }
