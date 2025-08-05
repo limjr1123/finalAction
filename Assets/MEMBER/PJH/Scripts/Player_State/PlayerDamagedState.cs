@@ -13,4 +13,10 @@ public class PlayerDamagedState : PlayerState
         stateMachine.Rb.linearVelocity = Vector3.zero;
     }
 
-}
+    public override void Exit()
+    {
+        animator.ResetTrigger("Damaged");
+        stateMachine.comboCount = 0; // 데미지를 입으면 콤보 초기화
+    }
+
+    }

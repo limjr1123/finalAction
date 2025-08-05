@@ -41,6 +41,8 @@ public struct PlayerDamageRange
 
 public class PlayerStats : MonoBehaviour
 {
+    public static PlayerStats Instance { get; private set; }
+
     [SerializeField]
     private PlayerStatsData baseStats;
     public static event Action OnPlayerDied; // 플레이어 사망 이벤트
@@ -93,6 +95,13 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         stateMachine = GetComponent<PlayerStateMachine>();
         ApplyBaseStats(); // 기본 스탯 초기화
         OnHealthChanged += () => HealthCheck();
