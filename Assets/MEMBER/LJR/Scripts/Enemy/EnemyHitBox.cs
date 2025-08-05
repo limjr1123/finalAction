@@ -17,7 +17,7 @@ public class EnemyHitBox : MonoBehaviour
             int finalDamage = GetComponentInParent<EnemyStat>().attackDamageRange.GetRandomDamage();
             other.GetComponent<PlayerStats>()?.TakePhysicalDamage(finalDamage);
         }
-        else if (other.CompareTag("Parry"))
+        else if (other.CompareTag("PlayerGuard") || other.CompareTag("PlayerParry"))
         {
             Debug.Log("패링 성공");
             enemyController.stateMachine.ChangeState(enemyController.stateDict[EnemyStates.GetHit]);
