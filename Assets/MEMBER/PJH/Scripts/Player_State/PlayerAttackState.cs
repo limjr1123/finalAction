@@ -32,6 +32,12 @@ public class PlayerAttackState : PlayerState
      
     }
 
+    public override void Exit()
+    {
+        animator.ResetTrigger("Attack");
+        animator.ResetTrigger("NextCombo");
+    }
+
     public override void OnAttack()
     {
         if (isComboInputPossible && stateMachine.comboCount < 4)

@@ -111,7 +111,7 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnAttack();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftAlt)) // 점프
+        if (Input.GetKeyDown(KeyCode.LeftControl)) // 점프
         {
             currentState?.OnJump(); 
         }
@@ -187,6 +187,8 @@ public class PlayerStateMachine : MonoBehaviour
     {
         comboCount = 0;
         Animator.SetInteger("ComboCount", 0);
+        Animator.ResetTrigger("Attack");
+        Animator.ResetTrigger("NextCombo");
         ChangeState(IdleState);
     }
 
