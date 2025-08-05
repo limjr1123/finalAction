@@ -13,24 +13,23 @@ public class ItemDatas
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Scriptable Objects/Database/ItemDatabase")]
 public class ItemDatabase : ScriptableObject
 {
-    [SerializeField] private List<ItemDatas> Items = new();
-
-    private Dictionary<string, ItemDatas> itemMap;
+    [SerializeField] private List<ItemDatas> items = new();
+    private Dictionary<string, ItemDatas> itemDict;
 
     public void Initialize()
     {
-        itemMap = Items.ToDictionary(Items => Items.itemData.ItemID);
+        itemDict = items.ToDictionary(items => items.itemData.ItemID);
     }
 
     public ItemData GetItemData(string itemID)
     {
-        if (itemMap == null)
+        if (itemDict == null)
         {
             Initialize();
         }
 
-        return itemMap.TryGetValue(itemID, out var data) ? data.itemData : null;
+        return itemDict.TryGetValue(itemID, out var item) ? item.itemData : null;
     }
 
-    public bool Contains(string itemID) => Items.Any(i => i.itemData.ItemID == itemID);
+    public bool Contains(string itemID) => items.Any(i => i.itemData.ItemID == itemID);
 }

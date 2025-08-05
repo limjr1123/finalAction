@@ -36,13 +36,24 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
     private List<InventorySlot> consumableInventroy = new();
     private List<InventorySlot> etcInventroy = new();
 
-    // 슬롯 20개.
+    // 각각 슬롯 20개.
 
     public List<InventorySlot> GetAllEquipmentInventory => equipmentInventroy;
-    public List<InventorySlot> GetAllConsumorInventory => consumableInventroy;
-    public List<InventorySlot> GetAllEtcInventroy => etcInventroy;
+    public List<InventorySlot> GetAllConsumableInventory => consumableInventroy;
+    public List<InventorySlot> GetAllEtcInventory => etcInventroy;
 
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            AddItem("Sword");
+            AddItem("Axe");
+            AddItem("Cheese");
+            AddItem("Armor");
+            Debug.Log("아이템 추가");
+        }
+    }
 
     #region 인벤토리 전용 함수(아이템 추가/삭제)
     public void AddItem(string itemID, int amount = 1)
@@ -80,12 +91,9 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
         }
 
 
-        // UI 최신화
-        if (remaining > 0) Debug.LogWarning($"{remaining}개는 추가되지 않음");
+        // // UI 최신화
+        // if (remaining > 0) Debug.LogWarning($"{remaining}개는 추가되지 않음");
     }
-
-
-
 
     public void RemoveItem(string itemID, int amount = 1)
     {

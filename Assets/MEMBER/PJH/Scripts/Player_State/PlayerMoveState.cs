@@ -6,6 +6,8 @@ public class PlayerMoveState : PlayerState
         : base(stateMachine, player, animator)
     { }
 
+    public bool isSprinting = false;
+
     public override void Enter()
     {
     }
@@ -39,7 +41,10 @@ public class PlayerMoveState : PlayerState
 
     public override void OnDodge()
     {
-        stateMachine.ChangeState(stateMachine.EvasionState);
+        if (stateMachine.Stats.TryUseStamina(stateMachine.dodgeStaminaCost))
+        {
+            stateMachine.ChangeState(stateMachine.EvasionState);
+        }
     }
 
     public override void OnParry()
@@ -50,6 +55,14 @@ public class PlayerMoveState : PlayerState
     public override void OnGuard()
     {
         stateMachine.ChangeState(stateMachine.GuardState);
+    }
+
+    public override void OnSkill(int slotIndex)
+    {
+        if (stateMachine.TryUseSkill(slotIndex))
+        {
+            stateMachine.ChangeState(stateMachine.SkillState);
+        }
     }
 
     private void Rotate(float deltaTime)
@@ -64,7 +77,18 @@ public class PlayerMoveState : PlayerState
     private void Move(float fixedDeltaTime)
     {
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        float currentSpeed = isSprinting ? stateMachine.Stats.sprintSpeed.GetValue() : stateMachine.Stats.moveSpeed.GetValue();
+        stateMachine.IsSprinting = isSprinting;
+        float currentSpeed;
+        if (isSprinting && stateMachine.Stats.TryUseStamina(Mathf.RoundToInt(15 * fixedDeltaTime)))
+        {
+            currentSpeed = stateMachine.Stats.sprintSpeed.GetValue();
+        }
+        else
+        {
+            stateMachine.IsSprinting = false;
+            currentSpeed = stateMachine.Stats.moveSpeed.GetValue();
+        }
+
         stateMachine.Rb.MovePosition(stateMachine.Rb.position + stateMachine.MoveDirection * currentSpeed * fixedDeltaTime);
     }
 

@@ -9,6 +9,7 @@ public enum UIType    // UI타입
     Inventory,
     Shop,
     Settings,
+    HUD,
     CharacterInfo, // 추가: CharacterInfo UI 타입
     SkillWindow    // 추가: SkillWindow UI 타입
 

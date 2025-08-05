@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
@@ -30,6 +30,12 @@ public class PlayerAttackState : PlayerState
     public override void Update()
     {
      
+    }
+
+    public override void Exit()
+    {
+        animator.ResetTrigger("Attack");
+        animator.ResetTrigger("NextCombo");
     }
 
     public override void OnAttack()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType { Equipment, Consumable, Etc}
+public enum ItemType { Equipment, Consumable, Etc }
 
 public abstract class ItemData : ScriptableObject
 {
@@ -17,7 +17,7 @@ public abstract class ItemData : ScriptableObject
     public string ItemID => itemID != null ? itemID : "NoID";
     public string ItemName => itemName != null ? itemName : "Unknown";
     public ItemType ItemType => itemType;
-    public Sprite Sprite => itemSp;
+    public Sprite ItemSprite => itemSp;
     public bool Stackable => stackable;
     public int MaxStack => maxStack;
     public string Description => description;

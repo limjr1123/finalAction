@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -39,6 +41,8 @@ public struct PlayerDamageRange
 
 public class PlayerStats : MonoBehaviour
 {
+    public static PlayerStats Instance { get; private set; }
+
     [SerializeField]
     private PlayerStatsData baseStats;
     public static event Action OnPlayerDied; // 플레이어 사망 이벤트
@@ -71,7 +75,7 @@ public class PlayerStats : MonoBehaviour
     [Header("이동 관련 능력치")]
     public FloatStat moveSpeed; // 기본 이동속도
     public FloatStat sprintSpeed; // 달리기 속도
-
+    
     [Header("전투 관련 능력치")]
     public Stat attackDamage; // 물리 공격력
     public Stat magicDamage; // 마법 공격력
@@ -91,14 +95,58 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         stateMachine = GetComponent<PlayerStateMachine>();
         ApplyBaseStats(); // 기본 스탯 초기화
         OnHealthChanged += () => HealthCheck();
     }
+    private void Start()
+    {
+        StartCoroutine(RegenerateResources());
+    }
 
-    public int GetAttackDamage()
+    private IEnumerator RegenerateResources()
+    {
+        while (!isDead)
+        {
+            // 마나 회복
+            if (currentMana < maxMana.GetValue())
+            {
+                currentMana += manaRegen.GetValue();
+                currentMana = Mathf.Min(currentMana, maxMana.GetValue());
+            }
+
+            // 스태미나 회복
+            bool canRegenStamina = (stateMachine.currentState is PlayerIdleState || stateMachine.currentState is PlayerMoveState)
+                                   && !stateMachine.IsSprinting;
+
+            if (canRegenStamina && currentStamina < maxStamina.GetValue())
+            {
+                currentStamina += staminaRegen.GetValue();
+                Debug.Log($"스태미나 회복: {currentStamina} / {maxStamina.GetValue()}");
+                currentStamina = Mathf.Min(currentStamina, maxStamina.GetValue());
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    public int GetAttackDamage()  // 공격 데미지 계산
     {
         var currentDamageRange = new PlayerDamageRange(attackDamage.GetValue(), damageRange);
+        return currentDamageRange.CalculateDamage(criRate.GetValue(), criDamage.GetValue());
+    }
+
+    public int GetSkillDamage(SkillData skill) // 스킬 데미지 계산
+    {
+        int baseSkillDamage = Mathf.RoundToInt(attackDamage.GetValue() * skill.damageMultiplier);
+        var currentDamageRange = new PlayerDamageRange(baseSkillDamage, damageRange);
         return currentDamageRange.CalculateDamage(criRate.GetValue(), criDamage.GetValue());
     }
 
@@ -202,6 +250,70 @@ public class PlayerStats : MonoBehaviour
         OnPlayerDied?.Invoke(); // 사망 이벤트 호출
     }
 
+    public bool TryUseMana(int amount)
+    {
+        if (currentMana >= amount)
+        {
+            currentMana -= amount;
+            return true;
+        }
+        return false;
+    }
+    public bool TryUseStamina(int amount)
+    {
+        if (currentStamina >= amount)
+        {
+            currentStamina -= amount;
+            return true;
+        }
+        return false;
+    }
+    public void ApplyBuff(SkillData skill)
+    {
+        StartCoroutine(BuffCoroutine(skill));
+    }
+    private IEnumerator BuffCoroutine(SkillData skill)
+    {
+        // 1. 적용할 모든 버프 스탯을 찾습니다.
+        List<Stat> statsToModify = new List<Stat>();
+        foreach (var buff in skill.buffs)
+        {
+            Stat targetStat = GetStat(buff.statToBuff);
+            if (targetStat != null)
+            {
+                statsToModify.Add(targetStat);
+            }
+        }
+        // 2. 찾아낸 모든 스탯에 버프를 적용합니다.
+        for (int i = 0; i < statsToModify.Count; i++)
+        {
+            statsToModify[i].AddModifier(skill.buffs[i].amount);
+            Debug.Log($"{skill.buffs[i].statToBuff} 스탯을 {skill.buffs[i].amount} 만큼 증가시킵니다.");
+        }
+
+        // 3. 지정된 시간만큼 기다립니다.
+        yield return new WaitForSeconds(skill.buffDuration);
+
+        // 4. 적용했던 모든 버프 효과를 제거합니다.
+        for (int i = 0; i < statsToModify.Count; i++)
+        {
+            statsToModify[i].RemoveModifier(skill.buffs[i].amount);
+            Debug.Log($"{skill.buffs[i].statToBuff} 스탯 버프가 종료되었습니다.");
+        }
+    }
+    private Stat GetStat(StatType type)
+    {
+        switch (type)
+        {
+            case StatType.Str: return Str;
+            case StatType.Dex: return Dex;
+            case StatType.Int: return Int;
+            case StatType.defense: return defense;
+            case StatType.magicDefense: return magicDefense;
+            default: return null;
+        }
+    }
+
     public void LoadData(PlayerSaveData data)
     {
         if (data == null)
@@ -239,4 +351,23 @@ public class PlayerStats : MonoBehaviour
         transform.position = data.savePos;
         Debug.Log($"캐릭터 데이터 로드 완료!");
     }
+
+    public void AddExp(int amount)
+    {
+        currentEXP += amount;
+        Debug.Log($"{amount}의 경험치를 획득했습니다. 현재 경험치: {currentEXP}/{maxEXP.GetValue()}");
+
+        while (currentEXP >= maxEXP.GetValue())
+        {
+            currentEXP -= maxEXP.GetValue();
+            LevelUp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        level++;
+        Debug.Log($"레벨 업! 현재 레벨: {level}");
+    }
+
 }
