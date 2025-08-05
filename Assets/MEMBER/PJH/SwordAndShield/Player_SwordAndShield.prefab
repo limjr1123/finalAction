@@ -1801,8 +1801,8 @@ MonoBehaviour:
   rotationSpeed: 15
   airControlSpeed: 3
   skills:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: f9bb46a6358435f42a4dced24f40a45b, type: 2}
+  - {fileID: 11400000, guid: dd5a4feba592e9341a487bcfdafc3a10, type: 2}
   dodgeStaminaCost: 10
   AttackStaminaCost: 10
 --- !u!114 &6711030526590164055
@@ -1818,7 +1818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: "\uB2C8\uB7EC"
+  characterName: TEST2
   characterJob: 
   currentHealth: 100
   currentMana: 0
@@ -1832,13 +1832,13 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   manaRegen:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   maxStamina:
-    baseValue: 0
+    baseValue: 100
     modifiers: 
   staminaRegen:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   maxEXP:
     baseValue: 0
@@ -2716,13 +2716,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6834751255879507248}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4620146, y: -0.48897028, z: -0.5613415, w: 0.4820232}
-  m_LocalPosition: {x: -0.32394782, y: -0.21029466, z: 0.33617938}
+  m_LocalRotation: {x: -0.508323, y: -0.5129131, z: -0.45180815, w: 0.5238294}
+  m_LocalPosition: {x: -0.24971826, y: -0.16682512, z: 0.39961594}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742134155696439399}
-  m_LocalEulerAnglesHint: {x: -1.108, y: 0.949, z: -0.419}
+  m_LocalEulerAnglesHint: {x: -95.11, y: 61.172997, z: -147.305}
 --- !u!65 &6184395318422701713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3081,7 +3081,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8962660627359903675
 Transform:
   m_ObjectHideFlags: 0
@@ -3090,13 +3090,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7740473996666576218}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4620146, y: -0.48897028, z: -0.5613415, w: 0.4820232}
-  m_LocalPosition: {x: -0.32394782, y: -0.21029466, z: 0.33617938}
+  m_LocalRotation: {x: -0.508323, y: -0.5129131, z: -0.45180815, w: 0.5238294}
+  m_LocalPosition: {x: -0.24971826, y: -0.16682512, z: 0.39961594}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742134155696439399}
-  m_LocalEulerAnglesHint: {x: -1.108, y: 0.949, z: -0.419}
+  m_LocalEulerAnglesHint: {x: -95.11, y: 61.172997, z: -147.305}
 --- !u!65 &1042393821768351857
 BoxCollider:
   m_ObjectHideFlags: 0
