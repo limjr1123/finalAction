@@ -50,6 +50,7 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
             AddItem("Sword");
             AddItem("Axe");
             AddItem("Cheese");
+            AddItem("Armor");
             Debug.Log("아이템 추가");
         }
     }
@@ -93,9 +94,6 @@ public class InventoryManager : Singleton<InventoryManager>, IInventory
         // // UI 최신화
         // if (remaining > 0) Debug.LogWarning($"{remaining}개는 추가되지 않음");
     }
-
-
-
 
     public void RemoveItem(string itemID, int amount = 1)
     {

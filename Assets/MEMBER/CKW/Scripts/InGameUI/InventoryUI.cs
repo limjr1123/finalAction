@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ public class InventoryUI : BaseUI
 
     [Header("Tooltip")]
     [SerializeField] ToolTipUI toolTipUI;
+
+    [Header("Equipment Slot")]
+    [SerializeField] Image weaponSlotImage;
+    [SerializeField] Image bodySlotImage;
+    [SerializeField] Image accessoryImage;
 
     private InventorySlotUI[] equipmentSlots;
     private InventorySlotUI[] consumableSlots;
@@ -76,6 +82,8 @@ public class InventoryUI : BaseUI
     {
         // 게임 머니 얻기
     }
+
+    #region 토글에 따라 인벤토리 슬롯 보여주기
 
     void OnEquipmentTabToggle(bool isOn)
     {
@@ -138,6 +146,51 @@ public class InventoryUI : BaseUI
         EquipmentSlotArea.gameObject.SetActive(activeArea == EquipmentSlotArea);
         ConsumableSlotArea.gameObject.SetActive(activeArea == ConsumableSlotArea);
         EtcSlotArea.gameObject.SetActive(activeArea == EtcSlotArea);
+    }
+
+    #endregion
+
+
+
+    // 장비 슬롯 UI 갱신 함수
+    public void SetWeaponSlot(EquipmentItemData equipmentItemData)
+    {
+        Sprite sprite;
+        bool isNull;
+
+        if (equipmentItemData == null)
+        {
+            sprite = null;
+            isNull = false;
+        }
+        else
+        {
+            sprite = equipmentItemData.ItemSprite;
+            isNull = true;
+        }
+
+        switch (equipmentItemData.EquipType)
+        {
+            case EquipType.Weapon:
+                {
+                    weaponSlotImage.sprite = sprite;
+                    weaponSlotImage.enabled = isNull;
+                    break;
+                }
+            case EquipType.Body:
+                {
+                    bodySlotImage.sprite = sprite;
+                    bodySlotImage.enabled = isNull;
+                    break;
+                }
+            case EquipType.Accessory:
+                {
+                    accessoryImage.sprite = sprite;
+                    accessoryImage.enabled = isNull;
+                    break;
+                }
+        }
+
     }
 }
 

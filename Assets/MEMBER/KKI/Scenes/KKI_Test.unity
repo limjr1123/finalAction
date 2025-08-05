@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &267505901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2063321308480130499, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+  m_PrefabInstance: {fileID: 468909934}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &428335810 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1917470960757744276, guid: 731c8ca6a90cf1e45851ce6d77413750, type: 3}
@@ -423,6 +434,10 @@ PrefabInstance:
     - target: {fileID: 866308438509850336, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 883730278754400224, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: m_Name
+      value: AccessorySlotImage
       objectReference: {fileID: 0}
     - target: {fileID: 1065495170559899182, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1364,6 +1379,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4348498567321903200, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: m_Name
+      value: BodySlotImage
+      objectReference: {fileID: 0}
     - target: {fileID: 4350889027649130868, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1704,6 +1723,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5448846989118030333, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: inventoryUI
+      value: 
+      objectReference: {fileID: 1028300074}
     - target: {fileID: 5495823577505138440, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1769,17 +1792,41 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: BodySlot
+      value: 
+      objectReference: {fileID: 2044564837}
+    - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: Accessory
+      value: 
+      objectReference: {fileID: 1507661749}
+    - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: toolTipUI
       value: 
       objectReference: {fileID: 568587840}
+    - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: WeaponSlot
+      value: 
+      objectReference: {fileID: 267505901}
     - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: EtcSlotArea
       value: 
       objectReference: {fileID: 1441156187}
     - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: bodySlotImage
+      value: 
+      objectReference: {fileID: 2044564837}
+    - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: TabToggleGroup
       value: 
       objectReference: {fileID: 534521211}
+    - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: accessoryImage
+      value: 
+      objectReference: {fileID: 1507661749}
+    - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: weaponSlotImage
+      value: 
+      objectReference: {fileID: 267505901}
     - target: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: EquipmentSlotArea
       value: 
@@ -2472,6 +2519,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8774075970197237898, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+      propertyPath: m_Name
+      value: WeaponSlotImage
+      objectReference: {fileID: 0}
     - target: {fileID: 8824898774767131180, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2941,6 +2992,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcData: {fileID: 11400000, guid: a86213d204b576649b3627e1b571422e, type: 2}
   startDialogueID: TestDialogue1
+--- !u!114 &1028300074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5948636051164057559, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+  m_PrefabInstance: {fileID: 468909934}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3891c0a171ebfc442893bf3ec6106cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1092141501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3264,6 +3326,17 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1507661749 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8970078048413948237, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+  m_PrefabInstance: {fileID: 468909934}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1646461427 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 80924030121745128, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
@@ -3451,6 +3524,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2044564837 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8214973704667747438, guid: 6207ccff665deda4a8af600a3308abba, type: 3}
+  m_PrefabInstance: {fileID: 468909934}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
