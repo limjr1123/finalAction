@@ -11,7 +11,7 @@ public class MeleeBoss : MonoBehaviour
 
     // 공격에 사용할 콜라이더들
     BoxCollider weaponCollider;
-    [SerializeField] SphereCollider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
+    [SerializeField] Collider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
 
 
     // 캐릭터의 애니메이터 컴포넌트
@@ -52,6 +52,9 @@ public class MeleeBoss : MonoBehaviour
         }
         string animName = attacks[attackIndex].animName;
 
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@애니메이션 복합 정보 확인용
+        //string animName2 = attacks[attackIndex].attackPhases[attackIndex].animName;
+        
         anim.CrossFade(animName, 0.2f);
         yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
 

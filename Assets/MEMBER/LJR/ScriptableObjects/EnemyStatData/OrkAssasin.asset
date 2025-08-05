@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95d823253eb4ca458a67d57ac2920a3, type: 3}
   m_Name: OrkAssasin
   m_EditorClassIdentifier: 
+  enemyName: 
   attackDamage: 20
   magicDamage: 0
   maxHealth: 1000
