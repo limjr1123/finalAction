@@ -66,6 +66,14 @@ public class RangeEnemy : MonoBehaviour
 
         while (isShooting)
         {
+            if(enemy.inGetHit)
+            {
+                isShooting = false; // 피격 상태면 공격 중지
+                inAction = false;
+                attackState = EnemyAttackStateInfo.Idle;
+                break;
+            }
+
             if (attackState == EnemyAttackStateInfo.Windup)
             {
                 anim.CrossFade(draw.animName, 0.2f);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeleeBoss : MonoBehaviour
 {
+    BossController boss;
     // 공격 애니메이션과 관련된 데이터
     [SerializeField] List<EnemyAttackData> attacks;
     [SerializeField] GameObject weapon;
@@ -19,7 +20,7 @@ public class MeleeBoss : MonoBehaviour
 
     public bool isParry { get; set; } = false; // 패링 상태 여부
     public bool inAction { get; private set; } = false;
-    public bool inGetHit { get; set; } = false;
+
     public EnemyAttackStateInfo attackState;
 
     private void Awake()
@@ -31,7 +32,7 @@ public class MeleeBoss : MonoBehaviour
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
     public void TryToAttack()
     {
-        if (!inAction && !inGetHit)
+        if (!inAction && !boss.inGetHit)
         {
             StartCoroutine(Attack());
         }

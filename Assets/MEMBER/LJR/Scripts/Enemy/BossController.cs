@@ -30,6 +30,8 @@ public class BossController : MonoBehaviour
 
     Vector3 prevPos;
 
+    public bool inGetHit { get; set; } = false;
+
     void Start()
     {
         stats = GetComponent<EnemyStat>();
