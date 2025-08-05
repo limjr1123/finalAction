@@ -3747,6 +3747,8 @@ MonoBehaviour:
   nicknameWindow: {fileID: 4029149881447967356}
   nicknameButton: {fileID: 7714239170810630980}
   closeButton: {fileID: 3812378068902875247}
+  characterCreateWindow: {fileID: 7005268080159309281}
+  characterSelectWindow: {fileID: 0}
   nicknameInputField: {fileID: 6944759386087370206}
 --- !u!1 &4201659597081940398
 GameObject:
