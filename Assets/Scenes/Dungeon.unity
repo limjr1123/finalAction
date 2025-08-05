@@ -2571,7 +2571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1027.1
+      value: 1021.2
       objectReference: {fileID: 0}
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2579,7 +2579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1021.8
+      value: 974.4
       objectReference: {fileID: 0}
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4455,6 +4455,18 @@ PrefabInstance:
     - target: {fileID: 3780235250055182675, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
       propertyPath: m_Name
       value: Portal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8865,7 +8877,7 @@ Transform:
   m_GameObject: {fileID: 1386231207}
   serializedVersion: 2
   m_LocalRotation: {x: -0.070580415, y: -0.016183617, z: -0.0011452535, w: 0.9973742}
-  m_LocalPosition: {x: 1027.2338, y: 71.43941, z: 1017.67847}
+  m_LocalPosition: {x: 1021.33374, y: 71.43941, z: 970.2785}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
