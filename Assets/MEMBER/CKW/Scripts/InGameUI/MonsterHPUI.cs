@@ -9,7 +9,9 @@ public class MonsterHPUI : MonoBehaviour
 
     [SerializeField] Image hpSlider;
     [SerializeField] TextMeshProUGUI monsterName;
+    [SerializeField] GameObject hpPanel;
     [SerializeField] float hideDelay = 5f;
+
 
     private EnemyStat currentTarget;
     private float lastDamageTime;
@@ -47,18 +49,18 @@ public class MonsterHPUI : MonoBehaviour
     public void SetTarget(EnemyStat monster)
     {
         currentTarget = monster;
-        monsterName.text = monster.name;
-        gameObject.SetActive(true);
-        UpdateHP(monster.currentHealth);
+        monsterName.text = monster.enemyName;
+        hpPanel.SetActive(true);
+        UpdateHP(monster.currentHealth, monster.maxHealth.GetValue());
         lastDamageTime = Time.time;
     }
 
 
-    public void UpdateHP(float currentHP)
+    public void UpdateHP(float currentHP, float maxHP)
     {
         if (currentTarget == null) return;
 
-        hpSlider.fillAmount = currentHP / 100;
+        hpSlider.fillAmount = currentHP / maxHP;
         lastDamageTime = Time.time;
     }
 
@@ -66,6 +68,6 @@ public class MonsterHPUI : MonoBehaviour
     public void HideUI()
     {
         currentTarget = null;
-        gameObject.SetActive(false);
+        hpPanel.SetActive(false);
     }
 }
