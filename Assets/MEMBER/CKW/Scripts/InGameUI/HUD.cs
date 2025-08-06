@@ -1,5 +1,8 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using GameSave;
 
 public class HUD : MonoBehaviour
 {
@@ -15,15 +18,25 @@ public class HUD : MonoBehaviour
     [SerializeField] Button consume_1;
     [SerializeField] Button consume_2;
 
-    // 캐릭터 정보 표시용 UI (필요시 추가)
+    // 캐릭터 정보 표시용 UI
     [Header("Character Info Display")]
-    [SerializeField] Text characterNameText;
-    [SerializeField] Text levelText;
-    [SerializeField] Slider healthBar;
-    [SerializeField] Slider manaBar;
+    [SerializeField] TextMeshProUGUI characterNameText;
+    [SerializeField] TextMeshProUGUI levelText;
+    [SerializeField] Image healthBar;
+    [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] Image manaBar;
+    [SerializeField] TextMeshProUGUI manaText;
+    [SerializeField] Image staminaBar;
+    [SerializeField] TextMeshProUGUI staminaText;
+    [SerializeField] Image expBar;
+    [SerializeField] TextMeshProUGUI expText;
+
+    // 현재 플레이어 참조
+    private PlayerStats playerStats;
 
     void Start()
     {
+        // 버튼 이벤트 등록
         if (jumpButton != null)
             jumpButton.onClick.AddListener(OnJumpButton);
         if (evasionButton != null)
@@ -41,67 +54,204 @@ public class HUD : MonoBehaviour
             consume_1.onClick.AddListener(OnConsumeButton1);
         if (consume_2 != null)
             consume_2.onClick.AddListener(OnConsumeButton2);
+
+
     }
 
-    // 캐릭터 데이터로 HUD 초기화 (UIManager에서 호출)
-    public void InitializeWithCharacterData(int characterIndex)
+    void OnDestroy()
     {
-        Debug.Log($"HUD 캐릭터 데이터 초기화 - 인덱스: {characterIndex}");
+        // 이벤트 구독 해제 (메모리 누수 방지)
+        UnsubscribeFromEvents();
+    }
 
-        // GameDataSaveLoadManager에서 캐릭터 데이터 가져오기
-        var characterData = GameDataSaveLoadManager.Instance.GetCharacterData(characterIndex);
+    void OnEnable()
+    {
+        SubscribeToEvents();
+    }
 
-        if (characterData != null)
+    void OnDisable()
+    {
+        UnsubscribeFromEvents();
+    }
+    // 플레이어 스탯으로 HUD 초기화
+    public void InitializeWithPlayer(PlayerStats stats)
+    {
+        Debug.Log($"HUD: InitializeWithPlayer 호출됨. 전달받은 PlayerStats: {stats != null}"); // ★1
+
+        playerStats = stats;
+
+        if (playerStats == null)
         {
-            // UI 업데이트 예시 (실제 PlayerSaveData 구조에 맞게 수정 필요)
-            if (characterNameText != null)
-                characterNameText.text = characterData.playerSaveData.characterName;
-            if (levelText != null)
-                levelText.text = $"Lv.{characterData.playerSaveData.level}";
-            if (healthBar != null)
-                healthBar.value = (float)characterData.playerSaveData.currentHealth / characterData.playerSaveData.maxHealth;
-            if (manaBar != null)
-                manaBar.value = (float)characterData.playerSaveData.currentMana / characterData.playerSaveData.maxMana;
-
-            Debug.Log($"HUD 업데이트 완료 - 캐릭터: {characterData.playerSaveData.characterName}");
+            Debug.LogWarning("HUD: PlayerStats 컴포넌트가 전달되지 않았습니다.");
+            return;
         }
-        else
+
+        UpdateAllUI();
+        Debug.Log("HUD: 초기 UI 업데이트 완료"); // ★3
+    }
+
+    // 이벤트 구독
+    private void SubscribeToEvents()
+    {
+        if (playerStats != null)
         {
-            Debug.LogWarning($"캐릭터 데이터를 찾을 수 없습니다. 인덱스: {characterIndex}");
+            // PlayerStats의 각 이벤트 구독
+            playerStats.OnHealthChanged += UpdateHealthUI;
+            playerStats.OnManaChanged += UpdateManaUI;
+            playerStats.OnStaminaChanged += UpdateStaminaUI;
+            playerStats.OnEXPChanged += UpdateEXPUI;
+            playerStats.OnLevelChanged += UpdateLevelUI;
         }
     }
 
-    // 스킬 & 공격 버튼 눌렀을 때
+    // 이벤트 구독 해제
+    private void UnsubscribeFromEvents()
+    {
+        if (playerStats != null)
+        {
+            playerStats.OnHealthChanged -= UpdateHealthUI;
+            playerStats.OnManaChanged -= UpdateManaUI;
+            playerStats.OnStaminaChanged -= UpdateStaminaUI;
+            playerStats.OnEXPChanged -= UpdateEXPUI;
+            playerStats.OnLevelChanged -= UpdateLevelUI;
+        }
+    }
+
+    // 전체 UI 업데이트 (초기화 시)
+    private void UpdateAllUI()
+    {
+        if (playerStats == null) return;
+
+        // 기본 정보 업데이트
+        if (characterNameText != null)
+            characterNameText.text = playerStats.characterName;
+
+        UpdateLevelUI();
+        UpdateHealthUI();
+        UpdateManaUI();
+        UpdateStaminaUI();
+        UpdateEXPUI();
+    }
+
+
+    // 개별 UI 업데이트 메서드들
+    private void UpdateHealthUI()
+    {
+        if (playerStats == null) return;
+
+        if (healthBar != null)
+        {
+            float fillAmount = playerStats.maxHealth.GetValue() > 0 ?
+                (float)playerStats.currentHealth / playerStats.maxHealth.GetValue() : 0f;
+            healthBar.fillAmount = fillAmount;
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = $"{playerStats.currentHealth} / {playerStats.maxHealth.GetValue()}";
+        }
+        Debug.Log("hp까까까임");
+    }
+
+    private void UpdateManaUI()
+    {
+        if (playerStats == null) return;
+
+        if (manaBar != null)
+        {
+            float fillAmount = playerStats.maxMana.GetValue() > 0 ?
+                (float)playerStats.currentMana / playerStats.maxMana.GetValue() : 0f;
+            manaBar.fillAmount = fillAmount;
+        }
+
+        if (manaText != null)
+        {
+            manaText.text = $"{playerStats.currentMana} / {playerStats.maxMana.GetValue()}";
+        }
+    }
+
+    private void UpdateStaminaUI()
+    {
+        if (playerStats == null) return;
+
+        if (staminaBar != null)
+        {
+            float fillAmount = playerStats.maxStamina.GetValue() > 0 ?
+                (float)playerStats.currentStamina / playerStats.maxStamina.GetValue() : 0f;
+            staminaBar.fillAmount = fillAmount;
+        }
+
+        if (staminaText != null)
+        {
+            staminaText.text = $"{playerStats.currentStamina} / {playerStats.maxStamina.GetValue()}";
+        }
+    }
+
+    private void UpdateLevelUI()
+    {
+        if (playerStats == null) return;
+
+        if (levelText != null)
+        {
+            levelText.text = $"Lv.{playerStats.level}";
+        }
+    }
+
+    private void UpdateEXPUI()
+    {
+        if (playerStats == null) return;
+
+        if (expBar != null)
+        {
+            float fillAmount = playerStats.maxEXP.GetValue() > 0 ?
+                (float)playerStats.currentEXP / playerStats.maxEXP.GetValue() : 0f;
+            expBar.fillAmount = fillAmount;
+        }
+
+        if (expText != null)
+        {
+            expText.text = $"{playerStats.currentEXP} / {playerStats.maxEXP.GetValue()}";
+        }
+    }
+
+    // 버튼 이벤트들
     private void OnJumpButton()
     {
+        // 점프 로직
     }
 
     private void OnEvasionButton()
     {
+        // 회피 로직
     }
 
     private void OnCounterButton()
     {
+        // 반격 로직
     }
 
     private void OnAttackButton()
     {
+        // 공격 로직
     }
 
     private void OnSkillButton1()
     {
+        // 스킬 1 로직
     }
 
     private void OnSkillButton2()
     {
+        // 스킬 2 로직
     }
 
-    // 퀵슬롯(소모품) 눌렀을 때
     private void OnConsumeButton1()
     {
+        // 소모품 1 사용 로직
     }
 
     private void OnConsumeButton2()
     {
+        // 소모품 2 사용 로직
     }
 }
