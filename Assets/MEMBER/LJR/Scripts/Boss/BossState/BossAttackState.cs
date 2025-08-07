@@ -55,9 +55,9 @@ public class BossAttackState : EnemyState<BossController>
     {
         isAttacking = true;
         boss.anim.applyRootMotion = true;
-        boss.meleeEnemy.TryToAttack();
+        boss.meleeBoss.TryToAttack();
         boss.navAgent.isStopped = true;
-        yield return new WaitUntil(() => boss.meleeEnemy.attackState == EnemyAttackStateInfo.Idle);
+        yield return new WaitUntil(() => boss.meleeBoss.attackState == EnemyAttackStateInfo.Idle);
 
         boss.anim.applyRootMotion = false;
         boss.navAgent.isStopped = false;

@@ -113,7 +113,7 @@ public class BossBattleState : EnemyState<BossController>
         timer = boss.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
 
         circlingDir = Random.Range(0, 2) == 0 ? 1 : -1; // 시계방향 또는 반시계방향 결정
-        //timer = Random.Range(idleTimeRange.x, idleTimeRange.y); // 대기 시간 범위 설정
+        timer = Random.Range(idleTimeRange.x, idleTimeRange.y); // 대기 시간 범위 설정
     }
 
     // 추격 상태 시작
