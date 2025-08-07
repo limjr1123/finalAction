@@ -15,13 +15,12 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
     {
         base.Awake();
 
-        prefabMap = new Dictionary<string, GameObject>
-        {
-            { "전사", WarriorPrefab },
-            { "궁수", archerPrefab },
-            { "마법사", magePrefab },
-            { "도적", thiefPrefab }
-        };
+        prefabMap = new Dictionary<string, GameObject>();
+
+        prefabMap.Add("전사", WarriorPrefab);
+        prefabMap.Add("궁수", archerPrefab);
+        prefabMap.Add("마법사", magePrefab);
+        prefabMap.Add("도적", thiefPrefab);
     }
 
     public PlayerSaveData SaveChracterData()
