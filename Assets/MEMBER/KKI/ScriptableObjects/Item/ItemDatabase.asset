@@ -19,5 +19,5 @@ MonoBehaviour:
     itemData: {fileID: 11400000, guid: 82c2ed1f8a1042a47b831bac58cf04ee, type: 2}
   - desription: "\uCE58\uC988"
     itemData: {fileID: 11400000, guid: 9e7c647daebf9ef4a9acb58767db59e1, type: 2}
-  - desription: "\uAC12\uC637"
+  - desription: "\uAC11\uC637"
     itemData: {fileID: 11400000, guid: ac5b77e427fe4714392b66007ac34a76, type: 2}

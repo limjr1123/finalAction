@@ -1,15 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopInstaller : MonoBehaviour
 {
-    void Start()
+    public static BasicShop ShopInstance;
+
+    [Header("상점에 진열할 아이템들")]
+    public List<ItemData> shopItems;
+
+    void Awake()
     {
         ICurrencySystem currency = FindAnyObjectByType<GoldSystem>();
         IInventory inventory = InventoryManager.Instance;
+        ShopInstance = new BasicShop(currency, inventory);
 
-        BasicShop shop = new BasicShop(currency, inventory);
-        shop.AddItem(new ShopItem { ID = "sword", Name = "Sword", Price = 100 });
-
-        shop.Purchase("sword");
+        foreach (var item in shopItems)
+            ShopInstance.AddItem(item);
     }
 }
