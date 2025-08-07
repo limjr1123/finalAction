@@ -47,6 +47,11 @@ public class PlayerStateMachine : MonoBehaviour
     public int dodgeStaminaCost = 10;
     public int AttackStaminaCost = 10;
 
+    [Header("레이어 관련")]
+    private int _playerLayer;
+    private int _evasionLayer;
+
+
     private void Awake()
     {
         Rb = GetComponent<Rigidbody>();
@@ -65,6 +70,9 @@ public class PlayerStateMachine : MonoBehaviour
         SkillState = new PlayerSkillState(this, gameObject, Animator);
 
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화
+
+        _playerLayer = LayerMask.NameToLayer("Player"); 
+        _evasionLayer = LayerMask.NameToLayer("PlayerDodge");
     }
 
     void Start()
@@ -126,12 +134,7 @@ public class PlayerStateMachine : MonoBehaviour
         //    currentState?.OnParry();
         //}
 
-        //if (Input.GetKeyDown(KeyCode.Tab)) // 가드
-        //{
-        //    currentState?.OnGuard();
-        //}
-
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))  // 가드
         {
             currentState?.OnGuard();
         }
@@ -140,11 +143,11 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnGuardUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))  // 스킬1
         {
             currentState?.OnSkill(0);
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.E))  // 스킬2
         {
             currentState?.OnSkill(1);
         }
@@ -194,7 +197,10 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void GetDamage()  // 피격 상태 전환
     {
-        if (currentState is PlayerDeathState || currentState is PlayerDamagedState)
+        if (currentState is PlayerDeathState ||   //죽었거나
+            currentState is PlayerDamagedState || // 피격 중이거나
+            currentState is PlayerGuardState ||  // 가드 중이거나
+            currentState is PlayerSkillState)  // 스킬 사용 중이면 경직x
         {
             return;
         }
@@ -233,6 +239,28 @@ public class PlayerStateMachine : MonoBehaviour
         ChangeState(DeathState);
     }
 
+    public void AnimationEvent_ChangeLayerToEvasion()
+    {
+        SetLayerRecursively(this.gameObject, _evasionLayer);
+    }
+
+    public void AnimationEvent_RevertLayer()
+    {
+        SetLayerRecursively(this.gameObject, _playerLayer);
+    }
+
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null) continue;
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+
     void OnDisable()
     {
         if (Stats != null)
@@ -261,6 +289,11 @@ public class PlayerStateMachine : MonoBehaviour
     public void AnimationEvent_AllowCombo()
     {
         currentState?.AllowCombo();
+    }
+
+    public void OnGuardSuccess()
+    {
+        currentState?.OnGuardSuccess();
     }
 }
 
