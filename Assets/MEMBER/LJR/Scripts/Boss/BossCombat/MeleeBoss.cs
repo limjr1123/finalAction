@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MeleeBoss : MonoBehaviour
 {
+    BossController boss;
     // 공격 애니메이션과 관련된 데이터
     [SerializeField] List<EnemyAttackData> attacks;
     [SerializeField] GameObject weapon;
 
     // 공격에 사용할 콜라이더들
     BoxCollider weaponCollider;
-    [SerializeField] SphereCollider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
+    [SerializeField] Collider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
 
 
     // 캐릭터의 애니메이터 컴포넌트
@@ -19,7 +20,7 @@ public class MeleeBoss : MonoBehaviour
 
     public bool isParry { get; set; } = false; // 패링 상태 여부
     public bool inAction { get; private set; } = false;
-    public bool inGetHit { get; set; } = false;
+
     public EnemyAttackStateInfo attackState;
 
     private void Awake()
@@ -31,7 +32,7 @@ public class MeleeBoss : MonoBehaviour
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
     public void TryToAttack()
     {
-        if (!inAction && !inGetHit)
+        if (!inAction && !boss.inGetHit)
         {
             StartCoroutine(Attack());
         }
@@ -51,6 +52,9 @@ public class MeleeBoss : MonoBehaviour
         }
         string animName = attacks[attackIndex].animName;
 
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@애니메이션 복합 정보 확인용
+        //string animName2 = attacks[attackIndex].attackPhases[attackIndex].animName;
+        
         anim.CrossFade(animName, 0.2f);
         yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
 

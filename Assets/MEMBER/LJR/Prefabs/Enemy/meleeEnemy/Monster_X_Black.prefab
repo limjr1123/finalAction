@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 1305192927322209996}
   m_Layer: 7
   m_Name: Monster_X_Black
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -497,6 +497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 180
   <target>k__BackingField: {fileID: 0}
+  <enemyType>k__BackingField: 0
 --- !u!114 &2548881174697248963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,9 +551,13 @@ MonoBehaviour:
   criticalChance:
     baseValue: 0
     modifiers: []
-  criticalDamage:
+  criticalMultiplier:
     baseValue: 0
     modifiers: []
+  attackDamageRange:
+    min: 0
+    max: 0
+  damageRange: 0.2
 --- !u!114 &3686575619922822792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f9e3fa61efb0b4cbdcf8d2da59ffd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitAnimationIndex: 0
 --- !u!114 &8864076697728465470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,6 +639,8 @@ MonoBehaviour:
   weapon: {fileID: 0}
   leftHandCollider: {fileID: 4545155797044054257}
   rightHandCollider: {fileID: 1570383066609922536}
+  leftFootCollider: {fileID: 0}
+  rightFootCollider: {fileID: 0}
   attackState: 0
 --- !u!195 &8924629300212347042
 NavMeshAgent:
@@ -1546,7 +1554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   sphereCollider: {fileID: 0}
-  enemyController: {fileID: 0}
+  aggroRange: 0
 --- !u!135 &427513832810078164
 SphereCollider:
   m_ObjectHideFlags: 0

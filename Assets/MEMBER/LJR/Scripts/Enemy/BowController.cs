@@ -23,6 +23,15 @@ public class BowController : MonoBehaviour
         enemyStat = GetComponentInParent<EnemyStat>();
     }
 
+    private void Update()
+    {
+        if (enemyController.inGetHit)
+        {
+            ResetBow();
+            ArrowPool.Instance.ReturnArrow(arrowController.gameObject); // 피격 상태일 때 화살 제거
+        }
+    }
+
     // 활 장전 및 조준
     public void DrawBow()
     {
@@ -37,6 +46,7 @@ public class BowController : MonoBehaviour
 
         GameObject _arrow = ArrowPool.Instance.GetArrow(arrowSpawnPoint.position, targetRotation, arrowSpawnPoint); // 화살 생성
         arrowController = _arrow.GetComponent<ArrowController>(); // 생성된 화살 오브젝트 저장
+        arrowController.hitBox.enabled = false; // 화살의 HitBox 비활성화
         arrowController.bow = this;     // BowController 설정
         arrowController.SetDamage();    // 데미지 설정
     }

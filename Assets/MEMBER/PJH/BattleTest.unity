@@ -470,22 +470,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_SwordAndShield
       objectReference: {fileID: 0}
-    - target: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4742134155696439399, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4742134155696439399, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4742134155696439399, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.71224
@@ -525,38 +509,6 @@ PrefabInstance:
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6184395318422701713, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7740473996666576218, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.336
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.159
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962660627359903675, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.551
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

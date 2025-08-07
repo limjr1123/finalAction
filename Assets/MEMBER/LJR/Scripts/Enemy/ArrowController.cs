@@ -4,9 +4,9 @@ public class ArrowController : MonoBehaviour
 {
     [SerializeField] Transform arrowHead;       // 화살촉
     [SerializeField] Transform arrowTail;       // 화살꼬리
-    [SerializeField] BoxCollider hitBox;        // 화살의 HitBox
-    [SerializeField] public Rigidbody rb;       // 화살의 Rigidbody
-    [SerializeField] public float arrowSpeed = 5f;    // 화살 속도
+    public BoxCollider hitBox;      // 화살의 HitBox
+    public Rigidbody rb;            // 화살의 Rigidbody
+    public float arrowSpeed = 50f;  // 화살 속도
 
     [SerializeField] public BowController bow; // 활 컨트롤러
     [SerializeField] int damage; // 화살 데미지
@@ -40,13 +40,13 @@ public class ArrowController : MonoBehaviour
         isShooting = false;
         isHit = false;
         rb.isKinematic = true;
-        hitBox.enabled = true;
     }
 
     public void ShootingArrow(Vector3 _direction)
     {
         SetDirection(_direction);   // 화살의 방향 설정(조준 방향으로 향하도록)
         isShooting = true;          // 화살이 발사 중임을 표시
+        hitBox.enabled = true;      // collider 비활성화
         rb.isKinematic = false;     // Rigidbody를 활성화하여 물리 엔진에 의해 움직일 수 있도록 설정
         rb.linearVelocity = transform.up * arrowSpeed;
         transform.SetParent(null);
@@ -58,21 +58,29 @@ public class ArrowController : MonoBehaviour
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, direction);
         transform.rotation = rotation;
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         Vector3 pullBackDirection = -rb.linearVelocity.normalized;
         transform.position += pullBackDirection * pullBackDistance;
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerGuard") || other.CompareTag("PlayerParry"))
+        {
+            Debug.Log("가드 성공.");
+            transform.SetParent(other.transform);
+            isHit = true;
+            rb.isKinematic = true;
+            hitBox.enabled = false;
+            return; // 플레이어의 방패나 패링에 맞았을 때는 아무 동작도 하지 않음
+        }
+        else if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerStats>()?.TakePhysicalDamage(damage);
+            transform.SetParent(other.transform);
+            isHit = true;
+            rb.isKinematic = true;
+            hitBox.enabled = false;
         }
-        transform.SetParent(other.transform);
-
-        isHit = true;
-        rb.isKinematic = true;
-        hitBox.enabled = false;
     }
 
     private void OnEnable()

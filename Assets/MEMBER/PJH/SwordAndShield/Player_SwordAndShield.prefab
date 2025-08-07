@@ -1858,7 +1858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: "\uB2C8\uB7EC"
+  characterName: TEST2
   characterJob: 
   currentHealth: 100
   currentMana: 0

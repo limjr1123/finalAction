@@ -3,6 +3,9 @@
 [CreateAssetMenu(fileName = "EnemyStatData", menuName = "Enemy Stat Setting/EnemyStatData", order = 1)]
 public class EnemyStatData : ScriptableObject
 {
+    [Header("info")]
+    public string enemyName;    //적 이름
+
     [Header("int Stat")]
     public int attackDamage;    //물리 공격력
     public int magicDamage;     //마법 공격력

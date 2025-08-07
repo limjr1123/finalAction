@@ -12,8 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe4ea36dde9057458c07a96f161dcab, type: 3}
   m_Name: attack
   m_EditorClassIdentifier: 
-  <animName>k__BackingField: 
+  <animName>k__BackingField: attack
   <hitboxToUse>k__BackingField: 0
   <impactStartTime>k__BackingField: 0
   <impactEndTime>k__BackingField: 0
   <isParry>k__BackingField: 0
+  <attackPhases>k__BackingField:
+  - animName: 1
+    hitboxToUse: 0
+    impactStartTime: 0
+    impactEndTime: 0
+    isParry: 0
+  - animName: 2
+    hitboxToUse: 0
+    impactStartTime: 0
+    impactEndTime: 0
+    isParry: 0
+  - animName: 3
+    hitboxToUse: 0
+    impactStartTime: 0
+    impactEndTime: 0
+    isParry: 0
+  - animName: 4
+    hitboxToUse: 0
+    impactStartTime: 0
+    impactEndTime: 0
+    isParry: 0
