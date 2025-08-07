@@ -16,7 +16,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
     [SerializeField] float distanceToStand;        // 타겟과의 기본 유지 거리
     [SerializeField] float adjustDistanceThreshold = 0.1f;    // 거리 조정 허용 오차
 
-    float timer = 0;
+    float attackTimer = 0;   // 공격 주기 타이머
     float walkSpeed = 0;
 
     public override void Enter(EnemyController owner)
@@ -38,10 +38,14 @@ public class EnemyBattleState : EnemyState<EnemyController>
 
         enemy.navAgent.speed = walkSpeed; // NavMeshAgent의 속도 설정
 
+        StartIdle(); // 초기 상태를 Idle로 설정
     }
 
     public override void Execute()
     {
+        if (enemy.inGetHit)
+            return;
+
         if (enemy.target == null)
         {
             enemy.target = enemy.FindTarget(); // 타겟을 찾는 메서드 호출
@@ -55,7 +59,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
         // 거리가 먼 경우 추격 상태로 변경
         if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) > distanceToStand + adjustDistanceThreshold)
         {
-            if (timer <= 0)
+            if (attackTimer <= 0)
             {
                 StartChase();
             }
@@ -63,7 +67,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
 
         if (state == AIBattleState.Idle)
         {
-            if (timer <= 0)
+            if (attackTimer <= 0)
             {
                 StartChase();
             }
@@ -85,9 +89,9 @@ public class EnemyBattleState : EnemyState<EnemyController>
             enemy.navAgent.SetDestination(enemy.target.transform.position); // 타겟의 위치로 NavMeshAgent의 목적지 설정
         }
 
-        if (timer > 0)
+        if (attackTimer > 0)
         {
-            timer -= Time.deltaTime;
+            attackTimer -= Time.deltaTime;
         }
     }
 
@@ -113,14 +117,12 @@ public class EnemyBattleState : EnemyState<EnemyController>
             }
         }
     }
-
-
-
+    
     // 대기 상태 시작
     private void StartIdle()
     {
         state = AIBattleState.Idle;
-        timer = enemy.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
+        attackTimer = enemy.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
     }
 
     // 추격 상태 시작

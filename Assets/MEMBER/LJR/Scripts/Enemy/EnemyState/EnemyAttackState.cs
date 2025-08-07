@@ -14,7 +14,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
 
     public override void Execute()
     {
-        if (isAttacking)
+        if (isAttacking && !enemy.inGetHit)
             return;
 
         float distanceToPlayer = Vector3.Distance(enemy.target.transform.position, transform.position);
@@ -88,7 +88,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
         enemy.rangeEnemy.TryToAttack();
         enemy.navAgent.isStopped = true;
         yield return new WaitUntil(() => enemy.rangeEnemy.attackState == EnemyAttackStateInfo.Idle);
-        
+
         enemy.anim.applyRootMotion = false;
         enemy.navAgent.isStopped = false;
         isAttacking = false;

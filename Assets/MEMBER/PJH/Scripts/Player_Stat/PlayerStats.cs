@@ -41,6 +41,8 @@ public struct PlayerDamageRange
 
 public class PlayerStats : MonoBehaviour
 {
+    public static PlayerStats Instance { get; private set; }
+
     [SerializeField]
     private PlayerStatsData baseStats;
     public static event Action OnPlayerDied; // 플레이어 사망 이벤트
@@ -50,12 +52,84 @@ public class PlayerStats : MonoBehaviour
     public string characterName;
     public string characterJob;
 
+    public event Action OnManaChanged;
+    public event Action OnStaminaChanged;
+    public event Action OnEXPChanged;
+    public event Action OnLevelChanged;
+
     [Header("현재 상태")]
-    public int currentHealth; // 현재 체력
-    public int currentMana; // 현재 마나
-    public int currentStamina; // 현재 스태미나
-    public int level; // 플레이어 레벨
-    public int currentEXP; // 현재 경험치
+    [SerializeField] private int _currentHealth;
+    public int currentHealth
+    {
+        get => _currentHealth;
+        set
+        {
+            if (currentHealth != value)
+            {
+                _currentHealth = value;
+                OnHealthChanged?.Invoke();
+                Debug.Log($" hoho{OnHealthChanged}");
+            }
+        }
+    }
+    [SerializeField] private int _currentMana;
+    public int currentMana
+    {
+        get => _currentMana;
+        set
+        {
+            if (currentMana != value)
+            {
+
+                _currentMana = value;
+                OnManaChanged?.Invoke();
+            }
+        }
+    }
+    [SerializeField] private int _currentStamina;
+    public int currentStamina
+    {
+        get => _currentStamina;
+        set
+        {
+            if (_currentStamina != value)
+            {
+                _currentStamina = value;
+                OnStaminaChanged?.Invoke();
+            }
+
+        }
+    }
+    [SerializeField] private int _level;
+    public int level
+    {
+        get => _level;
+        set
+        {
+            if (_level != value)
+            {
+
+                _level = value;
+                OnLevelChanged?.Invoke();
+            }
+        }
+    }
+    [SerializeField] private int _currentEXP;
+    public int currentEXP
+    {
+        get => _currentEXP;
+        set
+        {
+            if (_currentEXP != value)
+            {
+
+                _currentEXP = value;
+                OnEXPChanged?.Invoke();
+            }
+        }
+    }
+
+
 
     [Header("기본 능력치")]
     public Stat maxHealth; // 최대 체력
@@ -73,7 +147,7 @@ public class PlayerStats : MonoBehaviour
     [Header("이동 관련 능력치")]
     public FloatStat moveSpeed; // 기본 이동속도
     public FloatStat sprintSpeed; // 달리기 속도
-    
+
     [Header("전투 관련 능력치")]
     public Stat attackDamage; // 물리 공격력
     public Stat magicDamage; // 마법 공격력
@@ -89,10 +163,19 @@ public class PlayerStats : MonoBehaviour
 
     public Vector3 currentPos;
 
-    protected Action OnHealthChanged;
+    public Action OnHealthChanged;
+
+
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         stateMachine = GetComponent<PlayerStateMachine>();
         ApplyBaseStats(); // 기본 스탯 초기화
         OnHealthChanged += () => HealthCheck();

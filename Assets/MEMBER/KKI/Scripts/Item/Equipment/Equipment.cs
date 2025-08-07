@@ -2,21 +2,22 @@ using UnityEngine;
 
 public enum EquipType
 {
-    Head,
+    Weapon,
     Body,
-    Gloves,
-    Pants,
-    Boots,
-    Weapon
+    Accessory,
 }
-
-public class Equipment : ItemData, IEquipable
+[CreateAssetMenu(fileName = "Equipmentata", menuName = "Scriptable Objects/Item/Equipment")]
+public class EquipmentItemData : ItemData, IEquipable
 {
-    public EquipType equipType;
+    [SerializeField] private EquipType equipType;
 
     // 추가 속성 더하기 (ex. 공격력, 방어럭, 치명타 확률 등등)
-    public float attack;
-    public float defence;
+    [SerializeField] private float attack;
+    [SerializeField] private float defence;
+
+    public EquipType EquipType => equipType;
+    public float Attack => attack;
+    public float Defence => defence;
 
     public void Equip(GameObject user)
     {

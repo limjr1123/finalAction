@@ -3462,7 +3462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   sphereCollider: {fileID: 0}
-  enemyController: {fileID: 0}
+  aggroRange: 0
 --- !u!135 &4780777795009207989
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5456,7 +5456,7 @@ GameObject:
   - component: {fileID: 2383033301324817071}
   m_Layer: 7
   m_Name: Knight1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5515,6 +5515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 180
   <target>k__BackingField: {fileID: 0}
+  <enemyType>k__BackingField: 0
 --- !u!114 &8231802546328517659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5637,6 +5638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f9e3fa61efb0b4cbdcf8d2da59ffd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitAnimationIndex: 0
 --- !u!114 &1882457037036647923
 MonoBehaviour:
   m_ObjectHideFlags: 0

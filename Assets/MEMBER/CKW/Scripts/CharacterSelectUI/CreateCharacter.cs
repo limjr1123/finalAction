@@ -7,6 +7,8 @@ public class CreateCharacter : MonoBehaviour
     [SerializeField] GameObject nicknameWindow; // 닉네임 입력 UI 창
     [SerializeField] Button nicknameButton; // 닉네임 확정(캐릭터 생성) 버튼
     [SerializeField] Button closeButton; // 닉네임 창 닫기 버튼
+    [SerializeField] GameObject characterCreateWindow;
+    [SerializeField] GameObject characterSelectWindow;
 
     [Header("Nickname Input")] // UI 인스펙터에서 닉네임 입력 섹션 헤더
     [SerializeField] TMP_InputField nicknameInputField; // 닉네임을 입력받을 TMP_InputField 컴포넌트
@@ -39,9 +41,10 @@ public class CreateCharacter : MonoBehaviour
         GameDataSaveLoadManager.Instance.CreateCharacter(characterName, selectedJob); // 게임 데이터 매니저를 통해 새 캐릭터 생성 및 저장
 
         Debug.Log($"캐릭터 생성 완료: {characterName}, 직업: {selectedJob.jobName}"); // 생성 완료 로그 출력
-
-        RefreshCharacterUI(); // 캐릭터 UI를 새로고침하는 메서드 호출
         CloseNickname(); // 닉네임 입력 창 닫기
+        characterCreateWindow.SetActive(false);
+        characterSelectWindow.SetActive(true);
+        RefreshCharacterUI(); // 캐릭터 UI를 새로고침하는 메서드 호출
         ResetCharacterCreation(); // 캐릭터 생성 관련 UI 초기화
     }
 

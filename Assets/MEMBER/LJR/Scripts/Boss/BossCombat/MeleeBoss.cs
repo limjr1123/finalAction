@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MeleeBoss : MonoBehaviour
 {
+    BossController boss;
     // 공격 애니메이션과 관련된 데이터
     [SerializeField] List<EnemyAttackData> attacks;
     [SerializeField] GameObject weapon;
 
     // 공격에 사용할 콜라이더들
     BoxCollider weaponCollider;
-    [SerializeField] SphereCollider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
+    [SerializeField] Collider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
 
 
     // 캐릭터의 애니메이터 컴포넌트
@@ -19,7 +20,7 @@ public class MeleeBoss : MonoBehaviour
 
     public bool isParry { get; set; } = false; // 패링 상태 여부
     public bool inAction { get; private set; } = false;
-    public bool inGetHit { get; set; } = false;
+
     public EnemyAttackStateInfo attackState;
 
     private void Awake()
@@ -31,7 +32,7 @@ public class MeleeBoss : MonoBehaviour
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
     public void TryToAttack()
     {
-        if (!inAction && !inGetHit)
+        if (!inAction)
         {
             StartCoroutine(Attack());
         }
@@ -60,30 +61,63 @@ public class MeleeBoss : MonoBehaviour
         float timer = 0f;
         while (timer <= animState.length)
         {
-            // normalizedTime을 스킬 실행 시간 백분율로 사용합니다.
-            // attacks[comboCounter].impactStartTime은 백분율로 표현됩니다.
-            timer += Time.deltaTime;
-            float normalizedTime = timer / animState.length;
-
-            if (attackState == EnemyAttackStateInfo.Windup)
+            if (attacks[attackIndex].attackCount == AttackCount.Multi)
             {
-                //if (inCounter) break;
-                if (normalizedTime >= attacks[attackIndex].impactStartTime)
+                for (int i = 0; i < attacks[attackIndex].attackPhases.Length; i++)
                 {
-                    isParry = attacks[attackIndex].isParry; // 패링 가능한 공격인지 확인
-                    attackState = EnemyAttackStateInfo.Impact;
-                    //콜라이더 켜기
-                    EnableHitbox(attacks[attackIndex]);
+                    // normalizedTime을 스킬 실행 시간 백분율로 사용.
+                    timer += Time.deltaTime;
+                    float normalizedTime = timer / animState.length;
+                    if (attackState == EnemyAttackStateInfo.Windup)
+                    {
+                        //if (inCounter) break;
+                        if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactStartTime)
+                        {
+                            isParry = attacks[attackIndex].attackPhases[i].isParry; // 패링 가능한 공격인지 확인
+                            attackState = EnemyAttackStateInfo.Impact;
+                            //콜라이더 켜기
+                            EnableHitbox(attacks[attackIndex].attackPhases[i]);
+                        }
+                    }
+                    else if (attackState == EnemyAttackStateInfo.Impact)
+                    {
+                        if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactEndTime)
+                        {
+                            attackState = EnemyAttackStateInfo.AttackDelay;
+                            //콜라이더 끄기
+                            DisableAllCollider();
+                            isParry = false; // 초기화
+                        }
+                    }
                 }
             }
-            else if (attackState == EnemyAttackStateInfo.Impact)
+            else
             {
-                if (normalizedTime >= attacks[attackIndex].impactEndTime)
+                // normalizedTime을 스킬 실행 시간 백분율로 사용.
+                // attacks[comboCounter].impactStartTime은 백분율로 표현.
+                timer += Time.deltaTime;
+                float normalizedTime = timer / animState.length;
+
+                if (attackState == EnemyAttackStateInfo.Windup)
                 {
-                    attackState = EnemyAttackStateInfo.AttackDelay;
-                    //콜라이더 끄기
-                    DisableAllCollider();
-                    isParry = false; // 초기화
+                    //if (inCounter) break;
+                    if (normalizedTime >= attacks[attackIndex].impactStartTime)
+                    {
+                        isParry = attacks[attackIndex].isParry; // 패링 가능한 공격인지 확인
+                        attackState = EnemyAttackStateInfo.Impact;
+                        //콜라이더 켜기
+                        EnableHitbox(attacks[attackIndex]);
+                    }
+                }
+                else if (attackState == EnemyAttackStateInfo.Impact)
+                {
+                    if (normalizedTime >= attacks[attackIndex].impactEndTime)
+                    {
+                        attackState = EnemyAttackStateInfo.AttackDelay;
+                        //콜라이더 끄기
+                        DisableAllCollider();
+                        isParry = false; // 초기화
+                    }
                 }
             }
             yield return null;
@@ -91,6 +125,61 @@ public class MeleeBoss : MonoBehaviour
         attackState = EnemyAttackStateInfo.Idle;
         inAction = false;
     }
+
+    IEnumerator RepeatAttack(Vector3? attackDir = null)
+    {
+        inAction = true;
+        attackState = EnemyAttackStateInfo.Windup;
+        attackIndex = UnityEngine.Random.Range(0, attacks.Count);
+        if (attackDir != null)
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(attackDir.Value), 360f * Time.deltaTime);
+        }
+        string animName = attacks[attackIndex].animName;
+
+        anim.CrossFade(animName, 0.2f);
+        yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
+        var animState = anim.GetNextAnimatorStateInfo(1);
+
+        float timer = 0f;
+
+        while (timer <= animState.length)
+        {
+            for(int i = 0; i < attacks[attackIndex].attackPhases.Length; i++)
+            {
+                // normalizedTime을 스킬 실행 시간 백분율로 사용합니다.
+                // attacks[comboCounter].impactStartTime은 백분율로 표현됩니다.
+                timer += Time.deltaTime;
+                float normalizedTime = timer / animState.length;
+                if (attackState == EnemyAttackStateInfo.Windup)
+                {
+                    //if (inCounter) break;
+                    if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactStartTime)
+                    {
+                        isParry = attacks[attackIndex].attackPhases[i].isParry; // 패링 가능한 공격인지 확인
+                        attackState = EnemyAttackStateInfo.Impact;
+                        //콜라이더 켜기
+                        EnableHitbox(attacks[attackIndex].attackPhases[i]);
+                    }
+                }
+                else if (attackState == EnemyAttackStateInfo.Impact)
+                {
+                    if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactEndTime)
+                    {
+                        attackState = EnemyAttackStateInfo.AttackDelay;
+                        //콜라이더 끄기
+                        DisableAllCollider();
+                        isParry = false; // 초기화
+                    }
+                }
+            }
+            yield return null;
+        }
+        attackState = EnemyAttackStateInfo.Idle;
+        inAction = false;
+    }
+
+
 
     void DisableAllCollider()
     {
@@ -108,6 +197,34 @@ public class MeleeBoss : MonoBehaviour
     }
 
     void EnableHitbox(EnemyAttackData attack)
+    {
+        switch (attack.hitboxToUse)
+        {
+            case AttackHitbox.LeftHand:
+                leftHandCollider.enabled = true;
+                break;
+            case AttackHitbox.RightHand:
+                rightHandCollider.enabled = true;
+                break;
+            case AttackHitbox.TwoHand:
+                leftHandCollider.enabled = true;
+                rightHandCollider.enabled = true;
+                break;
+            case AttackHitbox.Weapon:
+                weaponCollider.enabled = true;
+                break;
+            case AttackHitbox.LeftFoot:
+                leftFootCollider.enabled = true;
+                break;
+            case AttackHitbox.RightFoot:
+                rightFootCollider.enabled = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    void EnableHitbox(AttackPhase attack)
     {
         switch (attack.hitboxToUse)
         {

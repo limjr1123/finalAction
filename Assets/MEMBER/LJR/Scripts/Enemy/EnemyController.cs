@@ -42,6 +42,9 @@ public class EnemyController : MonoBehaviour
 
     Vector3 prevPos;
 
+    public bool inGetHit { get; set; } = false;
+
+
     private void Awake()
     {
         // enemy Type 할당
@@ -78,6 +81,7 @@ public class EnemyController : MonoBehaviour
         stateMachine = new EnemyStateMachine<EnemyController>(this);
         // Idle 상태로 시작
         stateMachine.ChangeState(stateDict[EnemyStates.Idle]);
+        
         CacheGetHitAnimations();
 
         navAgent.speed = stats.moveSpeed.GetValue(); // 초기 이동 속도 설정
@@ -137,7 +141,10 @@ public class EnemyController : MonoBehaviour
         if (other.CompareTag("HitBox"))
         {
             Debug.Log("타격 성공");
-            stateMachine.ChangeState(stateDict[EnemyStates.GetHit]);
+            if (stats.currentHealth <= 0)
+                stateMachine.ChangeState(stateDict[EnemyStates.Dead]);
+            else
+                stateMachine.ChangeState(stateDict[EnemyStates.GetHit]);
         }
     }
 
