@@ -32,6 +32,14 @@ public class PlayerMoveState : PlayerState
 
     public override void OnAttack()
     {
+        Transform target = stateMachine.FindAutoTarget();
+        if (target != null)
+        {
+            Vector3 targetDir = target.position - player.transform.position;
+            targetDir.y = 0;
+            player.transform.rotation = Quaternion.LookRotation(targetDir);
+        }
+
         stateMachine.ChangeState(stateMachine.AttackState);
     }
     public override void OnJump()

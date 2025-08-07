@@ -47,9 +47,14 @@ public class PlayerStateMachine : MonoBehaviour
     public int dodgeStaminaCost = 10;
     public int AttackStaminaCost = 10;
 
-    [Header("레이어 관련")]
+    [Header("레이어 변경 관련")]
     private int _playerLayer;
     private int _evasionLayer;
+
+    [Header("오토타겟팅 관련")]
+    public float autoTargetingDistance = 10f; // 탐색 거리
+    public float autoTargetingAngle = 60f;    // 탐색 각도
+    public LayerMask enemyLayerMask;
 
 
     private void Awake()
@@ -218,13 +223,9 @@ public class PlayerStateMachine : MonoBehaviour
         ChangeState(IdleState);
     }
 
-    public void OnParryAnimationEnd() // 패링 애니메이션 종료 후 상태 전환
+    public void OnGuaurdAnimationEnd() // 가드 애니메이션 종료 후 상태 전환
     {
-        ChangeState(IdleState);
-    }
-    public void OnGuaurdAnimationEnd() // 패링 애니메이션 종료 후 상태 전환
-    {
-        ChangeState(IdleState);
+            ChangeState(IdleState);        
     }
 
     public void OnSkillAnimationEnd() // 스킬 애니메이션 종료 후 상태 전환
@@ -294,6 +295,38 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnGuardSuccess()
     {
         currentState?.OnGuardSuccess();
+    }
+
+    public Transform FindAutoTarget()
+    {
+        // 1. 지정된 거리 내의 모든 적을 찾습니다.
+        Collider[] colliders = Physics.OverlapSphere(transform.position, autoTargetingDistance, enemyLayerMask);
+
+        Transform bestTarget = null;
+        float minAngle = float.MaxValue;
+
+        if (colliders.Length == 0) return null;
+
+        // 2. 찾은 적들 중에서 가장 적합한 타겟을 고릅니다.
+        foreach (var collider in colliders)
+        {
+            Vector3 directionToTarget = (collider.transform.position - transform.position).normalized;
+            directionToTarget.y = 0; // y축은 무시하여 수평 각도만 계산
+
+            // 플레이어의 정면 방향과 타겟 방향 사이의 각도를 계산
+            float angle = Vector3.Angle(transform.forward, directionToTarget);
+
+            // 3. 설정된 탐색 각도 안에 있고, 그 중 가장 정면에 있는 타겟을 선택
+            if (angle < autoTargetingAngle / 2f)
+            {
+                if (angle < minAngle)
+                {
+                    minAngle = angle;
+                    bestTarget = collider.transform;
+                }
+            }
+        }
+        return bestTarget;
     }
 }
 
