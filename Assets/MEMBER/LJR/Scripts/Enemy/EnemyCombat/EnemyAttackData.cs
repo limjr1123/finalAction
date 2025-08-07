@@ -2,17 +2,21 @@
 
 // 공격 시 사용할 히트박스 종류를 정의하는 열거형입니다.
 public enum AttackHitbox { LeftHand, RightHand, TwoHand, Weapon, LeftFoot, RightFoot }
-
+public enum AttackCount { Single, Multi }
 //Enemy 공격 데이터를 정의하는 스크립트입니다.
 [CreateAssetMenu(menuName = "Combat System/Create a new Attack")]
 public class EnemyAttackData : ScriptableObject
 {
+    public AttackCount attackCount; // 공격 횟수 (단일 공격 또는 연타 공격)
+
+    [Header("단일 공격")]
     [field: SerializeField] public string animName { get; private set; }
     [field: SerializeField] public AttackHitbox hitboxToUse { get; private set; }
     [field: SerializeField] public float impactStartTime { get; private set; }  // 타격 판정이 시작되는 시간 (원거리 공격의 경우 사용되지 않음)
     [field: SerializeField] public float impactEndTime { get; private set; }    // 타격 판정이 끝나는 시간 (원거리 공격의 경우 애니메이션 종료 시간을 입력)
     [field: SerializeField] public bool isParry { get; private set; } // 패링 가능한 공격인지 여부
 
+    [Header("연타 공격")]
     [field: SerializeField] public AttackPhase[] attackPhases { get; private set; } // 공격 단계 리스트
 }
 

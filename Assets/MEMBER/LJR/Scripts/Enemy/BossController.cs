@@ -19,14 +19,14 @@ public class BossController : MonoBehaviour
 
     public EnemyStat stats { get; private set; }
     public Dictionary<BossStates, EnemyState<BossController>> stateDict { get; private set; }
-    public EnemyStateMachine<BossController> stateMachine { get; private set; }
+    [field: SerializeField] public EnemyStateMachine<BossController> stateMachine { get; private set; }
     public Animator anim { get; private set; }
     public bool isAttacking { get; set; } = false;
     [field: SerializeField] public GameObject target { get; set; } = null;
     public NavMeshAgent navAgent { get; private set; }
     public EnemyVision enemyVision { get; internal set; }
 
-    public MeleeEnemy meleeEnemy { get; private set; }
+    public MeleeBoss meleeBoss { get; private set; }
 
     Vector3 prevPos;
 
@@ -38,7 +38,7 @@ public class BossController : MonoBehaviour
         anim = GetComponent<Animator>();
         enemyVision = GetComponentInChildren<EnemyVision>();
         navAgent = GetComponent<NavMeshAgent>();
-        meleeEnemy = GetComponent<MeleeEnemy>();
+        meleeBoss = GetComponent<MeleeBoss>();
 
         stateDict = new Dictionary<BossStates, EnemyState<BossController>>();
         stateDict[BossStates.Idle] = GetComponent<BossIdleState>();
@@ -51,6 +51,8 @@ public class BossController : MonoBehaviour
         stateMachine = new EnemyStateMachine<BossController>(this);
 
         stateMachine.ChangeState(stateDict[BossStates.Idle]);
+
+        navAgent.speed = stats.moveSpeed.GetValue(); // 초기 이동 속도 설정
     }
 
     // Update is called once per frame
