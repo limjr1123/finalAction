@@ -26,7 +26,6 @@ public class PlayerGuardState : PlayerState
     public override void OnGuardSuccess()
     {
         animator.SetTrigger("BlockImpact");
-        Debug.Log("가드 성공");
     }
 
     public override void Exit()
