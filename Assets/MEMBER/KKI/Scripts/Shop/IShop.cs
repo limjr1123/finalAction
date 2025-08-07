@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+
 public interface IShop
 {
-    void DisplayItems();
-    void Purchase(string itemID);
+    bool Purchase(string itemID);
+    List<ItemData> GetAllItems();
+    void AddItem(ItemData item);
 }

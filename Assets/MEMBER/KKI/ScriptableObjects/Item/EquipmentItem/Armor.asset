@@ -18,6 +18,7 @@ MonoBehaviour:
   itemSp: {fileID: 21300000, guid: eebb51ed146ae604986518702b266e26, type: 3}
   stackable: 0
   maxStack: 1
+  gold: 100
   description: "\uBC29\uC5B4\uB825 + 20"
   equipType: 1
   attack: 0
