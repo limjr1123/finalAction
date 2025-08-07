@@ -5,7 +5,6 @@ using System.Linq;
 
 public class UIManager : Singleton<UIManager>
 {
-
     [Header("UI Manager Settings")]
     public bool handelEscapeInput = true;     // ESC키 입력 처리 여부를 설정하는 변수
 
@@ -18,7 +17,6 @@ public class UIManager : Singleton<UIManager>
     private Dictionary<UIType, BaseUI> registeredUI = new Dictionary<UIType, BaseUI>();     // 등록된 UI들을 타입별로 저장하는 딕셔너리
     private Stack<BaseUI> uiStack = new Stack<BaseUI>();           // 열린 UI들의 스택 (최상위 UI 추적용)
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -28,11 +26,8 @@ public class UIManager : Singleton<UIManager>
 
     void Start()
     {
-        // GameManager의 캐릭터 로드 완료 이벤트 구독
-        if (GameManager.Instance != null)
-        {
-            //GameManager.OnCharacterLoaded += OnCharacterLoaded;
-        }
+        // 시작 시 즉시 HUD 초기화 시도
+        InitializeHUD();
     }
 
     void Update()
@@ -48,11 +43,6 @@ public class UIManager : Singleton<UIManager>
     void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        // 이벤트 구독 해제
-        // if (GameManager.Instance != null)
-        // {
-        //     GameManager.OnCharacterLoaded -= OnCharacterLoaded;
-        // }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -63,89 +53,51 @@ public class UIManager : Singleton<UIManager>
 
         RegisterAllUI();
 
-        // Field 씬일 때 UI 참조 자동 설정
-        // if (scene.name == "Field")
-        // {
-        //     FindAndSetGameUI();
-        // }
+        // HUD 초기화 (씬 로드 후)
+        StartCoroutine(DelayedHUDInitialization());
     }
 
-    // Field 씬에서 HUD와 MainMenu UI를 자동으로 찾아서 설정
-    // private void FindAndSetGameUI()
-    // {
-    //     // HUD 컨트롤러 찾기
-    //     if (hudController == null)
-    //     {
-    //         hudController = FindAnyObjectByType<HUD>();
-    //     }
+    // 씬 로드 후 약간의 지연을 두고 HUD 초기화
+    private System.Collections.IEnumerator DelayedHUDInitialization()
+    {
+        yield return new WaitForEndOfFrame();
+        InitializeHUD();
+    }
 
-    //     // MainMenu 컨트롤러 찾기
-    //     if (mainMenuController == null)
-    //     {
-    //         mainMenuController = FindAnyObjectByType<MainMenuUI>();
-    //     }
+    // HUD 초기화 메서드
+    private void InitializeHUD()
+    {
+        Debug.Log("UIManager: HUD 초기화 시작");
 
-    //     Debug.Log($"UI 참조 설정 완료 - HUD: {hudController != null}, MainMenu: {mainMenuController != null}");
-    // }
+        // HUD 컨트롤러가 없으면 찾기
+        if (hudController == null)
+        {
+            hudController = FindAnyObjectByType<HUD>();
+            Debug.Log($"HUD 자동 검색 결과: {hudController != null}");
+        }
+
+        // PlayerStats 컴포넌트 찾기
+        PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
+        Debug.Log($"PlayerStats 검색 결과: {playerStats != null}");
+
+        if (hudController != null && playerStats != null)
+        {
+            // HUD에 PlayerStats 컴포넌트를 직접 전달하여 초기화
+            hudController.InitializeWithPlayer(playerStats);
+            Debug.Log("UIManager: HUD와 PlayerStats 연결 완료!");
+        }
+        else
+        {
+            Debug.LogWarning($"HUD 초기화 실패 - HUD: {hudController != null}, PlayerStats: {playerStats != null}");
+        }
+    }
 
     // GameManager에서 캐릭터 로드 완료 시 호출될 메서드
     public void OnCharacterLoaded()
     {
         Debug.Log("UIManager: 캐릭터 로드 완료, 게임 UI 활성화 시작");
-
-        // PlayerStats 컴포넌트 찾기
-        PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
-
-        if (playerStats != null)
-        {
-            //ActivateGameUI();
-            // HUD에 PlayerStats 컴포넌트를 직접 전달하여 초기화
-            hudController.InitializeWithPlayer(playerStats);
-        }
-        else
-        {
-            Debug.LogError("씬에서 PlayerStats 컴포넌트를 찾을 수 없습니다!");
-        }
+        InitializeHUD();
     }
-
-    // HUD와 MainMenu UI 활성화
-    // private void ActivateGameUI()
-    // {
-    //     // HUD 활성화
-    //     if (hudController != null)
-    //     {
-    //         hudController.gameObject.SetActive(true);
-    //         Debug.Log("HUD UI 활성화 완료!");
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("HUD Controller 참조가 없습니다! 자동으로 찾는 중...");
-    //         FindAndSetGameUI();
-    //         if (hudController != null)
-    //         {
-    //             hudController.gameObject.SetActive(true);
-    //             Debug.Log("HUD UI 찾아서 활성화 완료!");
-    //         }
-    //     }
-
-    //     // MainMenu 활성화
-    //     if (mainMenuController != null)
-    //     {
-    //         mainMenuController.gameObject.SetActive(true);
-    //         Debug.Log("MainMenu UI 활성화 완료!");
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("MainMenu Controller 참조가 없습니다! 자동으로 찾는 중...");
-    //         FindAndSetGameUI();
-    //         if (mainMenuController != null)
-    //         {
-    //             mainMenuController.gameObject.SetActive(true);
-    //             Debug.Log("MainMenu UI 찾아서 활성화 완료!");
-    //         }
-    //     }
-    // }
-
 
     public BaseUI OpenUI(UIType uiType)
     {
