@@ -1,92 +1,97 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement; // 씬 전환 시 필요할 수 있음
+using UnityEngine.SceneManagement; // 씬 관리를 위해 필요합니다.
 
+/// <summary>
+/// 플레이어가 진입 시, 지정된 RespawnPoint의 위치를 저장하는 스크립트.
+/// </summary>
 public class SavePoint : MonoBehaviour
 {
     [Header("Save Point Settings")]
-    public string savePointID = "DefaultSavePoint"; // 각 세이브 포인트를 식별할 고유 ID
-    public GameObject player; // 저장할 플레이어 오브젝트 (Inspector에서 할당)
-    public float saveDelay = 0.5f; // 플레이어가 세이브 포인트에 들어간 후 저장까지의 딜레이
+    [Tooltip("각 세이브 포인트를 식별할 고유 ID (선택 사항)")]
+    public string savePointID = "DefaultSavePoint";
 
+    [Tooltip("이 세이브 포인트와 짝을 이루는 리스폰 포인트 오브젝트의 Transform")]
+    public Transform respawnPoint;
+
+    [Tooltip("플레이어가 진입 후 저장까지 걸리는 시간(초)")]
+    public float saveDelay = 0.5f;
+
+    // 플레이어가 범위 내에 있는지 확인하여 중복 저장을 방지하는 플래그
     private bool playerInRange = false;
 
+    /// <summary>
+    /// 스크립트가 처음 활성화될 때 호출됩니다.
+    /// 필요한 컴포넌트나 설정이 올바른지 확인합니다.
+    /// </summary>
     void Start()
     {
-        // 플레이어 오브젝트가 할당되지 않았다면, "Player" 태그를 가진 오브젝트를 찾음
-        if (player == null)
+        // 리스폰 포인트가 Inspector에서 할당되었는지 확인
+        if (respawnPoint == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null)
-            {
-                Debug.LogError("SavePoint: Player GameObject not found. Please assign it in the Inspector or tag your player with 'Player'.");
-            }
+            // respawnPoint 변수가 비어있으면 에러 메시지를 콘솔에 출력합니다.
+            Debug.LogError($"SavePoint '{savePointID}'에 RespawnPoint가 할당되지 않았습니다! Inspector에서 설정해주세요.", this);
         }
 
-        // 세이브 포인트 오브젝트에 Collider가 없으면 경고
-        if (GetComponent<Collider>() == null || !GetComponent<Collider>().isTrigger)
+        // 이 오브젝트에 Collider가 있고, Is Trigger가 켜져 있는지 확인
+        Collider col = GetComponent<Collider>();
+        if (col == null || !col.isTrigger)
         {
-            Debug.LogWarning("SavePoint: This SavePoint needs a Collider component with 'Is Trigger' enabled to detect player entry.", this);
+            // 트리거 설정이 없으면 경고 메시지를 콘솔에 출력합니다.
+            Debug.LogWarning("SavePoint: 이 오브젝트는 'Is Trigger'가 활성화된 Collider가 필요합니다.", this);
         }
     }
 
+    /// <summary>
+    /// 다른 Collider가 이 오브젝트의 트리거 범위 안으로 들어왔을 때 호출됩니다.
+    /// </summary>
+    /// <param name="other">트리거에 들어온 다른 오브젝트의 Collider</param>
     void OnTriggerEnter(Collider other)
     {
-        // 플레이어가 세이브 포인트 범위에 들어오면 저장
-        if (other.gameObject == player)
+        // 들어온 오브젝트의 태그가 "Player"인지 확인하고, 아직 범위 안에 들어오지 않았다면
+        if (other.CompareTag("Player") && !playerInRange)
         {
-            if (!playerInRange) // 중복 저장을 방지
-            {
-                playerInRange = true;
-                Debug.Log($"플레이어 '{player.name}'가 세이브 포인트 '{savePointID}'에 진입했습니다. 잠시 후 저장됩니다.");
-                Invoke("PerformSave", saveDelay); // 딜레이 후 저장 함수 호출
-            }
+            playerInRange = true; // 플레이어가 범위에 들어왔다고 표시
+            Debug.Log($"플레이어가 세이브 포인트 '{savePointID}'에 진입했습니다.");
+
+            // 지정된 딜레이 이후에 PerformSave 함수를 호출
+            Invoke("PerformSave", saveDelay);
         }
     }
 
+    /// <summary>
+    /// 다른 Collider가 이 오브젝트의 트리거 범위 밖으로 나갔을 때 호출됩니다.
+    /// </summary>
+    /// <param name="other">트리거에서 나간 다른 오브젝트의 Collider</param>
     void OnTriggerExit(Collider other)
     {
-        // 플레이어가 세이브 포인트 범위에서 벗어나면 플래그 리셋
-        if (other.gameObject == player)
+        // 나간 오브젝트의 태그가 "Player"라면
+        if (other.CompareTag("Player"))
         {
-            playerInRange = false;
-            Debug.Log($"플레이어 '{player.name}'가 세이브 포인트 '{savePointID}'에서 벗어났습니다.");
-            CancelInvoke("PerformSave"); // 저장 딜레이 중 나갔다면 취소
+            playerInRange = false; // 플레이어가 범위를 벗어났다고 표시
         }
     }
 
+    /// <summary>
+    /// 실제 저장 로직을 수행하는 함수.
+    /// </summary>
     void PerformSave()
     {
-        //if (player == null) return;
+        // respawnPoint가 할당되지 않았다면 함수를 즉시 종료
+        if (respawnPoint == null) return;
 
-        //// 1. 플레이어 위치/로테이션 저장
-        //PlayerPrefs.SetFloat("PlayerPosX", player.transform.position.x);
-        //PlayerPrefs.SetFloat("PlayerPosY", player.transform.position.y);
-        //PlayerPrefs.SetFloat("PlayerPosZ", player.transform.position.z);
-        //PlayerPrefs.SetFloat("PlayerRotY", player.transform.rotation.eulerAngles.y); // Y축 회전만 저장 (캐릭터 방향)
+        // 1. 플레이어 위치 대신, 연결된 리스폰 포인트의 위치를 저장
+        PlayerPrefs.SetFloat("PlayerPosX", respawnPoint.position.x);
+        PlayerPrefs.SetFloat("PlayerPosY", respawnPoint.position.y);
+        PlayerPrefs.SetFloat("PlayerPosZ", respawnPoint.position.z);
+        PlayerPrefs.SetFloat("PlayerRotY", respawnPoint.rotation.eulerAngles.y); // 리스폰 포인트의 Y축 회전값 저장
 
-        //// 2. 현재 씬 이름 저장 (씬 로드시 사용)
-        //PlayerPrefs.SetString("LastSceneName", SceneManager.GetActiveScene().name);
+        // 2. 현재 씬 이름 저장
+        PlayerPrefs.SetString("LastSceneName", SceneManager.GetActiveScene().name);
 
-        //// 3. (선택 사항) 게임 진행 상황 저장 예시
-        //// 이 부분은 게임의 다른 스크립트에서 PlayerPrefabs를 통해 접근하거나,
-        //// SaveManager와 같은 중앙 관리 스크립트를 통해 저장/로드하는 것이 일반적
-        //// 여기서는 예시로 'Coins'와 'QuestProgress'를 저장한다고 가정
-        //PlayerPrefs.SetInt("PlayerCoins", 100); // 현재 코인 수 (예시)
-        //PlayerPrefs.SetInt("QuestProgress", 2); // 퀘스트 진행 단계 (예시)
+        // 3. PlayerPrefs의 모든 변경사항을 디스크에 실제로 저장 (매우 중요!)
+        PlayerPrefs.Save();
 
-        //// 4. PlayerPrefs 변경사항 적용 (매우 중요!)
-        //PlayerPrefs.Save();
-
-        //Debug.Log($"<color=lime>게임이 '{savePointID}' 지점에 저장되었습니다!</color>");
-
-        //// 저장 완료 메시지 표시 또는 사운드 재생 등 추가 효과
-        //// GetComponent<AudioSource>()?.Play();
-        GameManager.Instance.SaveGame();
-    }
-
-    // 외부에서 강제로 저장 로직을 호출해야 할 경우를 대비 (선택 사항)
-    public void ForceSave()
-    {
-        PerformSave();
+        // 저장 완료 로그를 라임색(lime)으로 보기 좋게 출력
+        Debug.Log($"<color=lime>게임 저장 완료! 리스폰 위치({respawnPoint.position})가 설정되었습니다.</color>");
     }
 }

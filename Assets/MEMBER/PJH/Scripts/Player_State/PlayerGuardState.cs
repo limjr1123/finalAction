@@ -23,6 +23,11 @@ public class PlayerGuardState : PlayerState
         stateMachine.ChangeState(stateMachine.IdleState);
     }
 
+    public override void OnGuardSuccess()
+    {
+        animator.SetTrigger("BlockImpact");
+    }
+
     public override void Exit()
     {
         animator.SetBool("IsBlocking", false);

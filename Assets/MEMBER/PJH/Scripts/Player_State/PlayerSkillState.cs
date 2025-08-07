@@ -14,12 +14,10 @@ public class PlayerSkillState : PlayerState
         switch (skillToUse.skillType)
         {
             case SkillType.Attack:
-                Debug.Log($"{skillToUse.skillName} 공격 스킬 사용!");
                 break;
 
             case SkillType.Buff:
                 stateMachine.Stats.ApplyBuff(skillToUse);
-                Debug.Log($"{skillToUse.skillName} 버프 스킬 사용!");
                 break;
         }
     }

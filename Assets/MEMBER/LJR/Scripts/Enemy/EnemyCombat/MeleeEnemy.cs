@@ -27,8 +27,7 @@ public class MeleeEnemy : MonoBehaviour
     // 현재 공격 동작(액션) 중인지 여부를 나타냅니다.
     public bool inAction { get; private set; } = false;
     public bool inCounter { get; set; } = false;
-    public bool inGetHit { get; set; } = false;
-
+    
     public EnemyAttackStateInfo attackState;
     public int attacksCount => attacks.Count;
 
@@ -39,6 +38,7 @@ public class MeleeEnemy : MonoBehaviour
     {
         // 컴포넌트가 활성화될 때 애니메이터를 초기화합니다.
         anim = GetComponent<Animator>();
+        enemyController = GetComponent<EnemyController>();
     }
 
     private void Start()
@@ -53,7 +53,7 @@ public class MeleeEnemy : MonoBehaviour
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
     public void TryToAttack()
     {
-        if (!inAction && !inGetHit)
+        if (!inAction && !enemyController.inGetHit)
         {
             StartCoroutine(Attack());
         }

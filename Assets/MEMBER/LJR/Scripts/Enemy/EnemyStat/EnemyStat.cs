@@ -44,6 +44,9 @@ public class EnemyStat : MonoBehaviour
 
     [field: SerializeField] public int currentHealth { get; private set; }  //현재 체력
 
+    [Header("기본 정보")]
+    public string enemyName; //적 이름
+
     [Header("기본 스탯")]
     public Stat attackDamage;   //물리 공격력
     public Stat magicDamage;    //마법 공격력
@@ -76,6 +79,7 @@ public class EnemyStat : MonoBehaviour
 
     protected void InitializeStat()
     {
+        enemyName = statData.enemyName;
         moveSpeed.SetDefaultValue(statData.moveSpeed);
         attackDamage.SetDefaultValue(statData.attackDamage);
         magicDamage.SetDefaultValue(statData.magicDamage);

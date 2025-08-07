@@ -162,7 +162,7 @@ public class PlayerRespawnManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            Debug.Log("강제 사망 테스트!");
+            Debug.Log("강제 사망 테스트");
             currentPlayerHealth?.TakeDamage(currentPlayerHealth.maxHealth); // 강제로 체력 0 만들기
         }
     }

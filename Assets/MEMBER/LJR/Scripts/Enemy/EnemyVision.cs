@@ -8,7 +8,7 @@ public class EnemyVision : MonoBehaviour
     [SerializeField] private float aggroRange;          // 어그로 범위
     public event Action<GameObject> OnTargetDetected;   // 타겟 감지 이벤트
 
-    private void Start()
+    private void Awake()
     {
         sphereCollider = GetComponent<SphereCollider>();
     }
