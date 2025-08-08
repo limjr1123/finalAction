@@ -17,8 +17,16 @@ public class CharacterFactory
                 maxHealth = _jobData.baseHP,
                 currentHealth = _jobData.baseHP,
                 attackDamage = _jobData.baseAttack,
-                defense = _jobData.baseDefance
-            }
+                defense = _jobData.baseDefance,
+
+                // 위치 
+                // savePos = new UnityEngine.Vector3(1,1,1),
+                // saveRot = new UnityEngine.Vector3(1,1,1),
+            },
+            gold = 1000,
+            // 인벤토리 처음 아이템,
+            // 퀘스트 처음 퀘스트,
+            // 등등
         };
     }
 }

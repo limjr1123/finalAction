@@ -10,6 +10,7 @@ public class ToolTipUI : MonoBehaviour
     [SerializeField] Button equipButton;
     [SerializeField] Button liftButton;
     [SerializeField] GameObject toolTip;
+
     public Image itemImage;
     public TextMeshProUGUI itemName;
     public TextMeshProUGUI itemType;
@@ -25,6 +26,8 @@ public class ToolTipUI : MonoBehaviour
             equipButton.onClick.AddListener(ItemEquip);
         if (liftButton != null)
             liftButton.onClick.AddListener(ItemLift);
+
+        toolTip.SetActive(false);
     }
 
 
@@ -39,15 +42,14 @@ public class ToolTipUI : MonoBehaviour
         if (itemData == null) return;
         if (itemData.ItemType == ItemType.Equipment)
         {
-            EquipmentItemData equipmentItemData = itemData as EquipmentItemData;
-            if (equipmentItemData == null)
+            if (itemData is EquipmentItemData eq == false)
             {
                 Debug.LogError("{TooltipUI} : itemData를 EquipmentItemData로 형변환을 할 수 없습니다!");
                 return;
             }
 
             // UI 업데이트
-            inventoryUI.SetWeaponSlot(equipmentItemData);
+            inventoryUI.SetWeaponSlot(eq, true);
             // 장비 장착
             // InventoryManager.Instance.EquipItem(itemData.ItemID, 플레이어 객체);
         }
@@ -64,15 +66,15 @@ public class ToolTipUI : MonoBehaviour
         if (itemData == null) return;
         if (itemData.ItemType == ItemType.Equipment)
         {
-            EquipmentItemData equipmentItemData = itemData as EquipmentItemData;
-            if (equipmentItemData == null)
+
+            if (itemData is EquipmentItemData eq == false)
             {
                 Debug.LogError("{TooltipUI} : itemData를 EquipmentItemData로 형변환을 할 수 없습니다!");
                 return;
             }
 
             // UI 업데이트
-            inventoryUI.SetWeaponSlot(equipmentItemData);
+            inventoryUI.SetWeaponSlot(eq, false);
             // 장비 해제
             // InventoryManager.Instance.UnEquipItem(itemData.ItemID, 플레이어 객체);
         }
@@ -80,23 +82,32 @@ public class ToolTipUI : MonoBehaviour
     }
 
 
-
-    public void Set(ItemData itemData)
+    public void Set(ItemData itemData, Vector2 screenPos)
     {
         this.itemData = itemData;
+
         itemImage.sprite = itemData.ItemSprite;
         itemName.text = itemData.ItemName;
         itemType.text = itemData.ItemType.ToString();
         itemText.text = itemData.Description;
+
+        // 화면 위치에 툴팁 배치 (원하면 캔버스 좌표 변환 추가)
+        // RectTransform rt = toolTip.GetComponent<RectTransform>();
+        // if (rt != null)
+        // {
+        //     rt.position = screenPos;
+        // }
+
         toolTip.SetActive(true);
     }
 
     public void Clear()
     {
+        itemData = null;
         itemImage.sprite = null;
-        itemName.text = null;
-        itemType.text = null;
-        itemText.text = null;
+        itemName.text = "";
+        itemType.text = "";
+        itemText.text = "";
         toolTip.SetActive(false);
     }
 }

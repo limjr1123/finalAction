@@ -507,6 +507,7 @@ public class PlayerStats : MonoBehaviour
         criResist.SetDefaultValue(data.criResist);
 
         transform.position = data.savePos;
+        transform.rotation = Quaternion.Euler(data.saveRot);
         Debug.Log($"캐릭터 데이터 로드 완료!");
     }
 

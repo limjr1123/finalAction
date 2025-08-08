@@ -18,6 +18,7 @@ namespace GameSave
     [System.Serializable]
     public class CharacterData
     {
+        public int gold;
         public PlayerSaveData playerSaveData = new();
         public InventorySaveData inventorySaveData = new();
         public QuestSaveData questSaveData = new();
