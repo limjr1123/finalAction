@@ -1719,6 +1719,7 @@ GameObject:
   - component: {fileID: 5168353133453131900}
   - component: {fileID: 9119243131022835790}
   - component: {fileID: 6711030526590164055}
+  - component: {fileID: -7692234641649496527}
   m_Layer: 6
   m_Name: Player_SwordAndShield
   m_TagString: Player
@@ -1862,12 +1863,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: TEST2
+  characterName: test
   characterJob: 
-  _currentHealth: 0
+  _currentHealth: 100
   _currentMana: 0
   _currentStamina: 0
-  _level: 0
+  _level: 1
   _currentEXP: 0
   maxHealth:
     baseValue: 100
@@ -1876,13 +1877,13 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   manaRegen:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   maxStamina:
-    baseValue: 100
+    baseValue: 0
     modifiers: 
   staminaRegen:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   maxEXP:
     baseValue: 0
@@ -1931,6 +1932,18 @@ MonoBehaviour:
     max: 0
   damageRange: 0.2
   currentPos: {x: 0, y: 0, z: 0}
+--- !u!114 &-7692234641649496527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537231057524668981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2991538ef9654d546bf4a72dd1ac5859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4571937434902477264
 GameObject:
   m_ObjectHideFlags: 0
