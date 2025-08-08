@@ -20,8 +20,8 @@ public class CharacterFactory
                 defense = _jobData.baseDefance,
 
                 // 위치 
-                // savePos = new UnityEngine.Vector3(1,1,1),
-                // saveRot = new UnityEngine.Vector3(1,1,1),
+                savePos = new UnityEngine.Vector3(78.3310013f, -11.0290003f, 54.4690018f),
+                saveRot = new UnityEngine.Vector3(0, 0, 0),
             },
             gold = 1000,
             // 인벤토리 처음 아이템,
