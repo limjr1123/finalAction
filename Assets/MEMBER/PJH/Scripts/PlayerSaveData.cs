@@ -42,6 +42,10 @@ public class PlayerSaveData
 
     // 캐릭터 세이브 위치
     public Vector3 savePos;
+    public Vector3 saveRot;
+
+    // 캐릭터가 가지고 있는 골드
+
 
     public PlayerSaveData() { }
 
@@ -81,8 +85,9 @@ public class PlayerSaveData
         criDamage = playerStats.criDamage.GetValue();
         criResist = playerStats.criResist.GetValue();
 
-        // 씬이나 위치 같은 정보는 추후 결정
+        // 위치 정보 불러오기.
         savePos = playerStats.transform.position;
+        saveRot = playerStats.transform.rotation.eulerAngles;
     }
 
 
