@@ -3,13 +3,12 @@
 public class BossBattleState : EnemyState<BossController>
 {
     BossController boss;
-    AIBattleState state;
+    [SerializeField] AIBattleState state;
 
     [SerializeField] float distanceToStand;        // 타겟과의 기본 유지 거리
     [SerializeField] float adjustDistanceThreshold = 0.1f;    // 거리 조정 허용 오차
 
-    [SerializeField] Vector2 idleTimeRange = new Vector2(2, 5);     // 대기 상태 지속 시간 범위(초)
-    [SerializeField] Vector2 circlingTimeRange = new Vector2(3, 6); // 원형 이동 상태 지속 시간 범위(초) - 통상적으로 최대 최소값을 관리하는 방식
+    [SerializeField] Vector2 idleTimeRange = new Vector2(1, 2);     // 대기 상태 지속 시간 범위(초)
 
     float timer = 0;
     int circlingDir = 1; // 1: 시계방향, -1: 반시계방향
@@ -20,7 +19,8 @@ public class BossBattleState : EnemyState<BossController>
         boss = owner;
         distanceToStand = boss.stats.attackRange.GetValue(); // 공격 범위에 따라 거리 설정
         boss.navAgent.stoppingDistance = distanceToStand; // NavMeshAgent의 정지 거리 설정
-        circlingSpeed = boss.stats.moveSpeed.GetValue() * 0.5f; // 회전 속도 설정
+        circlingSpeed = boss.stats.moveSpeed.GetValue()*10f; // 회전 속도 설정
+        boss.anim.SetBool("BattleState", true);
     }
 
     public override void Execute()
@@ -93,6 +93,10 @@ public class BossBattleState : EnemyState<BossController>
             }
             boss.navAgent.SetDestination(boss.target.transform.position); // 타겟의 위치로 NavMeshAgent의 목적지 설정
         }
+        else if (state == AIBattleState.BackStep)
+        {
+            
+        }
 
         if (timer > 0)
         {
@@ -106,11 +110,18 @@ public class BossBattleState : EnemyState<BossController>
         timer = boss.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
     }
 
+    private void StartBackStep()
+    {
+        state = AIBattleState.BackStep;
+        boss.navAgent.ResetPath(); // NavMeshAgent의 경로 초기화
+        //timer = boss.stats.backStepInterval.GetValue(); // 후퇴 주기 타이머 설정
+    }
+
     private void StartCircling()
     {
         state = AIBattleState.Circling;
         boss.navAgent.ResetPath(); // NavMeshAgent의 경로 초기화
-        timer = boss.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
+        //timer = boss.stats.attackInterval.GetValue(); // 공격 주기 타이머 설정
 
         circlingDir = Random.Range(0, 2) == 0 ? 1 : -1; // 시계방향 또는 반시계방향 결정
         timer = Random.Range(idleTimeRange.x, idleTimeRange.y); // 대기 시간 범위 설정
@@ -124,6 +135,7 @@ public class BossBattleState : EnemyState<BossController>
 
     public override void Exit()
     {
+        boss.anim.SetBool("BattleState", false);
         boss.navAgent.ResetPath();
     }
 }
