@@ -15,7 +15,7 @@ public enum BossStates
 
 public class BossController : MonoBehaviour
 {
-    public float fov = 180f; // 시야각
+    public float fov = 360f; // 시야각
 
     public EnemyStat stats { get; private set; }
     public Dictionary<BossStates, EnemyState<BossController>> stateDict { get; private set; }
@@ -27,6 +27,8 @@ public class BossController : MonoBehaviour
     public EnemyVision enemyVision { get; internal set; }
 
     public MeleeBoss meleeBoss { get; private set; }
+
+    public List<string> getHitAnimations { get; set; } = new List<string>();
 
     Vector3 prevPos;
 
@@ -44,6 +46,9 @@ public class BossController : MonoBehaviour
         stateDict[BossStates.Idle] = GetComponent<BossIdleState>();
         stateDict[BossStates.Battle] = GetComponent<BossBattleState>();
         stateDict[BossStates.Attack] = GetComponent<BossAttackState>();
+        stateDict[BossStates.GetHit] = GetComponent<BossGetHitState>();
+        stateDict[BossStates.Dead] = GetComponent<BossDeadState>();
+
         //EnemyVision OnTargetDetected에 타겟 설정 매서드 구독
         enemyVision.OnTargetDetected += SetTarget;
         enemyVision.SetAggroRange(stats.aggroRange.GetValue()); // 어그로 범위 설정
