@@ -297,6 +297,11 @@ public class PlayerStateMachine : MonoBehaviour
         currentState?.OnGuardSuccess();
     }
 
+    public void OnParrySuccess()
+    {
+        Animator.SetTrigger("Parrying");
+    }
+
     public Transform FindAutoTarget()
     {
         // 1. 지정된 거리 내의 모든 적을 찾습니다.
