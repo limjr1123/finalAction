@@ -7,19 +7,23 @@ public class BossBattleState : EnemyState<BossController>
 
     [SerializeField] float distanceToStand;        // 타겟과의 기본 유지 거리
     [SerializeField] float adjustDistanceThreshold = 0.1f;    // 거리 조정 허용 오차
+    [SerializeField] float backStepDistance = 1.5f; // 후퇴 거리
 
     [SerializeField] Vector2 idleTimeRange = new Vector2(1, 2);     // 대기 상태 지속 시간 범위(초)
 
     float timer = 0;
     int circlingDir = 1; // 1: 시계방향, -1: 반시계방향
     float circlingSpeed;
+    float backStepSpeed; // 후퇴 속도
 
     public override void Enter(BossController owner)
     {
         boss = owner;
         distanceToStand = boss.stats.attackRange.GetValue(); // 공격 범위에 따라 거리 설정
         boss.navAgent.stoppingDistance = distanceToStand; // NavMeshAgent의 정지 거리 설정
-        circlingSpeed = boss.stats.moveSpeed.GetValue()*10f; // 회전 속도 설정
+        boss.navAgent.speed = boss.stats.moveSpeed.GetValue() * 0.5f; // NavMeshAgent의 정지 거리 설정
+        circlingSpeed = boss.stats.moveSpeed.GetValue(); // 회전 속도 설정
+        backStepSpeed = boss.stats.moveSpeed.GetValue(); // 후퇴 속도 설정
         boss.anim.SetBool("BattleState", true);
     }
 
@@ -76,13 +80,13 @@ public class BossBattleState : EnemyState<BossController>
                 boss.ChangeState(BossStates.Attack);
 
                 // 공격 후 대기 상태로 전환
-                StartIdle();
+                StartBackStep();
                 return;
             }
             var vecToTarget = boss.transform.position - boss.target.transform.position;
             var rotatePos = Quaternion.Euler(0, circlingSpeed * circlingDir * Time.deltaTime, 0) * vecToTarget;
 
-            boss.navAgent.Move(rotatePos - vecToTarget);
+            boss.navAgent.Move((rotatePos - vecToTarget) * circlingSpeed);
             boss.transform.rotation = Quaternion.LookRotation(-rotatePos); // 타겟을 바라보면서 회전
         }
         else if (state == AIBattleState.Chase)
@@ -95,7 +99,15 @@ public class BossBattleState : EnemyState<BossController>
         }
         else if (state == AIBattleState.BackStep)
         {
+            if (Vector3.Distance(boss.target.transform.position, boss.transform.position) >= distanceToStand + adjustDistanceThreshold)
+            {
+                StartCircling();
+            }
+            var vecToTarget = boss.transform.position - boss.target.transform.position;
             
+            // 타겟 반대 방향(뒤로) 이동
+            boss.navAgent.Move(vecToTarget.normalized * backStepSpeed * 0.5f * Time.deltaTime);
+            vecToTarget.y = 0f;
         }
 
         if (timer > 0)
