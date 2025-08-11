@@ -21,7 +21,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Animator Animator { get; private set; }
 
     [Header("공격 관련")]
-    public float comboTime = 1.5f;
+    public float comboTime = 1f;
     public int comboCount = 0;
     public float lastAttackTime = 0f;
 

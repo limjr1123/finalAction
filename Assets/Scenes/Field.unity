@@ -24275,9 +24275,6 @@ MonoBehaviour:
   portalID: Field
   targetSceneName: Dungeon
   targetPortalID: Dungeon
-  player: {fileID: 1623295173}
-  teleportDelay: 0.5
-  fadeDuration: 0.5
   portalCooldown: 3
 --- !u!1 &176926261
 GameObject:
@@ -41590,7 +41587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
   respawnDelay: 3
   initialSceneName: GameScene
 --- !u!4 &579390502 stripped
@@ -109466,7 +109462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
+  currentHealth: 100
 --- !u!1001 &1627139997
 PrefabInstance:
   m_ObjectHideFlags: 0
