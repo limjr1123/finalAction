@@ -7,6 +7,7 @@ public class MeleeBoss : MonoBehaviour
     BossController boss;
     // 공격 애니메이션과 관련된 데이터
     [SerializeField] List<EnemyAttackData> attacks;
+    [SerializeField] List<EnemyAttackData> rageAttack;
     [SerializeField] GameObject weapon;
 
     // 공격에 사용할 콜라이더들
@@ -27,6 +28,16 @@ public class MeleeBoss : MonoBehaviour
     {
         // 컴포넌트가 활성화될 때 애니메이터를 초기화합니다.
         anim = GetComponent<Animator>();
+        boss = GetComponent<BossController>();
+    }
+
+    private void Start()
+    {
+        if (weapon != null)
+        {
+            weaponCollider = weapon.GetComponent<BoxCollider>();
+        }
+        DisableAllCollider();
     }
 
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
@@ -43,7 +54,7 @@ public class MeleeBoss : MonoBehaviour
         inAction = true;
         attackState = EnemyAttackStateInfo.Windup;
 
-        // attacks 리스트에서 애니매이션을 선택
+        // attacks 리스트에서 애니메이션을 선택
         attackIndex = UnityEngine.Random.Range(0, attacks.Count);
 
         if (attackDir != null)
@@ -51,61 +62,63 @@ public class MeleeBoss : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(attackDir.Value), 360f * Time.deltaTime);
         }
         string animName = attacks[attackIndex].animName;
-
+        Debug.Log("animName: " + animName);
         anim.CrossFade(animName, 0.2f);
-        yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
+        yield return null; // 프레임 대기하여 애니메이션 정보를 확인
 
-        //GetNextAnimatorStateInfo 애니매이션 상태 정보를 가져옵니다.
+        // 애니메이션 상태 정보 가져오기
         var animState = anim.GetNextAnimatorStateInfo(1);
 
         float timer = 0f;
-        while (timer <= animState.length)
+        int currentPhaseIndex = 0; // 현재 처리 중인 attackPhase 인덱스
+
+        if (attacks[attackIndex].attackCount == AttackCount.Multi)
         {
-            if (attacks[attackIndex].attackCount == AttackCount.Multi)
+            while (timer <= animState.length && currentPhaseIndex < attacks[attackIndex].attackPhases.Length)
             {
-                for (int i = 0; i < attacks[attackIndex].attackPhases.Length; i++)
+                timer += Time.deltaTime;
+                float normalizedTime = timer / animState.length;
+
+                var currentPhase = attacks[attackIndex].attackPhases[currentPhaseIndex];
+
+                if (attackState == EnemyAttackStateInfo.Windup)
                 {
-                    // normalizedTime을 스킬 실행 시간 백분율로 사용.
-                    timer += Time.deltaTime;
-                    float normalizedTime = timer / animState.length;
-                    if (attackState == EnemyAttackStateInfo.Windup)
+                    if (normalizedTime >= currentPhase.impactStartTime)
                     {
-                        //if (inCounter) break;
-                        if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactStartTime)
-                        {
-                            isParry = attacks[attackIndex].attackPhases[i].isParry; // 패링 가능한 공격인지 확인
-                            attackState = EnemyAttackStateInfo.Impact;
-                            //콜라이더 켜기
-                            EnableHitbox(attacks[attackIndex].attackPhases[i]);
-                        }
-                    }
-                    else if (attackState == EnemyAttackStateInfo.Impact)
-                    {
-                        if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactEndTime)
-                        {
-                            attackState = EnemyAttackStateInfo.AttackDelay;
-                            //콜라이더 끄기
-                            DisableAllCollider();
-                            isParry = false; // 초기화
-                        }
+                        isParry = currentPhase.isParry; // 패링 가능 여부 설정
+                        attackState = EnemyAttackStateInfo.Impact;
+                        EnableHitbox(currentPhase); // 현재 phase의 collider 켜기
                     }
                 }
+                else if (attackState == EnemyAttackStateInfo.Impact)
+                {
+                    if (normalizedTime >= currentPhase.impactEndTime)
+                    {
+                        attackState = EnemyAttackStateInfo.Windup;
+                        DisableAllCollider(); // collider 끄기
+                        isParry = false; // 패링 초기화
+                        currentPhaseIndex++; // 다음 phase로 이동
+                    }
+                }
+
+                yield return null;
             }
-            else
+            attackState = EnemyAttackStateInfo.AttackDelay;
+        }
+        else
+        {
+            // Single 공격 로직 
+            while (timer <= animState.length)
             {
-                // normalizedTime을 스킬 실행 시간 백분율로 사용.
-                // attacks[comboCounter].impactStartTime은 백분율로 표현.
                 timer += Time.deltaTime;
                 float normalizedTime = timer / animState.length;
 
                 if (attackState == EnemyAttackStateInfo.Windup)
                 {
-                    //if (inCounter) break;
                     if (normalizedTime >= attacks[attackIndex].impactStartTime)
                     {
-                        isParry = attacks[attackIndex].isParry; // 패링 가능한 공격인지 확인
+                        isParry = attacks[attackIndex].isParry;
                         attackState = EnemyAttackStateInfo.Impact;
-                        //콜라이더 켜기
                         EnableHitbox(attacks[attackIndex]);
                     }
                 }
@@ -114,70 +127,23 @@ public class MeleeBoss : MonoBehaviour
                     if (normalizedTime >= attacks[attackIndex].impactEndTime)
                     {
                         attackState = EnemyAttackStateInfo.AttackDelay;
-                        //콜라이더 끄기
                         DisableAllCollider();
-                        isParry = false; // 초기화
+                        isParry = false;
                     }
                 }
+                yield return null;
             }
-            yield return null;
         }
-        attackState = EnemyAttackStateInfo.Idle;
-        inAction = false;
+        if(attackState == EnemyAttackStateInfo.AttackDelay)
+        {
+            // 공격 딜레이 상태로 전환
+            yield return new WaitForSeconds(boss.stats.attackInterval.GetValue());
+
+            attackState = EnemyAttackStateInfo.Idle;
+            inAction = false;
+        }
     }
 
-    IEnumerator RepeatAttack(Vector3? attackDir = null)
-    {
-        inAction = true;
-        attackState = EnemyAttackStateInfo.Windup;
-        attackIndex = UnityEngine.Random.Range(0, attacks.Count);
-        if (attackDir != null)
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(attackDir.Value), 360f * Time.deltaTime);
-        }
-        string animName = attacks[attackIndex].animName;
-
-        anim.CrossFade(animName, 0.2f);
-        yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
-        var animState = anim.GetNextAnimatorStateInfo(1);
-
-        float timer = 0f;
-
-        while (timer <= animState.length)
-        {
-            for(int i = 0; i < attacks[attackIndex].attackPhases.Length; i++)
-            {
-                // normalizedTime을 스킬 실행 시간 백분율로 사용합니다.
-                // attacks[comboCounter].impactStartTime은 백분율로 표현됩니다.
-                timer += Time.deltaTime;
-                float normalizedTime = timer / animState.length;
-                if (attackState == EnemyAttackStateInfo.Windup)
-                {
-                    //if (inCounter) break;
-                    if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactStartTime)
-                    {
-                        isParry = attacks[attackIndex].attackPhases[i].isParry; // 패링 가능한 공격인지 확인
-                        attackState = EnemyAttackStateInfo.Impact;
-                        //콜라이더 켜기
-                        EnableHitbox(attacks[attackIndex].attackPhases[i]);
-                    }
-                }
-                else if (attackState == EnemyAttackStateInfo.Impact)
-                {
-                    if (normalizedTime >= attacks[attackIndex].attackPhases[i].impactEndTime)
-                    {
-                        attackState = EnemyAttackStateInfo.AttackDelay;
-                        //콜라이더 끄기
-                        DisableAllCollider();
-                        isParry = false; // 초기화
-                    }
-                }
-            }
-            yield return null;
-        }
-        attackState = EnemyAttackStateInfo.Idle;
-        inAction = false;
-    }
 
 
 
@@ -229,9 +195,11 @@ public class MeleeBoss : MonoBehaviour
         switch (attack.hitboxToUse)
         {
             case AttackHitbox.LeftHand:
+                Debug.Log("LeftHand Collider Enabled");
                 leftHandCollider.enabled = true;
                 break;
             case AttackHitbox.RightHand:
+                Debug.Log("RightHand Collider Enabled");
                 rightHandCollider.enabled = true;
                 break;
             case AttackHitbox.TwoHand:
