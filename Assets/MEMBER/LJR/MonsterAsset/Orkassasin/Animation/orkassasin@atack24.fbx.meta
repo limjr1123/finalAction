@@ -5,7 +5,7 @@ AssetOrigin:
   productId: 117169
   packageName: orks assasin
   packageVersion: 1.0
-  assetPath: Assets/Orkassasin/Animation/orkassasin@atack24.fbx
+  assetPath: Assets/MEMBER/LJR/MonsterAsset/Orkassasin/Animation/orkassasin@atack24.fbx
   uploadId: 241905
 ModelImporter:
   serializedVersion: 22200
@@ -1479,10 +1479,10 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

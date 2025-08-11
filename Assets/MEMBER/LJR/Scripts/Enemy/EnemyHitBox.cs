@@ -3,6 +3,7 @@
 public class EnemyHitBox : MonoBehaviour
 {
     private EnemyController enemyController;
+    [SerializeField] private HitEffectType hitEffectType;
 
     void Start()
     {
@@ -16,6 +17,7 @@ public class EnemyHitBox : MonoBehaviour
         {
             int finalDamage = GetComponentInParent<EnemyStat>().attackDamageRange.GetRandomDamage();
             other.GetComponent<PlayerStats>()?.TakePhysicalDamage(finalDamage);
+            HitEffectManager.Instance.EffectCreate(other.transform, hitEffectType, new Vector3(0, 1f, 0));
         }
         else if (other.CompareTag("PlayerParry"))
         {
@@ -33,6 +35,7 @@ public class EnemyHitBox : MonoBehaviour
             if (playerStateMachine != null)
             {
                 playerStateMachine.OnGuardSuccess();
+                HitEffectManager.Instance.EffectCreate(other.transform, HitEffectType.Block);
             }
         }
     }

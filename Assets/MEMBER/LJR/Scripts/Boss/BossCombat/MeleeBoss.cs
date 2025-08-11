@@ -7,6 +7,7 @@ public class MeleeBoss : MonoBehaviour
     BossController boss;
     // 공격 애니메이션과 관련된 데이터
     [SerializeField] List<EnemyAttackData> attacks;
+    [SerializeField] List<EnemyAttackData> unblockableAttacks; // 방어가 불가능한 공격
     [SerializeField] List<EnemyAttackData> rageAttack;
     [SerializeField] GameObject weapon;
 
@@ -100,7 +101,6 @@ public class MeleeBoss : MonoBehaviour
                         currentPhaseIndex++; // 다음 phase로 이동
                     }
                 }
-
                 yield return null;
             }
             attackState = EnemyAttackStateInfo.AttackDelay;
@@ -136,9 +136,6 @@ public class MeleeBoss : MonoBehaviour
         }
         if(attackState == EnemyAttackStateInfo.AttackDelay)
         {
-            // 공격 딜레이 상태로 전환
-            yield return new WaitForSeconds(boss.stats.attackInterval.GetValue());
-
             attackState = EnemyAttackStateInfo.Idle;
             inAction = false;
         }

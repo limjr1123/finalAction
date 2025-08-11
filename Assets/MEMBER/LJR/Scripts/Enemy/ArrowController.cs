@@ -11,6 +11,8 @@ public class ArrowController : MonoBehaviour
     [SerializeField] public BowController bow; // 활 컨트롤러
     [SerializeField] int damage; // 화살 데미지
     [SerializeField] private float pullBackDistance = 1f; // 뒤로 당길 거리
+    
+    private HitEffectType hitEffectType = HitEffectType.Hit; // 히트 이펙트 타입
 
     public bool isShooting { get; set; } = false; // 화살이 발사 중인지 여부
     public bool isHit { get; set; } = false;      // 화살이 적에게 맞았는지 여부
@@ -71,7 +73,7 @@ public class ArrowController : MonoBehaviour
             isHit = true;
             rb.isKinematic = true;
             hitBox.enabled = false;
-            return; // 플레이어의 방패나 패링에 맞았을 때는 아무 동작도 하지 않음
+            HitEffectManager.Instance.EffectCreate(transform, HitEffectType.Block);
         }
         else if (other.CompareTag("Player"))
         {
@@ -80,6 +82,7 @@ public class ArrowController : MonoBehaviour
             isHit = true;
             rb.isKinematic = true;
             hitBox.enabled = false;
+            HitEffectManager.Instance.EffectCreate(transform, hitEffectType);
         }
     }
 
