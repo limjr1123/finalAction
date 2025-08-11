@@ -5,7 +5,8 @@ public enum AIBattleState
     Idle,
     Chase,
     Circling,
-    Attack
+    Attack,
+    BackStep,
 }
 
 public class EnemyBattleState : EnemyState<EnemyController>

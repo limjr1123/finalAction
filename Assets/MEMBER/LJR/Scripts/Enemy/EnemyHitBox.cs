@@ -20,6 +20,11 @@ public class EnemyHitBox : MonoBehaviour
         else if (other.CompareTag("PlayerParry"))
         {
             Debug.Log("패링 성공");
+            PlayerStateMachine playerStateMachine = other.GetComponentInParent<PlayerStateMachine>();
+            if (playerStateMachine != null)
+            {
+                playerStateMachine.OnParrySuccess();
+            }
             enemyController.stateMachine.ChangeState(enemyController.stateDict[EnemyStates.GetHit]);
         }
         else if (other.CompareTag("PlayerGuard"))

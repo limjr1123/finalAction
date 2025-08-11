@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fe4ea36dde9057458c07a96f161dcab, type: 3}
-  m_Name: attack1
+  m_Name: attack12
   m_EditorClassIdentifier: 
   attackCount: 1
-  <animName>k__BackingField: attack1
+  <animName>k__BackingField: attack12
   <hitboxToUse>k__BackingField: 0
   <impactStartTime>k__BackingField: 0
   <impactEndTime>k__BackingField: 0
   <isParry>k__BackingField: 0
   <attackPhases>k__BackingField:
-  - animName: 1
-    hitboxToUse: 1
-    impactStartTime: 0.16
-    impactEndTime: 0.58
-    isParry: 1
-  - animName: 2
-    hitboxToUse: 0
-    impactStartTime: 0.7
-    impactEndTime: 0.9
-    isParry: 1
+  - animName: 
+    hitboxToUse: 2
+    impactStartTime: 0.25
+    impactEndTime: 0.45
+    isParry: 0
+  - animName: 
+    hitboxToUse: 2
+    impactStartTime: 0.6
+    impactEndTime: 0.99
+    isParry: 0
