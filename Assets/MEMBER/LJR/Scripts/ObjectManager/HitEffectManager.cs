@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum HitEffectType
 {
@@ -28,12 +30,22 @@ public class HitEffectManager : MonoBehaviour
     [Header("Pool Settings")]
     [SerializeField] private int initialPoolSize = 10; // 초기 풀 크기
 
+    [Header("Scene Settings")]
+    [SerializeField] private string[] allowedScenes = { "Dungeon", "LJR_Monster" }; // DontDestroyOnLoad를 적용할 씬들
+
+
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않도록 설정
+            // 현재 씬이 허용된 씬 목록에 있는지 확인
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            Debug.Log($"Current Scene: {currentSceneName}");
+            if (IsSceneAllowed(currentSceneName))
+            {
+                DontDestroyOnLoad(gameObject); // 허용된 씬에서만 파괴되지 않도록 설정
+            }
         }
         else
         {
@@ -51,11 +63,24 @@ public class HitEffectManager : MonoBehaviour
         effectPools = new Dictionary<HitEffectType, Queue<GameObject>>();
     }
 
+    private bool IsSceneAllowed(string currentSceneName)
+    {
+        foreach (string allowedScene in allowedScenes)
+        {
+            if (currentSceneName == allowedScene)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void Start()
     {
         InitializeEffectPool();
     }
 
+    // 이펙트 풀 초기화
     private void InitializeEffectPool()
     {
         foreach (var type in effectPrefabs.Keys)
@@ -81,6 +106,7 @@ public class HitEffectManager : MonoBehaviour
         }
     }
 
+    // 이펙트 생성
     public void EffectCreate(Transform target, HitEffectType effectType = HitEffectType.Hit, Vector3? offset = null, Quaternion? rotation = null)
     {
         GameObject effect = GetEffectFromPool(effectType);
@@ -96,6 +122,7 @@ public class HitEffectManager : MonoBehaviour
         }
     }
 
+    // 이펙트 풀에서 이펙트를 가져오는 메서드
     private GameObject GetEffectFromPool(HitEffectType type)
     {
         if (effectPools[type].Count > 0)
@@ -108,6 +135,7 @@ public class HitEffectManager : MonoBehaviour
         }
     }
 
+    // 이펙트를 일정 시간 후에 풀로 반환하는 코루틴
     private IEnumerator ReturnEffectAfterDuration(GameObject effect, HitEffectType type, float duration)
     {
         yield return new WaitForSeconds(duration);
