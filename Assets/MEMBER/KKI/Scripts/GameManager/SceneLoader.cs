@@ -70,11 +70,15 @@ public class SceneLoader : Singleton<SceneLoader>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Field")
+        // 로드된 씬이 "Field" 또는 "Dungeon"인지 확인합니다.
+        if (scene.name == "Field" || scene.name == "Dungeon")
         {
+            // 이벤트 중복 호출을 막기 위해 등록을 해제합니다.
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            // 게임 데이터를 로드합니다.
             GameManager.Instance.LoadGame();
-            Debug.Log("Field 씬 로드 후 함수 호출 완료!");
+            // 어떤 씬이 로드되었는지 정확히 로그로 남깁니다.
+            Debug.Log($"{scene.name} 씬 로드 후 함수 호출 완료!");
         }
     }
 }
