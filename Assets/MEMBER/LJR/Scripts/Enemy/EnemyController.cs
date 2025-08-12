@@ -20,6 +20,7 @@ public enum EnemyAttackStateInfo
 {
     Idle,           // 대기 상태
     Windup,         // 공격 준비(선딜레이)
+    Charge,         // 공격 모션(딜레이)
     Impact,         // 타격 판정 구간
     AttackDelay     // 후딜레이
 }

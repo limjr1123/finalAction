@@ -1474,7 +1474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueText: {fileID: 7501410611734263267}
-  NPCNameText: {fileID: 4796382141032159905}
+  npcNameText: {fileID: 4796382141032159905}
 --- !u!1 &8678280108272210776
 GameObject:
   m_ObjectHideFlags: 0
