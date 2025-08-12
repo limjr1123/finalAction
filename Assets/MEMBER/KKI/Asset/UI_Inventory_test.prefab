@@ -10246,7 +10246,7 @@ GameObject:
   - component: {fileID: 6955007956353732083}
   - component: {fileID: 8214973704667747438}
   m_Layer: 5
-  m_Name: Pants
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14437,15 +14437,20 @@ MonoBehaviour:
   UIType: 3
   uILayer: 200
   closeOnEscape: 1
+  EquipmentSlotArea: {fileID: 80924030121745128}
+  ConsumableSlotArea: {fileID: 426438476672371210}
+  EtcSlotArea: {fileID: 7002242963084132641}
   EquipmentTabToggle: {fileID: 2346116697992552713}
   ConsumableTabToggle: {fileID: 8041109185147575427}
   EtcTabToggle: {fileID: 8254779373265876134}
+  TabToggleGroup: {fileID: 3411780671787234317}
   closeButton: {fileID: 8298427858904179062}
   sellButton: {fileID: 121553074108129689}
-  EquipmentSlotArea: {fileID: 8977136639633096892}
-  ConsumableSlotArea: {fileID: 8009110645364884971}
-  EtcSlotArea: {fileID: 6491171372936323892}
-  toolTipUI: {fileID: 0}
+  toolTipUI: {fileID: 5448846989118030333}
+  weaponSlotImage: {fileID: 2063321308480130499}
+  bodySlotImage: {fileID: 8214973704667747438}
+  accessoryImage: {fileID: 8970078048413948237}
+  goldText: {fileID: 7570644570579116690}
 --- !u!1 &6885203001485913759
 GameObject:
   m_ObjectHideFlags: 0
@@ -18286,6 +18291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a941650a087594845af3ac9f26532773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 5948636051164057559}
   closeButton: {fileID: 8087979169208352933}
   equipButton: {fileID: 6177568946770979826}
   liftButton: {fileID: 5447846962750417932}
