@@ -27,6 +27,9 @@ public class InventoryUI : BaseUI
     [SerializeField] Image weaponSlotImage;
     [SerializeField] Image bodySlotImage;
     [SerializeField] Image accessoryImage;
+    [SerializeField] Sprite originWeaponSlotImage;
+    [SerializeField] Sprite originBodySlotImage;
+    [SerializeField] Sprite originAccessoryImage;
 
     [Header("Gold")]
     [SerializeField] TextMeshProUGUI goldText;
@@ -260,20 +263,17 @@ public class InventoryUI : BaseUI
         {
             case EquipType.Weapon:
                 {
-                    weaponSlotImage.sprite = flag ? equipmentItemData.ItemSprite : null;
-                    weaponSlotImage.enabled = flag;
+                    weaponSlotImage.sprite = flag ? equipmentItemData.ItemSprite : originWeaponSlotImage;
                     break;
                 }
             case EquipType.Body:
                 {
-                    bodySlotImage.sprite = flag ? equipmentItemData.ItemSprite : null;
-                    bodySlotImage.enabled = flag;
+                    bodySlotImage.sprite = flag ? equipmentItemData.ItemSprite : originBodySlotImage;
                     break;
                 }
             case EquipType.Accessory:
                 {
-                    accessoryImage.sprite = flag ? equipmentItemData.ItemSprite : null;
-                    accessoryImage.enabled = flag;
+                    accessoryImage.sprite = flag ? equipmentItemData.ItemSprite : originAccessoryImage;
                     break;
                 }
         }
