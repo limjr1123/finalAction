@@ -53,13 +53,17 @@ public class ShopUI : BaseUI
     private void OnEquipmentToggle(bool isOn)
     {
         if (isOn)
+        {
             ShowEquipmentPanel();
+        }
     }
 
     private void OnConsumptionToggle(bool isOn)
     {
         if (isOn)
+        {
             ShowConsumptionPanel();
+        }
     }
 
     private void ShowEquipmentPanel()
