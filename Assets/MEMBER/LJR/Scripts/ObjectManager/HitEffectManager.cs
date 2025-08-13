@@ -9,7 +9,7 @@ public enum HitEffectType
     Hit,        // 일반 히트 이펙트
     Slash,      // 슬래시 이펙트
     Block,      // 블록 이펙트
-    AttackReady // 공격 준비 이펙트
+    AttackReady,// 공격 준비 이펙트
 }
 
 public class HitEffectManager : MonoBehaviour
@@ -17,12 +17,12 @@ public class HitEffectManager : MonoBehaviour
     public static HitEffectManager Instance { get; private set; }
 
     [Header("Hit Effect Prefabs")]
-    [SerializeField] private GameObject hitEffectPrefab;    // 히트 이펙트 프리팹
-    [SerializeField] private GameObject slashEffectPrefab;  // 슬래시 이펙트 프리팹
-    [SerializeField] private GameObject blockEffectPrefab;  // 슬래시 이펙트 프리팹
+    [SerializeField] private GameObject hitEffectPrefab;        // 히트 이펙트 프리팹
+    [SerializeField] private GameObject slashEffectPrefab;      // 슬래시 이펙트 프리팹
+    [SerializeField] private GameObject blockEffectPrefab;      // 가드 이펙트 프리팹
 
     [Header("Attack Ready Effect")]
-    [SerializeField] private GameObject attackReadyEffectPrefab;  // 슬래시 이펙트 프리팹
+    [SerializeField] private GameObject attackReadyEffectPrefab;  // 가불기 전조 이펙트 프리팹
 
     private Dictionary<HitEffectType, GameObject> effectPrefabs;
     private Dictionary<HitEffectType, Queue<GameObject>> effectPools;
@@ -63,6 +63,7 @@ public class HitEffectManager : MonoBehaviour
         effectPools = new Dictionary<HitEffectType, Queue<GameObject>>();
     }
 
+    // 현재 씬이 허용된 씬 목록에 있는지 확인하는 메서드
     private bool IsSceneAllowed(string currentSceneName)
     {
         foreach (string allowedScene in allowedScenes)
@@ -109,10 +110,16 @@ public class HitEffectManager : MonoBehaviour
     // 이펙트 생성
     public void EffectCreate(Transform target, HitEffectType effectType = HitEffectType.Hit, Vector3? offset = null, Quaternion? rotation = null)
     {
+        Debug.Log("이펙트 동작");
         GameObject effect = GetEffectFromPool(effectType);
         effect.transform.position = target.position + (offset ?? Vector3.zero);
         effect.transform.rotation = rotation ?? Quaternion.identity;
         effect.SetActive(true);
+
+        if(effectType == HitEffectType.AttackReady)
+        {
+            effect.transform.SetParent(target); // 공격 준비 이펙트는 타겟에 부모로 설정
+        }
 
         // 파티클 반환 처리
         var particle = effect.GetComponent<ParticleSystem>();
@@ -121,6 +128,8 @@ public class HitEffectManager : MonoBehaviour
             StartCoroutine(ReturnEffectAfterDuration(effect, effectType, particle.main.duration));
         }
     }
+
+    
 
     // 이펙트 풀에서 이펙트를 가져오는 메서드
     private GameObject GetEffectFromPool(HitEffectType type)
@@ -141,5 +150,8 @@ public class HitEffectManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
         effect.SetActive(false);
         effectPools[type].Enqueue(effect);
+
+        if(type == HitEffectType.AttackReady)
+            effect.transform.SetParent(transform);
     }
 }

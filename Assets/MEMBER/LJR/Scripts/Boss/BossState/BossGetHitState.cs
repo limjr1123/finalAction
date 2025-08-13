@@ -13,8 +13,6 @@ public class BossGetHitState : EnemyState<BossController>
         StartCoroutine(GettingHitAnim());
     }
 
-
-    // Update is called once per frame
     IEnumerator GettingHitAnim()
     {
         boss.inGetHit = true;

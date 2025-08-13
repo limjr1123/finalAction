@@ -28,4 +28,5 @@ public struct AttackPhase
     [SerializeField] public float impactStartTime;    // 타격 판정이 시작되는 시간
     [SerializeField] public float impactEndTime;      // 타격 판정이 끝나는 시간
     [SerializeField] public bool isParry;             // 패링 가능한 공격인지 여부
+    [SerializeField] public float attackZAngle;        // 공격 방향 (회전값)
 }

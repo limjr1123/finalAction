@@ -24,8 +24,10 @@ MonoBehaviour:
     impactStartTime: 0
     impactEndTime: 0
     isParry: 0
+    attackZAngle: -35
   - animName: attack22_slash
     hitboxToUse: 1
     impactStartTime: 0.21
     impactEndTime: 0.9
     isParry: 0
+    attackZAngle: -35

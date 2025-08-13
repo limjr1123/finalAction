@@ -9,7 +9,7 @@ public class BossBattleState : EnemyState<BossController>
     [SerializeField] float adjustDistanceThreshold = 0.1f;    // 거리 조정 허용 오차
     [SerializeField] float backStepDistance = 1.5f; // 후퇴 거리
 
-    [SerializeField] Vector2 idleTimeRange = new Vector2(1, 2);     // 대기 상태 지속 시간 범위(초)
+    [SerializeField] Vector2 idleTimeRange = new Vector2(0, 2);     // 대기 상태 지속 시간 범위(초)
 
     float timer = 0;
     int circlingDir = 1; // 1: 시계방향, -1: 반시계방향
