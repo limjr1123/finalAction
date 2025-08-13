@@ -2,14 +2,33 @@ using UnityEngine;
 
 public class PlayerGuardState : PlayerState
 {
+    private bool _isExiting = false;
+    private float _timer;
+    private readonly float _exitDuration;
 
-    public PlayerGuardState(PlayerStateMachine stateMachine, GameObject player, Animator animator) 
-        : base(stateMachine, player, animator) {}
+    public PlayerGuardState(PlayerStateMachine stateMachine, GameObject player, Animator animator, float exitDuration) 
+        : base(stateMachine, player, animator) 
+    {
+        _exitDuration = exitDuration;
+    }
 
     public override void Enter()
     {
         animator.SetBool("IsBlocking", true);
-    
+
+        _isExiting = false;
+    }
+
+    public override void Update()
+    {
+        if (_isExiting)
+        {
+            _timer += Time.deltaTime;
+            if (_timer >= _exitDuration)
+            {
+                stateMachine.ChangeState(stateMachine.IdleState);
+            }
+        }
     }
 
     public override void FixedUpdate()
@@ -20,7 +39,12 @@ public class PlayerGuardState : PlayerState
 
     public override void OnGuardUp()
     {
-        stateMachine.ChangeState(stateMachine.IdleState);
+        if (!_isExiting)
+        {
+            animator.SetBool("IsBlocking", false);
+            _isExiting = true;
+            _timer = 0f;
+        }
     }
 
     public override void OnGuardSuccess()
@@ -32,4 +56,8 @@ public class PlayerGuardState : PlayerState
     {
         animator.SetBool("IsBlocking", false);
     }
+
+    public override void OnAttack() { if (_isExiting) return; }
+    public override void OnJump() { if (_isExiting) return; }
+    public override void OnDodge() { if (_isExiting) return; }
 }

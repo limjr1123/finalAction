@@ -17,19 +17,27 @@ MonoBehaviour:
   manaRegen: 10
   maxStamina: 100
   staminaRegen: 10
-  defense: 50
-  magicDefense: 50
-  Str: 50
-  Dex: 20
-  Int: 20
-  attackDamage: 30
+  defense: 15
+  magicDefense: 15
+  Str: 20
+  Dex: 10
+  Int: 10
+  attackDamage: 20
   magicDamage: 0
   moveSpeed: 5
   sprintSpeed: 10
   attackSpeed: 1
   criRate: 0.2
-  criDamage: 1.2
+  criDamage: 1.5
   criResist: 30
   level: 1
-  maxEXP: 200
+  maxEXP: 100
   currentEXP: 0
+  maxHealthPerLevel: 20
+  maxManaPerLevel: 5
+  maxStaminaPerLevel: 2
+  defensePerLevel: 2
+  magicDefensePerLevel: 2
+  strPerLevel: 2
+  dexPerLevel: 0
+  intPerLevel: 0

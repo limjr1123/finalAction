@@ -45,7 +45,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Header("소모 관련")]
     public int dodgeStaminaCost = 10;
-    public int AttackStaminaCost = 10;
+    public int attackStaminaCost = 5;
+    public int sprintStaminaCost = 2; 
 
     [Header("레이어 변경 관련")]
     private int _playerLayer;
@@ -55,6 +56,9 @@ public class PlayerStateMachine : MonoBehaviour
     public float autoTargetingDistance = 10f; // 탐색 거리
     public float autoTargetingAngle = 60f;    // 탐색 각도
     public LayerMask enemyLayerMask;
+
+    [Header("가드 관련")] 
+    public float guardExitDuration = 0.6f;
 
 
     private void Awake()
@@ -71,7 +75,7 @@ public class PlayerStateMachine : MonoBehaviour
         DamagedState = new PlayerDamagedState(this, gameObject, Animator);
         DeathState = new PlayerDeathState(this, gameObject, Animator);
         ParryingState = new PlayerParryingState(this, gameObject, Animator);
-        GuardState = new PlayerGuardState(this, gameObject, Animator);
+        GuardState = new PlayerGuardState(this, gameObject, Animator, guardExitDuration);
         SkillState = new PlayerSkillState(this, gameObject, Animator);
 
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화

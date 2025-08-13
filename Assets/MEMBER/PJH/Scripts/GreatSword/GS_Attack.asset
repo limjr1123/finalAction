@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: GS_Attack
   m_EditorClassIdentifier: 
   skillType: 0
-  skillName: 
-  cooldown: 0
-  manaCost: 0
-  animationTriggerName: 
-  damageMultiplier: 0
+  skillName: 3Slashing
+  cooldown: 10
+  manaCost: 20
+  animationTriggerName: AttackSkill
+  damageMultiplier: 1.2
   buffs: []
   buffDuration: 0
