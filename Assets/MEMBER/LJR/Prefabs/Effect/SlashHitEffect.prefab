@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8517239380886513991}
   - component: {fileID: 5874125126949949338}
   m_Layer: 0
-  m_Name: FX_Slash_Hit
+  m_Name: SlashHitEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926830327607843685}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
@@ -4857,7 +4857,7 @@ GameObject:
   - component: {fileID: 8856748984828678268}
   - component: {fileID: 6828802149088928326}
   - component: {fileID: 8103364918553334071}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: bl (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9769,7 +9769,7 @@ GameObject:
   - component: {fileID: 2602262381628114948}
   - component: {fileID: 7665486152047090188}
   - component: {fileID: 9159811899383568875}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: bl (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

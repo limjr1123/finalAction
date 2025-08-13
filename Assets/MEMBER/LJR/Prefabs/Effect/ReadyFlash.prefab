@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2481149162050015051}
   - component: {fileID: 3312401935589584771}
   - component: {fileID: 6960357150757841212}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: ReadyFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
