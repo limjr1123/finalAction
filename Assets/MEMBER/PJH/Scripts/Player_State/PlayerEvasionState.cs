@@ -30,6 +30,11 @@ public class PlayerEvasionState : PlayerState
             evasionDirection = player.transform.forward;
         }
 
+        if (evasionDirection != Vector3.zero)
+        {
+            player.transform.rotation = Quaternion.LookRotation(evasionDirection);
+        }
+
         stateMachine.Rb.AddForce(evasionDirection * evasionForce, ForceMode.Impulse);
 
     }

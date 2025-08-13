@@ -28,7 +28,10 @@ public class PlayerIdleState : PlayerState
             player.transform.rotation = Quaternion.LookRotation(targetDir);
         }
 
-        stateMachine.ChangeState(stateMachine.AttackState);
+        if (stateMachine.Stats.TryUseStamina(stateMachine.attackStaminaCost))
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
     }
 
     public override void OnDodge()

@@ -12,24 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd4e959da8457e4f8878d7a0b072c1a, type: 3}
   m_Name: SAS_Stats
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 150
   maxMana: 100
   manaRegen: 10
   maxStamina: 100
   staminaRegen: 10
   defense: 20
   magicDefense: 20
-  Str: 40
+  Str: 15
   Dex: 10
   Int: 10
-  attackDamage: 20
+  attackDamage: 15
   magicDamage: 0
   moveSpeed: 5
   sprintSpeed: 10
   attackSpeed: 1
   criRate: 0.2
   criDamage: 1.5
-  criResist: 20
+  criResist: 30
   level: 1
-  maxEXP: 200
+  maxEXP: 100
   currentEXP: 0
+  maxHealthPerLevel: 20
+  maxManaPerLevel: 5
+  maxStaminaPerLevel: 2
+  defensePerLevel: 3
+  magicDefensePerLevel: 3
+  strPerLevel: 2
+  dexPerLevel: 0
+  intPerLevel: 0

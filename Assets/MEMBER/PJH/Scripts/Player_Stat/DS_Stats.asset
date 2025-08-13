@@ -20,16 +20,24 @@ MonoBehaviour:
   defense: 10
   magicDefense: 10
   Str: 10
-  Dex: 20
+  Dex: 15
   Int: 10
   attackDamage: 10
   magicDamage: 0
   moveSpeed: 5
   sprintSpeed: 10
   attackSpeed: 1
-  criRate: 0.3
+  criRate: 0.4
   criDamage: 1.5
-  criResist: 10
+  criResist: 15
   level: 1
   maxEXP: 200
   currentEXP: 0
+  maxHealthPerLevel: 10
+  maxManaPerLevel: 5
+  maxStaminaPerLevel: 2
+  defensePerLevel: 1
+  magicDefensePerLevel: 1
+  strPerLevel: 0
+  dexPerLevel: 2
+  intPerLevel: 0
