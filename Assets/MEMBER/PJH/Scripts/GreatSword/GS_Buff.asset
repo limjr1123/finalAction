@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0942fdc39a6d844dba9ef3ca21fc676, type: 3}
   m_Name: GS_Buff
   m_EditorClassIdentifier: 
-  skillType: 0
-  skillName: 
-  cooldown: 0
-  manaCost: 0
-  animationTriggerName: 
+  skillType: 1
+  skillName: Berserk
+  cooldown: 30
+  manaCost: 50
+  animationTriggerName: BuffSkill
   damageMultiplier: 0
-  buffs: []
-  buffDuration: 0
+  buffs:
+  - statToBuff: 0
+    amount: 10
+  - statToBuff: 5
+    amount: 100
+  buffDuration: 15
+  Hasting: 0
+  hasteAmount: 0
+  Berserk: 1

@@ -6,6 +6,8 @@ public class PlayerMoveState : PlayerState
         : base(stateMachine, player, animator)
     { }
 
+    private float _staminaDrainAccumulator = 0f;
+
     public bool isSprinting = false;
 
     public override void Enter()
@@ -40,8 +42,12 @@ public class PlayerMoveState : PlayerState
             player.transform.rotation = Quaternion.LookRotation(targetDir);
         }
 
-        stateMachine.ChangeState(stateMachine.AttackState);
+        if (stateMachine.Stats.TryUseStamina(stateMachine.attackStaminaCost))
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
     }
+
     public override void OnJump()
     {
         stateMachine.ChangeState(stateMachine.JumpState);
@@ -85,18 +91,38 @@ public class PlayerMoveState : PlayerState
     private void Move(float fixedDeltaTime)
     {
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        stateMachine.IsSprinting = isSprinting;
         float currentSpeed;
-        if (isSprinting && stateMachine.Stats.TryUseStamina(Mathf.RoundToInt(15 * fixedDeltaTime)))
+
+        if (isSprinting)
         {
-            currentSpeed = stateMachine.Stats.sprintSpeed.GetValue();
+            _staminaDrainAccumulator += stateMachine.sprintStaminaCost * fixedDeltaTime;
+
+            if (_staminaDrainAccumulator >= 1f)
+            {
+                int staminaToDrain = Mathf.FloorToInt(_staminaDrainAccumulator);
+                if (stateMachine.Stats.TryUseStamina(staminaToDrain))
+                {
+                    _staminaDrainAccumulator -= staminaToDrain;
+                    currentSpeed = stateMachine.Stats.sprintSpeed.GetValue();
+                }
+                else
+                {
+                    isSprinting = false;
+                    currentSpeed = stateMachine.Stats.moveSpeed.GetValue();
+                }
+            }
+            else
+            {
+                currentSpeed = stateMachine.Stats.sprintSpeed.GetValue();
+            }
         }
         else
         {
-            stateMachine.IsSprinting = false;
+            _staminaDrainAccumulator = 0f;
             currentSpeed = stateMachine.Stats.moveSpeed.GetValue();
         }
 
+        stateMachine.IsSprinting = isSprinting;
         stateMachine.Rb.MovePosition(stateMachine.Rb.position + stateMachine.MoveDirection * currentSpeed * fixedDeltaTime);
     }
 

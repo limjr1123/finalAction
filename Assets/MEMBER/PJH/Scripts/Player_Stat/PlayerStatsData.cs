@@ -29,4 +29,14 @@ public class PlayerStatsData : ScriptableObject
     public int level;             // 플레이어 레벨
     public int maxEXP;            // 최대 경험치
     public int currentEXP;        // 현재 경험치
+
+    [Header("레벨당 스탯 증가량")]
+    public int maxHealthPerLevel;
+    public int maxManaPerLevel;
+    public int maxStaminaPerLevel;
+    public int defensePerLevel;
+    public int magicDefensePerLevel;
+    public int strPerLevel;
+    public int dexPerLevel;
+    public int intPerLevel;
 }

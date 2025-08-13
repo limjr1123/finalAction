@@ -196,6 +196,9 @@ public class MeleeBoss : MonoBehaviour
             float normalizedTime = timer / animState.length;
 
             var currentPhase = unblockableAttacks[unblockableAttackIndex].attackPhases[currentPhaseIndex];
+            anim.CrossFade(currentPhase.animName, 0.2f);
+            yield return null; // 프레임 대기하여 애니메이션 정보를 확인
+            animState = anim.GetNextAnimatorStateInfo(1); // 다음 애니메이션 상태 정보 갱신
 
             if (attackState == EnemyAttackStateInfo.Charge)
             {

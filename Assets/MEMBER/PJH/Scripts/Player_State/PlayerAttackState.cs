@@ -13,8 +13,6 @@ public class PlayerAttackState : PlayerState
         stateMachine.lastAttackTime = Time.time;
         stateMachine.comboCount = Mathf.Clamp(stateMachine.comboCount + 1, 1, 4);
 
-        Debug.Log("Attack Combo: " + stateMachine.comboCount);
-
         if (stateMachine.comboCount == 1)
         {
             animator.SetTrigger("Attack");
@@ -42,7 +40,14 @@ public class PlayerAttackState : PlayerState
     {
         if (isComboInputPossible && stateMachine.comboCount < 4)
         {
-            stateMachine.ChangeState(stateMachine.AttackState);
+            if (stateMachine.Stats.TryUseStamina(stateMachine.attackStaminaCost))
+            {
+                stateMachine.ChangeState(stateMachine.AttackState);
+            }
+            else
+            {
+                Debug.Log("스태미나 부족");
+            }
         }
     }
 

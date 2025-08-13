@@ -161,6 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1251760738030441024}
   - component: {fileID: 7665763156231855061}
+  - component: {fileID: 2093481689627285021}
   m_Layer: 6
   m_Name: GS_ParryCollider
   m_TagString: PlayerParry
@@ -202,8 +203,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.27942318, y: 0.08977074, z: 1.185355}
-  m_Center: {x: 0.96556574, y: 0.45485982, z: 0.50307834}
+  m_Size: {x: 0.2794232, y: 0.3302692, z: 1.1853548}
+  m_Center: {x: 0.9655672, y: 0.43824902, z: 0.5030783}
+--- !u!114 &2093481689627285021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596306569023311237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb974d6a4f24ac7419e3798be1a3ce2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &617288560462308143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,8 +1144,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.27942318, y: 0.08977074, z: 1.185355}
-  m_Center: {x: 0.96556574, y: 0.45485982, z: 0.50307834}
+  m_Size: {x: 0.2794232, y: 0.3302692, z: 1.1853548}
+  m_Center: {x: 0.9655672, y: 0.43824902, z: 0.5030783}
 --- !u!1 &3249003575618560868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,7 +1525,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5517697180281672466
 Transform:
   m_ObjectHideFlags: 0
@@ -1616,26 +1629,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 6669724365614782507}
-  comboTime: 1.5
+  comboTime: 1.1
   comboCount: 0
   lastAttackTime: 0
   jumpForce: 5
   groundCheckDistance: 1.1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   rotationSpeed: 15
   airControlSpeed: 5
   skills:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: ab4e832f799c566458cf24813ff96645, type: 2}
+  - {fileID: 11400000, guid: f9d39e37fb72fe04185d93a1a2d032cf, type: 2}
   dodgeStaminaCost: 10
-  AttackStaminaCost: 10
+  attackStaminaCost: 5
+  sprintStaminaCost: 2
   autoTargetingDistance: 10
   autoTargetingAngle: 180
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  guardExitDuration: 0.4
 --- !u!114 &5506020680777131475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1855,7 +1870,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9217421785775392883}
   - component: {fileID: 2027457519862958419}
-  - component: {fileID: 3318082751161561295}
   m_Layer: 0
   m_Name: Maria_sword
   m_TagString: Untagged
@@ -2002,18 +2016,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.9563867, y: 0.4161765, z: 0.33970225}
     m_Extent: {x: 0.37377962, y: 0.10996109, z: 0.634907}
   m_DirtyAABB: 0
---- !u!114 &3318082751161561295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4469075014329048595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3f5de61ef168c47a3a56801192084c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4570213717577325146
 GameObject:
   m_ObjectHideFlags: 0
@@ -3100,6 +3102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 955646378956646846}
   - component: {fileID: 8211456338426552513}
+  - component: {fileID: 6705784781340204342}
   m_Layer: 9
   m_Name: GS_AttackCollider
   m_TagString: HitBox
@@ -3143,6 +3146,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.27942318, y: 0.08977074, z: 1.185355}
   m_Center: {x: 0.96556574, y: 0.45485982, z: 0.50307834}
+--- !u!114 &6705784781340204342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8732925186947805439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3f5de61ef168c47a3a56801192084c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9159220537539815930
 GameObject:
   m_ObjectHideFlags: 0

@@ -166,6 +166,8 @@ public class PlayerStats : MonoBehaviour
     public PlayerDamageRange attackDamageRange;
     public float damageRange = 0.2f;
 
+    public bool IsBerserk { get; private set; } = false; 
+
     public Vector3 currentPos;
 
     void Awake()
@@ -346,14 +348,8 @@ public class PlayerStats : MonoBehaviour
         Str.SetDefaultValue(baseStats.Str);
         Dex.SetDefaultValue(baseStats.Dex);
         Int.SetDefaultValue(baseStats.Int);
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("HitBox"))
-        {
-            Debug.Log("플레이어 피격!");
-        }
+        UpdateFinalStats();
     }
 
     public void TakePhysicalDamage(int damage)
@@ -385,7 +381,14 @@ public class PlayerStats : MonoBehaviour
 
     protected virtual int DecreaseHealth(int finalDamage)
     {
-        currentHealth = Mathf.Max(0, currentHealth - finalDamage);
+        if (IsBerserk && currentHealth - finalDamage <= 0)
+        {
+            currentHealth = 1;
+        }
+        else
+        {
+            currentHealth = Mathf.Max(0, currentHealth - finalDamage);
+        }
         return currentHealth;
     }
 
@@ -437,6 +440,9 @@ public class PlayerStats : MonoBehaviour
 
     private IEnumerator BuffCoroutine(SkillData skill)
     {
+        float moveSpeedBonus = 0;
+        float sprintSpeedBonus = 0;
+
         List<Stat> statsToModify = new List<Stat>();
         foreach (var buff in skill.buffs)
         {
@@ -444,22 +450,57 @@ public class PlayerStats : MonoBehaviour
             if (targetStat != null)
             {
                 statsToModify.Add(targetStat);
+                if (buff.statToBuff == StatType.maxStamina)
+                {
+                    currentStamina += buff.amount;
+                }
             }
         }
 
         for (int i = 0; i < statsToModify.Count; i++)
         {
             statsToModify[i].AddModifier(skill.buffs[i].amount);
-            Debug.Log($"{skill.buffs[i].statToBuff} 스탯을 {skill.buffs[i].amount} 만큼 증가시킵니다.");
         }
 
+        if (skill.Hasting)
+        {
+            stateMachine.Animator.speed = skill.hasteAmount;  // 애니메이터 속도 증가
+
+            moveSpeedBonus = moveSpeed.GetValue() * (skill.hasteAmount - 1f);
+            sprintSpeedBonus = sprintSpeed.GetValue() * (skill.hasteAmount - 1f);
+
+            moveSpeed.AddModifier(moveSpeedBonus);
+            sprintSpeed.AddModifier(sprintSpeedBonus);
+        }
+        if (skill.Berserk)
+        {
+            IsBerserk = true;
+        }
+
+        UpdateFinalStats();
+        // --------------------------------------------------------- 버프적용
         yield return new WaitForSeconds(skill.buffDuration);
+        // ---------------------------------------------------------- 버프지속
 
         for (int i = 0; i < statsToModify.Count; i++)
         {
             statsToModify[i].RemoveModifier(skill.buffs[i].amount);
-            Debug.Log($"{skill.buffs[i].statToBuff} 스탯 버프가 종료되었습니다.");
         }
+        currentStamina = Mathf.Min(currentStamina, maxStamina.GetValue());
+        if (skill.Hasting)
+        {
+            stateMachine.Animator.speed = 1f;
+
+            moveSpeed.RemoveModifier(moveSpeedBonus);
+            sprintSpeed.RemoveModifier(sprintSpeedBonus);
+        }
+        if (skill.Berserk)
+        {
+            IsBerserk = false;
+        }
+
+        UpdateFinalStats();
+        //---------------------------------------------------------- 버프해제
     }
 
     private Stat GetStat(StatType type)
@@ -471,6 +512,7 @@ public class PlayerStats : MonoBehaviour
             case StatType.Int: return Int;
             case StatType.defense: return defense;
             case StatType.magicDefense: return magicDefense;
+            case StatType.maxStamina: return maxStamina;
             default: return null;
         }
     }
@@ -527,6 +569,30 @@ public class PlayerStats : MonoBehaviour
     {
         level++;
         Debug.Log($"레벨 업! 현재 레벨: {level}");
+        maxHealth.AddModifier(baseStats.maxHealthPerLevel);
+        maxMana.AddModifier(baseStats.maxManaPerLevel);
+        maxStamina.AddModifier(baseStats.maxStaminaPerLevel);
+        defense.AddModifier(baseStats.defensePerLevel);
+        magicDefense.AddModifier(baseStats.magicDefensePerLevel);
+        Str.AddModifier(baseStats.strPerLevel);
+        Dex.AddModifier(baseStats.dexPerLevel);
+        Int.AddModifier(baseStats.intPerLevel);
+
+        currentHealth = maxHealth.GetValue(); // 체력과 마나를 최대치로 회복
+        currentMana = maxMana.GetValue();
+
+        maxEXP.SetDefaultValue(baseStats.maxEXP + 100 * (level - 1));
+
+        UpdateFinalStats();  // 최종 스탯 업뎃
+        Debug.Log("스탯 재계산 완료");
+    }
+
+    public void UpdateFinalStats()
+    {
+        int strBonusDamage = Str.GetValue() * 1;
+        int dexBonusDamage = Dex.GetValue() * 1;
+        attackDamage.SetDefaultValue(baseStats.attackDamage + strBonusDamage + dexBonusDamage);
+        Debug.Log($"공격력 업데이트: {attackDamage.GetValue()} (기본: {baseStats.attackDamage}, 힘 보너스: {strBonusDamage}, 민첩 보너스: {dexBonusDamage})");
     }
 
     // 테스트용 메서드 (Inspector에서 테스트용)
