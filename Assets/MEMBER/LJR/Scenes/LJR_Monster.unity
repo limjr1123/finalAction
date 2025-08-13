@@ -119,6 +119,68 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &403457352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 403457353}
+  m_Layer: 0
+  m_Name: SpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &403457353
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403457352}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.21936, y: 0.5, z: 0.21699}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &547019553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 547019554}
+  m_Layer: 7
+  m_Name: SwordWindAim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &547019554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547019553}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4558266188818586}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &881359969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219,6 +281,10 @@ PrefabInstance:
     - target: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_Name
       value: Player_SwordAndShield
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5056567684460758164, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalScale.x
@@ -413,7 +479,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -6259,6 +6325,7 @@ Transform:
   - {fileID: 4295099370051128}
   - {fileID: 4228970572506738}
   - {fileID: 4665487210873686}
+  - {fileID: 547019554}
   - {fileID: 1917381537344549781}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7275,7 +7342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitEffectType: 0
+  hitEffectType: 1
 --- !u!4 &4812531796914308
 Transform:
   m_ObjectHideFlags: 0
@@ -7631,7 +7698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitEffectType: 0
+  hitEffectType: 1
 --- !u!4 &4931211487455422
 Transform:
   m_ObjectHideFlags: 0
@@ -7954,12 +8021,17 @@ MonoBehaviour:
   unblockableAttacks:
   - {fileID: 11400000, guid: c99ef6a37b7441b4e9c311b7db3d3c8a, type: 2}
   rageAttack: []
+  rightAttackImpactPosition: {fileID: 4316048025190582}
+  leftAttackImpactPosition: {fileID: 4734314307839936}
+  swordWindPrefab: {fileID: 1370121811555816182, guid: f2e173bee2435f549acd7f371f0f7946, type: 3}
+  swordWindAim: {fileID: 547019554}
+  swordWindZAngle: 0
   weapon: {fileID: 0}
-  attackImpactPosition: {fileID: 0}
   leftHandCollider: {fileID: 4928136096541457}
   rightHandCollider: {fileID: 4805895018118653}
   leftFootCollider: {fileID: 0}
   rightFootCollider: {fileID: 0}
+  warningSignPrefab: {fileID: 1619254214636677203, guid: 196c78e7d39965742ada35250ada5516, type: 3}
   attackState: 0
 --- !u!114 &95036879724964658
 MonoBehaviour:
@@ -9584,3 +9656,4 @@ SceneRoots:
   - {fileID: 3244451500686155102}
   - {fileID: 994896153}
   - {fileID: 7736408756196026899}
+  - {fileID: 403457353}
