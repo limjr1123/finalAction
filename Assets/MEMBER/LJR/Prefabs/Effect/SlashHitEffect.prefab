@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8517239380886513991}
   - component: {fileID: 5874125126949949338}
   m_Layer: 0
-  m_Name: FX_Slash_Hit
+  m_Name: SlashHitEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
