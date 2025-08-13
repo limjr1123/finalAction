@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameSave;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -7,7 +7,7 @@ public class QuestManager : Singleton<QuestManager>
 {
     [SerializeField] private QuestDatabase questDatabase;
     private List<QuestProgress> activeQuests = new List<QuestProgress>();
-
+    public QuestDatabase GetQuestDataBase => questDatabase;
 
     void Start()
     {

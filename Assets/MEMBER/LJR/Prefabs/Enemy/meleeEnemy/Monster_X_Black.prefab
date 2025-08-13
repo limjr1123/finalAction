@@ -433,6 +433,7 @@ GameObject:
   - component: {fileID: 8924629300212347042}
   - component: {fileID: 3486306561709582496}
   - component: {fileID: 1305192927322209996}
+  - component: {fileID: 5796363620988888909}
   m_Layer: 7
   m_Name: Monster_X_Black
   m_TagString: Enemy
@@ -715,6 +716,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &5796363620988888909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044956858299777166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f211072d0838bcb43b4ec2ba6af7564e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconType: 2
+  iconSize: 3
 --- !u!1 &1595328436999576805
 GameObject:
   m_ObjectHideFlags: 0

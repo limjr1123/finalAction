@@ -3900,7 +3900,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 533271992}
   respawnDelay: 3
   initialSceneName: Dungeon
 --- !u!65 &533271995
@@ -4881,7 +4880,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
   respawnDelay: 3
   initialSceneName: GameScene
 --- !u!1001 &645261181
@@ -5717,9 +5715,6 @@ MonoBehaviour:
   portalID: Dungeon
   targetSceneName: Field
   targetPortalID: Field
-  player: {fileID: 0}
-  teleportDelay: 0.5
-  fadeDuration: 0.5
   portalCooldown: 3
 --- !u!65 &760278007
 BoxCollider:
@@ -6695,7 +6690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 886941602}
   respawnDelay: 3
   initialSceneName: GameScene
 --- !u!4 &886941604 stripped
@@ -7864,6 +7858,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1b58f75618fc340baeccee09741a0e, type: 3}
+--- !u!1001 &1037345677
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6917158064638926932, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_Name
+      value: OrkAssasin_Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1485.2928
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 104.600006
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 90.47723
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.62962586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.77689856
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -101.955
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965953488196063255, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d1c4d7ffc63942548894a242372ee052, type: 3}
 --- !u!1001 &1049195786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7946,7 +7997,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1049195788}
   respawnDelay: 3
   initialSceneName: GameScene
 --- !u!114 &1086207407 stripped
@@ -10613,7 +10663,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -11797,6 +11847,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be5ddce7644ff094db0b61aa24d9814a, type: 3}
+--- !u!1001 &1582701599
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1387.171
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 116.97063
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 64.12488
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057784180130757487, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045441081114076483, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
+      propertyPath: m_Name
+      value: HitEffectManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
 --- !u!1 &1586851375
 GameObject:
   m_ObjectHideFlags: 1
@@ -17121,7 +17228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2111350098}
   respawnDelay: 3
   initialSceneName: Dungeon
 --- !u!4 &2111350100 stripped
@@ -19151,3 +19257,5 @@ SceneRoots:
   - {fileID: 418173540}
   - {fileID: 1837173321}
   - {fileID: 558875875}
+  - {fileID: 1037345677}
+  - {fileID: 1582701599}

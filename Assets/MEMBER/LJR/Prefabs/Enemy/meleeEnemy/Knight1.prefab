@@ -5433,6 +5433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!1 &7220286321481275768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5454,6 +5455,7 @@ GameObject:
   - component: {fileID: 4589608812321966284}
   - component: {fileID: 48100047721050166}
   - component: {fileID: 2383033301324817071}
+  - component: {fileID: -6529819282849965777}
   m_Layer: 7
   m_Name: Knight1
   m_TagString: Enemy
@@ -5530,6 +5532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statData: {fileID: 11400000, guid: 8e4f0acdb95ee8641b05360191ebf948, type: 2}
   <currentHealth>k__BackingField: 0
+  enemyName: 
   attackDamage:
     baseValue: 0
     modifiers: 
@@ -5733,6 +5736,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &-6529819282849965777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7220286321481275768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f211072d0838bcb43b4ec2ba6af7564e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconType: 2
+  iconSize: 3
 --- !u!1 &7454197992491050568
 GameObject:
   m_ObjectHideFlags: 0
@@ -6365,6 +6382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!1 &8770727035520049887
 GameObject:
   m_ObjectHideFlags: 0
