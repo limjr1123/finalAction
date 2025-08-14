@@ -10,11 +10,17 @@ public class BossGetHitState : EnemyState<BossController>
     {
         boss = owner;
         hitAnimationIndex = boss.getHitAnimations.Count;
-        StartCoroutine(GettingHitAnim());
+        //StartCoroutine(GettingHitAnim());
+    }
+    public override void Execute()
+    {
+        if (boss.stats.currentHealth <= 0)
+        {
+            boss.stateMachine.ChangeState(boss.stateDict[BossStates.Battle]);
+        }
+        else { boss.stateMachine.ChangeState(boss.stateDict[BossStates.Battle]); }
     }
 
-
-    // Update is called once per frame
     IEnumerator GettingHitAnim()
     {
         boss.inGetHit = true;

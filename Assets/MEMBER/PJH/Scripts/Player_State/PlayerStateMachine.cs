@@ -1,3 +1,4 @@
+ï»¿using System;
 using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
@@ -14,23 +15,23 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerGuardState GuardState { get; private set; }
     public PlayerSkillState SkillState { get; private set; }
 
-    [Header("ÇÊ¼ö ÄÄÆ÷³ÍÆ®")]
+    [Header("í•„ìˆ˜ ì»´í¬ë„ŒíŠ¸")]
     public PlayerStats Stats { get; private set; }
     public Transform mainCamera;
     public Rigidbody Rb { get; private set; }
     public Animator Animator { get; private set; }
 
-    [Header("°ø°İ °ü·Ã")]
+    [Header("ê³µê²© ê´€ë ¨")]
     public float comboTime = 1f;
     public int comboCount = 0;
     public float lastAttackTime = 0f;
 
-    [Header("Á¡ÇÁ °ü·Ã")]
+    [Header("ì í”„ ê´€ë ¨")]
     public float jumpForce = 5f;
     public float groundCheckDistance = 1.1f;
     public LayerMask groundLayer;
 
-    [Header("ÀÌµ¿ °ü·Ã")]
+    [Header("ì´ë™ ê´€ë ¨")]
     public Vector3 MoveDirection { get; set; }
     public float InputX { get; private set; }
     public float InputY { get; private set; }
@@ -38,28 +39,30 @@ public class PlayerStateMachine : MonoBehaviour
     public float airControlSpeed = 5f;
     public bool IsSprinting { get; set; }
 
-    [Header("½ºÅ³ °ü·Ã")]
+    [Header("ìŠ¤í‚¬ ê´€ë ¨")]
     public SkillData[] skills = new SkillData[2];
     public SkillData CurrentSkillToUse { get; private set; }
     private float[] skillCooldowns;
 
-    [Header("¼Ò¸ğ °ü·Ã")]
+    [Header("ì†Œëª¨ ê´€ë ¨")]
     public int dodgeStaminaCost = 10;
     public int attackStaminaCost = 5;
     public int sprintStaminaCost = 2; 
 
-    [Header("·¹ÀÌ¾î º¯°æ °ü·Ã")]
+    [Header("ë ˆì´ì–´ ë³€ê²½ ê´€ë ¨")]
     private int _playerLayer;
     private int _evasionLayer;
 
-    [Header("¿ÀÅäÅ¸°ÙÆÃ °ü·Ã")]
-    public float autoTargetingDistance = 10f; // Å½»ö °Å¸®
-    public float autoTargetingAngle = 60f;    // Å½»ö °¢µµ
+    [Header("ì˜¤í† íƒ€ê²ŸíŒ… ê´€ë ¨")]
+    public float autoTargetingDistance = 10f; // íƒìƒ‰ ê±°ë¦¬
+    public float autoTargetingAngle = 60f;    // íƒìƒ‰ ê°ë„
     public LayerMask enemyLayerMask;
 
-    [Header("°¡µå °ü·Ã")] 
+    [Header("ê°€ë“œ ê´€ë ¨")] 
     public float guardExitDuration = 0.6f;
-
+    
+    public Collider interactableCollider; // ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì˜ ì½œë¼ì´ë”
+    public LayerMask interactableLayerMask; // ìƒí˜¸ì‘ìš© ê°€ëŠ¥í•œ ë ˆì´ì–´
 
     private void Awake()
     {
@@ -78,7 +81,7 @@ public class PlayerStateMachine : MonoBehaviour
         GuardState = new PlayerGuardState(this, gameObject, Animator, guardExitDuration);
         SkillState = new PlayerSkillState(this, gameObject, Animator);
 
-        skillCooldowns = new float[skills.Length]; // ½ºÅ³ ÄğÅ¸ÀÓ ÃÊ±âÈ­
+        skillCooldowns = new float[skills.Length]; // ìŠ¤í‚¬ ì¿¨íƒ€ì„ ì´ˆê¸°í™”
 
         _playerLayer = LayerMask.NameToLayer("Player"); 
         _evasionLayer = LayerMask.NameToLayer("PlayerDodge");
@@ -104,7 +107,7 @@ public class PlayerStateMachine : MonoBehaviour
         HandleInput();
         currentState?.Update();
 
-        for (int i = 0; i < skillCooldowns.Length; i++)  // ÄğÅ¸ÀÓ °è»ê
+        for (int i = 0; i < skillCooldowns.Length; i++)  // ì¿¨íƒ€ì„ ê³„ì‚°
         {
             if (skillCooldowns[i] > 0)
             {
@@ -123,27 +126,27 @@ public class PlayerStateMachine : MonoBehaviour
         InputX = Input.GetAxisRaw("Horizontal");
         InputY = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetMouseButtonDown(0))  // °ø°İ
+        if (Input.GetMouseButtonDown(0))  // ê³µê²©
         {
             currentState?.OnAttack();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl)) // Á¡ÇÁ
+        if (Input.GetKeyDown(KeyCode.LeftControl)) // ì í”„
         {
             currentState?.OnJump(); 
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) // È¸ÇÇ
+        if (Input.GetKeyDown(KeyCode.Space)) // íšŒí”¼
         {   
             currentState?.OnDodge();
         }
 
-        //if (Input.GetKeyDown(KeyCode.LeftControl)) // ÆĞ¸µ
+        //if (Input.GetKeyDown(KeyCode.LeftControl)) // íŒ¨ë§
         //{
         //    currentState?.OnParry();
         //}
 
-        if (Input.GetKeyDown(KeyCode.Tab))  // °¡µå
+        if (Input.GetKeyDown(KeyCode.Tab))  // ê°€ë“œ
         {
             currentState?.OnGuard();
         }
@@ -152,40 +155,54 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnGuardUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))  // ½ºÅ³1
+        if (Input.GetKeyDown(KeyCode.Q))  // ìŠ¤í‚¬1
         {
             currentState?.OnSkill(0);
         }
-        else if (Input.GetKeyDown(KeyCode.E))  // ½ºÅ³2
+        else if (Input.GetKeyDown(KeyCode.E))  // ìŠ¤í‚¬2
         {
             currentState?.OnSkill(1);
+        }
+
+        if(Input.GetKeyDown(KeyCode.G)) // ìƒí˜¸ì‘ìš©
+        {
+            Interact();
+        }
+    }
+
+    private void Interact()
+    {
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, interactableLayerMask))
+        {
+            hit.collider.GetComponent<NPC>()?.Interact();
         }
     }
 
     public bool TryUseSkill(int slotIndex)
     {
-        // ½½·Ô ¹øÈ£°¡ À¯È¿ÇÑÁö È®ÀÎ
+        // ìŠ¬ë¡¯ ë²ˆí˜¸ê°€ ìœ íš¨í•œì§€ í™•ì¸
         if (slotIndex < 0 || slotIndex >= skills.Length || skills[slotIndex] == null) return false;
 
-        // ÇØ´ç ½ºÅ³ÀÇ ÄğÅ¸ÀÓÀÌ ³¡³µ´ÂÁö È®ÀÎ
+        // í•´ë‹¹ ìŠ¤í‚¬ì˜ ì¿¨íƒ€ì„ì´ ëë‚¬ëŠ”ì§€ í™•ì¸
         if (skillCooldowns[slotIndex] > 0)
         {
-            Debug.Log($"{skills[slotIndex].skillName}ÀÇ ÄğÅ¸ÀÓÀÌ ¾ÆÁ÷ ³¡³ªÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.Log($"{skills[slotIndex].skillName}ì˜ ì¿¨íƒ€ì„ì´ ì•„ì§ ëë‚˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return false;
         }
 
-        // ÇØ´ç ½ºÅ³ÀÇ ¸¶³ª ºñ¿ëÀ» È®ÀÎ
+        // í•´ë‹¹ ìŠ¤í‚¬ì˜ ë§ˆë‚˜ ë¹„ìš©ì„ í™•ì¸
         if (!Stats.TryUseMana(skills[slotIndex].manaCost))
         {
-            Debug.Log("¸¶³ª°¡ ºÎÁ·ÇÕ´Ï´Ù.");
+            Debug.Log("ë§ˆë‚˜ê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
             return false;
         }
 
-        // ¸ğµç Á¶°ÇÀ» Åë°úÇßÀ¸¸é ½ºÅ³ »ç¿ë ÁØºñ
+        // ëª¨ë“  ì¡°ê±´ì„ í†µê³¼í–ˆìœ¼ë©´ ìŠ¤í‚¬ ì‚¬ìš© ì¤€ë¹„
         CurrentSkillToUse = skills[slotIndex];
         skillCooldowns[slotIndex] = CurrentSkillToUse.cooldown;
 
-        // ¼º°øÇß´Ù´Â ÀÇ¹Ì·Î true¸¦ ¹İÈ¯
+        // ì„±ê³µí–ˆë‹¤ëŠ” ì˜ë¯¸ë¡œ trueë¥¼ ë°˜í™˜
         return true;
     }
 
@@ -204,12 +221,12 @@ public class PlayerStateMachine : MonoBehaviour
         ChangeState(IdleState);
     }
 
-    public void GetDamage()  // ÇÇ°İ »óÅÂ ÀüÈ¯
+    public void GetDamage()  // í”¼ê²© ìƒíƒœ ì „í™˜
     {
-        if (currentState is PlayerDeathState ||   //Á×¾ú°Å³ª
-            currentState is PlayerDamagedState || // ÇÇ°İ ÁßÀÌ°Å³ª
-            currentState is PlayerGuardState ||  // °¡µå ÁßÀÌ°Å³ª
-            currentState is PlayerSkillState)  // ½ºÅ³ »ç¿ë ÁßÀÌ¸é °æÁ÷x
+        if (currentState is PlayerDeathState ||   //ì£½ì—ˆê±°ë‚˜
+            currentState is PlayerDamagedState || // í”¼ê²© ì¤‘ì´ê±°ë‚˜
+            currentState is PlayerGuardState ||  // ê°€ë“œ ì¤‘ì´ê±°ë‚˜
+            currentState is PlayerSkillState)  // ìŠ¤í‚¬ ì‚¬ìš© ì¤‘ì´ë©´ ê²½ì§x
         {
             return;
         }
@@ -217,29 +234,29 @@ public class PlayerStateMachine : MonoBehaviour
         ChangeState(DamagedState);
     }
 
-    public void OnHitAnimationEnd()  // ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á ÈÄ »óÅÂ ÀüÈ¯
+    public void OnHitAnimationEnd()  // í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ í›„ ìƒíƒœ ì „í™˜
     {
         ChangeState(IdleState);
     }
 
-    public void OnEvasionAnimationEnd() // È¸ÇÇ ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á ÈÄ »óÅÂ ÀüÈ¯
+    public void OnEvasionAnimationEnd() // íšŒí”¼ ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ í›„ ìƒíƒœ ì „í™˜
     {
         ChangeState(IdleState);
     }
 
-    public void OnGuaurdAnimationEnd() // °¡µå ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á ÈÄ »óÅÂ ÀüÈ¯
+    public void OnGuaurdAnimationEnd() // ê°€ë“œ ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ í›„ ìƒíƒœ ì „í™˜
     {
             ChangeState(IdleState);        
     }
 
-    public void OnSkillAnimationEnd() // ½ºÅ³ ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á ÈÄ »óÅÂ ÀüÈ¯
+    public void OnSkillAnimationEnd() // ìŠ¤í‚¬ ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ í›„ ìƒíƒœ ì „í™˜
     {
         ChangeState(IdleState);
     }
 
-    public void Die()  // »ç¸Á »óÅÂ ÀüÈ¯
+    public void Die()  // ì‚¬ë§ ìƒíƒœ ì „í™˜
     {
-        if (currentState is PlayerDeathState) return; // Áßº¹ ½ÇÇà ¹æÁö
+        if (currentState is PlayerDeathState) return; // ì¤‘ë³µ ì‹¤í–‰ ë°©ì§€
 
         ChangeState(DeathState);
     }
@@ -298,7 +315,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public Transform FindAutoTarget()
     {
-        // 1. ÁöÁ¤µÈ °Å¸® ³»ÀÇ ¸ğµç ÀûÀ» Ã£½À´Ï´Ù.
+        // 1. ì§€ì •ëœ ê±°ë¦¬ ë‚´ì˜ ëª¨ë“  ì ì„ ì°¾ìŠµë‹ˆë‹¤.
         Collider[] colliders = Physics.OverlapSphere(transform.position, autoTargetingDistance, enemyLayerMask);
 
         Transform bestTarget = null;
@@ -306,16 +323,16 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (colliders.Length == 0) return null;
 
-        // 2. Ã£Àº Àûµé Áß¿¡¼­ °¡Àå ÀûÇÕÇÑ Å¸°ÙÀ» °í¸¨´Ï´Ù.
+        // 2. ì°¾ì€ ì ë“¤ ì¤‘ì—ì„œ ê°€ì¥ ì í•©í•œ íƒ€ê²Ÿì„ ê³ ë¦…ë‹ˆë‹¤.
         foreach (var collider in colliders)
         {
             Vector3 directionToTarget = (collider.transform.position - transform.position).normalized;
-            directionToTarget.y = 0; // yÃàÀº ¹«½ÃÇÏ¿© ¼öÆò °¢µµ¸¸ °è»ê
+            directionToTarget.y = 0; // yì¶•ì€ ë¬´ì‹œí•˜ì—¬ ìˆ˜í‰ ê°ë„ë§Œ ê³„ì‚°
 
-            // ÇÃ·¹ÀÌ¾îÀÇ Á¤¸é ¹æÇâ°ú Å¸°Ù ¹æÇâ »çÀÌÀÇ °¢µµ¸¦ °è»ê
+            // í”Œë ˆì´ì–´ì˜ ì •ë©´ ë°©í–¥ê³¼ íƒ€ê²Ÿ ë°©í–¥ ì‚¬ì´ì˜ ê°ë„ë¥¼ ê³„ì‚°
             float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-            // 3. ¼³Á¤µÈ Å½»ö °¢µµ ¾È¿¡ ÀÖ°í, ±× Áß °¡Àå Á¤¸é¿¡ ÀÖ´Â Å¸°ÙÀ» ¼±ÅÃ
+            // 3. ì„¤ì •ëœ íƒìƒ‰ ê°ë„ ì•ˆì— ìˆê³ , ê·¸ ì¤‘ ê°€ì¥ ì •ë©´ì— ìˆëŠ” íƒ€ê²Ÿì„ ì„ íƒ
             if (angle < autoTargetingAngle / 2f)
             {
                 if (angle < minAngle)

@@ -1,12 +1,14 @@
-using UnityEngine;
+﻿using UnityEngine;
 using GameSave;
 
-public class GoldSystem : MonoBehaviour, ICurrencySystem
+public class GoldSystem : Singleton<GoldSystem>, ICurrencySystem
 {
     private CharacterData character;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         var mgr = GameDataSaveLoadManager.Instance;
         int idx = mgr.GetSelectedCharacterSlotIndex();
         character = mgr.GetCharacterData(idx);

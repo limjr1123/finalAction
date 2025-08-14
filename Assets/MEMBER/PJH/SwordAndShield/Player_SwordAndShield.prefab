@@ -1794,7 +1794,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!136 &5168353133453131900
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1853,6 +1853,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   guardExitDuration: 0.6
+  interactableCollider: {fileID: 0}
+  interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &6711030526590164055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1866,7 +1870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: "\uD14C\uC2A4\uD2B822"
+  characterName: "\uD14C\uC2A4\uD2B8\uD14C\uC2A4"
   characterJob: 
   _currentHealth: 100
   _currentMana: 0
@@ -2775,6 +2779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6856035334171093451}
   - component: {fileID: 6184395318422701713}
+  - component: {fileID: 8540008128604999221}
   m_Layer: 6
   m_Name: SAS_ShieldCollider (Parry)
   m_TagString: PlayerParry
@@ -2818,6 +2823,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.66981655, y: 0.42743042, z: 0.038922135}
   m_Center: {x: -0.42682204, y: 0.2895766, z: 0.16537149}
+--- !u!54 &8540008128604999221
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6834751255879507248}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 3
 --- !u!1 &6855653871618625226
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,6 +3181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8962660627359903675}
   - component: {fileID: 1042393821768351857}
+  - component: {fileID: 163669136951739628}
   m_Layer: 6
   m_Name: SAS_ShieldCollider(Gaurd)
   m_TagString: PlayerGuard
@@ -3192,6 +3225,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7236327, y: 0.5151096, z: 0.038922124}
   m_Center: {x: -0.39991388, y: 0.28003073, z: 0.16537173}
+--- !u!54 &163669136951739628
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7740473996666576218}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 3
 --- !u!1 &7779514781946550727
 GameObject:
   m_ObjectHideFlags: 0

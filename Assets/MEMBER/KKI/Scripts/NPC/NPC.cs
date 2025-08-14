@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 
 // 나중에 NPC의 속성이 많아지면 상점 NPC, 퀘스트 NPC 등 역할별로 파생 클래스으로 확장
@@ -8,6 +8,11 @@ public class NPC : MonoBehaviour, INPCInteractable
     [SerializeField] private string startDialogueID;
     private bool isInteract;
 
+
+    private void Start()
+    {
+    }
+
     public virtual void Interact()
     {
         if (isInteract == true) return;
@@ -16,7 +21,14 @@ public class NPC : MonoBehaviour, INPCInteractable
 
         // 상호작용 : 기본 대화, 상점, 퀘스트 수락 등 NPCType에 따라 처리
         // 대화 데이터 보내기
-        DialogueManager.Instance.StartDialogue(startDialogueID);
+        //DialogueManager.Instance.StartDialogue(startDialogueID);
+
+        QuestData questData =  QuestManager.Instance.GetQuestDataBase.GetQuestByID("Dungeon1Reach");
+        if (questData != null)
+        {
+            Debug.Log(questData.title + "퀘스트 등록!");
+            QuestManager.Instance.AddQuest(questData);
+        }
     }
 
     public virtual void EndInteraction()

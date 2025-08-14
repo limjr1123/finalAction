@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerEvasionState : PlayerState
 {
@@ -19,7 +19,7 @@ public class PlayerEvasionState : PlayerState
     {
         animator.SetTrigger("Evasion");
 
-        SetLayerRecursively(player, _dodgingLayer);
+        player.layer = _dodgingLayer;
 
         if (stateMachine.InputX != 0 || stateMachine.InputY != 0)
         {
@@ -46,20 +46,9 @@ public class PlayerEvasionState : PlayerState
 
     public override void Exit()
     {
-        SetLayerRecursively(player, _originalLayer);
-   
+        player.layer = _originalLayer;
+
         stateMachine.Rb.linearVelocity = Vector3.zero;
     }
 
-    private void SetLayerRecursively(GameObject obj, int newLayer)
-    {
-        if (obj == null) return;
-        obj.layer = newLayer;
-
-        foreach (Transform child in obj.transform)
-        {
-            if (child == null) continue;
-            SetLayerRecursively(child.gameObject, newLayer);
-        }
-    }
 }
