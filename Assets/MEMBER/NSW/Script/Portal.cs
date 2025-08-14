@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -8,13 +8,13 @@ public class Portal : MonoBehaviour
     public string portalID = "DefaultPortal";
 
     [Header("Scene Transition")]
-    [Tooltip("ÀÌ Æ÷Å»À» ÅëÇØ ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§ (ÇÊ¼ö). Build Settings¿¡ Ãß°¡µÇ¾î ÀÖ¾î¾ß ÇÕ´Ï´Ù.")]
+    [Tooltip("ì´ í¬íƒˆì„ í†µí•´ ì´ë™í•  ì”¬ì˜ ì´ë¦„ (í•„ìˆ˜). Build Settingsì— ì¶”ê°€ë˜ì–´ ìˆì–´ì•¼ í•©ë‹ˆë‹¤.")]
     public string targetSceneName;
-    [Tooltip("ÀÌ Æ÷Å»À» ÅëÇØ ÀÌµ¿ÇßÀ» ¶§, µµÂøÇÒ ¾À¿¡ ÀÖ´Â ¸ñÀûÁö Æ÷Å»ÀÇ IDÀÔ´Ï´Ù.")]
+    [Tooltip("ì´ í¬íƒˆì„ í†µí•´ ì´ë™í–ˆì„ ë•Œ, ë„ì°©í•  ì”¬ì— ìˆëŠ” ëª©ì ì§€ í¬íƒˆì˜ IDì…ë‹ˆë‹¤.")]
     public string targetPortalID;
 
     [Header("Cooldown Settings")]
-    [Tooltip("Æ÷Å» »ç¿ë ÈÄ ´Ù½Ã »ç¿ëÇÏ±â±îÁöÀÇ ´ë±â ½Ã°£(ÃÊ)ÀÔ´Ï´Ù.")]
+    [Tooltip("í¬íƒˆ ì‚¬ìš© í›„ ë‹¤ì‹œ ì‚¬ìš©í•˜ê¸°ê¹Œì§€ì˜ ëŒ€ê¸° ì‹œê°„(ì´ˆ)ì…ë‹ˆë‹¤.")]
     public float portalCooldown = 3.0f;
 
     private bool isTeleporting = false;
@@ -26,56 +26,60 @@ public class Portal : MonoBehaviour
         {
             if (Time.time < lastTeleportTime + portalCooldown)
             {
-                Debug.Log($"Æ÷Å» ÄğÅ¸ÀÓ ÁßÀÔ´Ï´Ù. {((lastTeleportTime + portalCooldown) - Time.time):F1}ÃÊ ³²À½.");
+                Debug.Log($"í¬íƒˆ ì¿¨íƒ€ì„ ì¤‘ì…ë‹ˆë‹¤. {((lastTeleportTime + portalCooldown) - Time.time):F1}ì´ˆ ë‚¨ìŒ.");
                 return;
             }
 
             isTeleporting = true;
-            Debug.Log($"ÇÃ·¹ÀÌ¾î '{other.name}'°¡ Æ÷Å» '{portalID}'¿¡ ÁøÀÔÇß½À´Ï´Ù. ¾À '{targetSceneName}'ÀÇ '{targetPortalID}'·Î ÀÌµ¿ ½Ãµµ.");
+            Debug.Log($"í”Œë ˆì´ì–´ '{other.name}'ê°€ í¬íƒˆ '{portalID}'ì— ì§„ì…í–ˆìŠµë‹ˆë‹¤. ì”¬ '{targetSceneName}'ì˜ '{targetPortalID}'ë¡œ ì´ë™ ì‹œë„.");
             StartCoroutine(TeleportPlayer(other.gameObject));
         }
     }
 
     IEnumerator TeleportPlayer(GameObject player)
     {
-        // ÄğÅ¸ÀÓ ¼³Á¤
+        // ì¿¨íƒ€ì„ ì„¤ì •
         lastTeleportTime = Time.time;
 
-        // È­¸é ÆäÀÌµå ¾Æ¿ô µîÀÇ È¿°ú¸¦ ¿©±â¿¡ Ãß°¡ÇÒ ¼ö ÀÖ½À´Ï´Ù.
-        // ÀÌ ºÎºĞÀº SceneLoaderÀÇ ·Îµù UI°¡ Ã³¸®ÇÏ¹Ç·Î, ¿©±â¼­´Â µô·¹ÀÌ¸¦ ÁÖÁö ¾Ê°Å³ª
-        // ÆäÀÌµå È¿°ú¸¦ SceneLoader¿Í ¿¬µ¿ÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
-        // ¿©±â¼­´Â ÀÏ´Ü ·Î±×¸¸ ³²±é´Ï´Ù.
-        Debug.Log("¾À ·ÎµùÀ» ½ÃÀÛÇÕ´Ï´Ù...");
+        // í™”ë©´ í˜ì´ë“œ ì•„ì›ƒ ë“±ì˜ íš¨ê³¼ë¥¼ ì—¬ê¸°ì— ì¶”ê°€í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+        // ì´ ë¶€ë¶„ì€ SceneLoaderì˜ ë¡œë”© UIê°€ ì²˜ë¦¬í•˜ë¯€ë¡œ, ì—¬ê¸°ì„œëŠ” ë”œë ˆì´ë¥¼ ì£¼ì§€ ì•Šê±°ë‚˜
+        // í˜ì´ë“œ íš¨ê³¼ë¥¼ SceneLoaderì™€ ì—°ë™í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+        // ì—¬ê¸°ì„œëŠ” ì¼ë‹¨ ë¡œê·¸ë§Œ ë‚¨ê¹ë‹ˆë‹¤.
+        Debug.Log("ì”¬ ë¡œë”©ì„ ì‹œì‘í•©ë‹ˆë‹¤...");
 
-        // ÇÃ·¹ÀÌ¾î ÀÌµ¿ ºñÈ°¼ºÈ­
+        // í”Œë ˆì´ì–´ ì´ë™ ë¹„í™œì„±í™”
         SetPlayerMovement(player, false);
 
-        // PlayerPrefs¸¦ »ç¿ëÇØ µµÂøÁö Æ÷Å» ID¸¦ ´ÙÀ½ ¾ÀÀ¸·Î Àü´Ş
+        // PlayerPrefsë¥¼ ì‚¬ìš©í•´ ë„ì°©ì§€ í¬íƒˆ IDë¥¼ ë‹¤ìŒ ì”¬ìœ¼ë¡œ ì „ë‹¬
         PlayerPrefs.SetString("TargetPortalIDAfterSceneLoad", targetPortalID);
         PlayerPrefs.Save();
 
-        // ¾À ·Îµå ¿Ï·á ½Ã ÇÃ·¹ÀÌ¾î À§Ä¡¸¦ Àç¼³Á¤ÇÒ ÇÔ¼ö¸¦ µî·Ï
-        SceneManager.sceneLoaded += OnSceneLoadedAndTeleport;
+        // ì”¬ ë¡œë“œ ì´ì „ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ìœ ì§€í•˜ê¸° ìœ„í•¨.
+        DontDestroyOnLoad(player);
 
-        // --- Áß¿ä º¯°æÁ¡ ---
-        // ±âÁ¸ÀÇ µ¿±â ¹æ½Ä ·Îµå ´ë½Å, ·Îµù UI¸¦ Ç¥½ÃÇÏ´Â ºñµ¿±â ¹æ½Ä SceneLoader¸¦ È£ÃâÇÕ´Ï´Ù.
+        // --- ì¤‘ìš” ë³€ê²½ì  ---
+        // ê¸°ì¡´ì˜ ë™ê¸° ë°©ì‹ ë¡œë“œ ëŒ€ì‹ , ë¡œë”© UIë¥¼ í‘œì‹œí•˜ëŠ” ë¹„ë™ê¸° ë°©ì‹ SceneLoaderë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
         SceneLoader.LoadSceneAsync(targetSceneName);
 
-        // SceneLoader°¡ ¾À ·ÎµùÀ» ½ÃÀÛÇßÀ¸¹Ç·Î ÀÌ ÄÚ·çÆ¾ÀÇ ¿ªÇÒÀº ³¡³µ½À´Ï´Ù.
-        yield break;
+        // ì”¬ ë¡œë“œ ì™„ë£Œ ì‹œ í”Œë ˆì´ì–´ ìœ„ì¹˜ë¥¼ ì¬ì„¤ì •í•  í•¨ìˆ˜ë¥¼ ë“±ë¡
+        SceneManager.sceneLoaded += OnSceneLoadedAndTeleport;
+
+        TransferManager.Instance.TransformPlayerCoroutine(player);
+
+        yield return null; // ì”¬ ë¡œë“œê°€ ì™„ë£Œë  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
     }
 
     void OnSceneLoadedAndTeleport(Scene scene, LoadSceneMode mode)
     {
-        // ÀÌº¥Æ® Áßº¹ È£ÃâÀ» ¸·±â À§ÇØ Áï½Ã µî·Ï ÇØÁ¦
+        // ì´ë²¤íŠ¸ ì¤‘ë³µ í˜¸ì¶œì„ ë§‰ê¸° ìœ„í•´ ì¦‰ì‹œ ë“±ë¡ í•´ì œ
         SceneManager.sceneLoaded -= OnSceneLoadedAndTeleport;
 
-        // PlayerManager³ª ´Ù¸¥ ¼ö´ÜÀ» ÅëÇØ ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+        // PlayerManagerë‚˜ ë‹¤ë¥¸ ìˆ˜ë‹¨ì„ í†µí•´ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ìŠµë‹ˆë‹¤.
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (player == null)
         {
-            Debug.LogError("»õ·Î¿î ¾À¿¡¼­ 'Player'¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("ìƒˆë¡œìš´ ì”¬ì—ì„œ 'Player'ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
             isTeleporting = false;
             return;
         }
@@ -83,7 +87,7 @@ public class Portal : MonoBehaviour
         string storedTargetPortalID = PlayerPrefs.GetString("TargetPortalIDAfterSceneLoad", "");
         if (string.IsNullOrEmpty(storedTargetPortalID))
         {
-            Debug.LogError("PlayerPrefs¿¡¼­ TargetPortalID¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("PlayerPrefsì—ì„œ TargetPortalIDë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
             FinishTeleportation(player);
             return;
         }
@@ -92,15 +96,15 @@ public class Portal : MonoBehaviour
 
         if (targetPortal != null)
         {
-            // ÇÃ·¹ÀÌ¾î¸¦ ¸ñÀûÁö Æ÷Å»ÀÇ À§Ä¡¿Í ¹æÇâÀ¸·Î ¼³Á¤
+            // í”Œë ˆì´ì–´ë¥¼ ëª©ì ì§€ í¬íƒˆì˜ ìœ„ì¹˜ì™€ ë°©í–¥ìœ¼ë¡œ ì„¤ì •
             Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * 1.5f;
             player.transform.position = destination;
             player.transform.rotation = targetPortal.transform.rotation;
-            Debug.Log($"ÇÃ·¹ÀÌ¾î¸¦ »õ·Î¿î ¾ÀÀÇ '{targetPortal.portalID}' Æ÷Å» À§Ä¡·Î ÀÌµ¿½ÃÄ×½À´Ï´Ù: {destination}");
+            Debug.Log($"í”Œë ˆì´ì–´ë¥¼ ìƒˆë¡œìš´ ì”¬ì˜ '{targetPortal.portalID}' í¬íƒˆ ìœ„ì¹˜ë¡œ ì´ë™ì‹œì¼°ìŠµë‹ˆë‹¤: {destination}");
         }
         else
         {
-            Debug.LogError($"»õ·Î¿î ¾À '{scene.name}'¿¡¼­ ¸ñÀûÁö Æ÷Å» ID '{storedTargetPortalID}'¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù! ÇÃ·¹ÀÌ¾î ¹èÄ¡ ½ÇÆĞ.");
+            Debug.LogError($"ìƒˆë¡œìš´ ì”¬ '{scene.name}'ì—ì„œ ëª©ì ì§€ í¬íƒˆ ID '{storedTargetPortalID}'ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤! í”Œë ˆì´ì–´ ë°°ì¹˜ ì‹¤íŒ¨.");
         }
 
         PlayerPrefs.DeleteKey("TargetPortalIDAfterSceneLoad");
@@ -122,20 +126,20 @@ public class Portal : MonoBehaviour
 
     void FinishTeleportation(GameObject player)
     {
-        // SceneLoaderÀÇ ·Îµù UI°¡ »ç¶óÁø ÈÄ ÇÃ·¹ÀÌ¾î ÀÌµ¿À» È°¼ºÈ­ÇÕ´Ï´Ù.
-        Debug.Log("È­¸é ÀüÈ¯ ¿Ï·á. ÇÃ·¹ÀÌ¾î ÀÌµ¿À» ´Ù½Ã È°¼ºÈ­ÇÕ´Ï´Ù.");
+        // SceneLoaderì˜ ë¡œë”© UIê°€ ì‚¬ë¼ì§„ í›„ í”Œë ˆì´ì–´ ì´ë™ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
+        Debug.Log("í™”ë©´ ì „í™˜ ì™„ë£Œ. í”Œë ˆì´ì–´ ì´ë™ì„ ë‹¤ì‹œ í™œì„±í™”í•©ë‹ˆë‹¤.");
         SetPlayerMovement(player, true);
         isTeleporting = false;
-        Debug.Log("ÅÚ·¹Æ÷Æ® ¿Ï·á.");
+        Debug.Log("í…”ë ˆí¬íŠ¸ ì™„ë£Œ.");
     }
 
     void SetPlayerMovement(GameObject player, bool enabled)
     {
         if (player != null)
         {
-            // ½ÇÁ¦ ÇÁ·ÎÁ§Æ®¿¡ ¸Â´Â ÇÃ·¹ÀÌ¾î ÀÌµ¿ Á¦¾î ½ºÅ©¸³Æ®¸¦ È°¼ºÈ­/ºñÈ°¼ºÈ­ ÇÏ¼¼¿ä.
-            // ¿¹: player.GetComponent<PlayerController>().enabled = enabled;
-            Debug.Log($"ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ {(enabled ? "È°¼ºÈ­" : "ºñÈ°¼ºÈ­")}.");
+            // ì‹¤ì œ í”„ë¡œì íŠ¸ì— ë§ëŠ” í”Œë ˆì´ì–´ ì´ë™ ì œì–´ ìŠ¤í¬ë¦½íŠ¸ë¥¼ í™œì„±í™”/ë¹„í™œì„±í™” í•˜ì„¸ìš”.
+            // ì˜ˆ: player.GetComponent<PlayerController>().enabled = enabled;
+            Debug.Log($"í”Œë ˆì´ì–´ ì›€ì§ì„ {(enabled ? "í™œì„±í™”" : "ë¹„í™œì„±í™”")}.");
         }
     }
 
