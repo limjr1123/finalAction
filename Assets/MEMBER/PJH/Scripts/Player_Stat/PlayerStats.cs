@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 [System.Serializable]
@@ -601,5 +602,13 @@ public class PlayerStats : MonoBehaviour
     {
         currentHealth -= 10; // 방어력 무시하고 직접 10 감소
         Debug.Log($"테스트: HP 10 직접 감소, 현재 HP: {currentHealth}");
+    }
+
+    public void Respawn()
+    {
+        isDead = false;
+        stateMachine.Animator.SetTrigger("Respawn");
+        currentHealth = maxHealth.GetValue();
+        stateMachine.ChangeState(stateMachine.IdleState);
     }
 }

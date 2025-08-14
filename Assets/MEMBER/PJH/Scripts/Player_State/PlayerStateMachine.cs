@@ -141,11 +141,6 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnDodge();
         }
 
-        //if (Input.GetKeyDown(KeyCode.LeftControl)) // 패링
-        //{
-        //    currentState?.OnParry();
-        //}
-
         if (Input.GetKeyDown(KeyCode.Tab))  // 가드
         {
             currentState?.OnGuard();
