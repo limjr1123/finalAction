@@ -17,6 +17,7 @@ public class CharacterInfoToggles : MonoBehaviour
     public GameObject selectedCharacterPanel; // 선택된 캐릭터 정보를 표시할 패널
     public TextMeshProUGUI selectedCharacterName; // 선택된 캐릭터의 이름을 표시할 텍스트
     public TextMeshProUGUI selectedCharacterClass; // 선택된 캐릭터의 클래스를 표시할 텍스트
+    public Sprite warriorImage;
 
     private List<CharacterData> characterDatas = new List<CharacterData>(); // 캐릭터 데이터들을 저장하는 리스트
     private List<CharacterToggleUI> createdToggleUIs = new List<CharacterToggleUI>(); // 생성된 토글 UI들을 저장하는 리스트
@@ -112,26 +113,33 @@ public class CharacterInfoToggles : MonoBehaviour
     }
 
 
-    private void UpdateToggleUI(CharacterToggleUI toggleUI, CharacterData character) // 각 토글 UI를 캐릭터 데이터와 동기화함
+    private void UpdateToggleUI(CharacterToggleUI toggleUI, CharacterData character)
     {
-        if (toggleUI.characterNameText != null) // 캐릭터 이름 텍스트가 있는 경우
-            toggleUI.characterNameText.text = $"Lv. {character.playerSaveData.level} {character.playerSaveData.characterName}"; // 레벨과 이름을 표시
+        // 실제 저장된 값 확인
+        Debug.Log($"characterJob 타입: {character.playerSaveData.characterJob?.GetType()}");
+        Debug.Log($"characterJob 값: {character.playerSaveData.characterJob}");
 
-        if (toggleUI.characterClassText != null) // 캐릭터 클래스 텍스트가 있는 경우
-            toggleUI.characterClassText.text = $"{character.playerSaveData.characterJob}"; // 직업 이름을 표시
+        if (toggleUI.characterNameText != null)
+            toggleUI.characterNameText.text = $"Lv. {character.playerSaveData.level} {character.playerSaveData.characterName}";
 
-        // // ⭐ 직업 이미지 설정 추가
-        // if (toggleUI.characterImage != null && character.playerSaveData.jobData != null) // 캐릭터 이미지와 직업 데이터가 있는 경우
-        // {
-        //     if (character.playerSaveData.jobData.jobIcon != null) // 직업 아이콘이 있는 경우
-        //     {
-        //         toggleUI.characterImage.sprite = character.playerSaveData.jobData.jobIcon; // 토글 UI의 이미지를 직업 아이콘으로 설정
-        //     }
-        //     else // 직업 아이콘이 없는 경우
-        //     {
-        //         Debug.LogWarning($"캐릭터 {character.playerSaveData.characterName}의 직업 이미지가 없습니다!"); // 경고 로그 출력
-        //     }
-        // }
+        if (toggleUI.characterClassText != null)
+            toggleUI.characterClassText.text = $"{character.playerSaveData.characterJob}";
+
+        // 이미지 설정 수정
+        if (toggleUI.characterImage != null && character.playerSaveData.characterJob != null)
+        {
+            string jobName = character.playerSaveData.characterJob.ToString(); // JobData라면 ToString() 사용
+            Debug.Log($"jobName: {jobName}");
+
+            if (jobName == "Warrior" || jobName.Contains("전사")) // 한글 이름도 체크
+            {
+                toggleUI.characterImage.sprite = warriorImage;
+            }
+            else
+            {
+                Debug.LogWarning($"캐릭터 {character.playerSaveData.characterName}의 직업 이미지가 없습니다! 직업: {jobName}");
+            }
+        }
     }
 
 

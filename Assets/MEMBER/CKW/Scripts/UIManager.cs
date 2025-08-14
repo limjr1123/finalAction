@@ -1,110 +1,230 @@
-using System.Collections.Generic;  // Dictionary, Stack 등 컬렉션 사용을 위한 네임스페이스
-using UnityEngine;               // Unity 엔진의 기본 클래스들 사용을 위한 네임스페이스
-using UnityEngine.SceneManagement; // 씬 관리 기능 사용을 위한 네임스페이스
-using System.Linq;               // LINQ 확장 메서드 사용을 위한 네임스페이스 (ToList, Reverse 등)
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Linq;
+using System.Collections;
 
 // UIManager 클래스: 게임 내 모든 UI를 중앙에서 관리하는 싱글톤 매니저
 public class UIManager : Singleton<UIManager>
 {
     // === 설정 변수들 ===
-    [Header("UI Manager Settings")]      // Inspector에서 "UI Manager Settings" 헤더로 그룹화
-    public bool handelEscapeInput = true; // ESC키 입력 처리 여부를 설정하는 변수 (기본값: true)
+    [Header("UI Manager Settings")]
+    public bool handelEscapeInput = true;
 
-    [SerializeField] GameObject optionUI; // 옵션 UI 게임오브젝트 참조 (직접 할당용)
+    [SerializeField] GameObject optionUI;
+
+    // ⭐ 씬별 UI 제어 설정 추가
+    [Header("Scene-specific UI Control")]
+    [SerializeField] private List<string> uiDisabledScenes = new List<string>();
+    [SerializeField] private CanvasGroup mainCanvasGroup;
+    [Tooltip("이 씬들에서는 UIManager만 활성화되고 자식 UI들은 모두 비활성화됩니다")]
 
     // === 게임 UI 참조들 ===
-    [Header("Game UI References")]                    // Inspector에서 "Game UI References" 헤더로 그룹화
-    [SerializeField] HUD hudController;               // HUD 스크립트 직접 참조 (Inspector에서 할당)
-    [SerializeField] MainMenuUI mainMenuController;   // MainMenuUI 스크립트 직접 참조 (Inspector에서 할당)
+    [Header("Game UI References")]
+    [SerializeField] HUD hudController;
+    [SerializeField] MainMenuUI mainMenuController;
 
     // === 내부 관리 변수들 ===
-    private Dictionary<UIType, BaseUI> registeredUI = new Dictionary<UIType, BaseUI>(); // 등록된 모든 UI들을 UIType별로 저장하는 딕셔너리
-    private Stack<BaseUI> uiStack = new Stack<BaseUI>();                                // 현재 열린 UI들의 스택 (LIFO 구조로 최상위 UI 추적)
+    private Dictionary<UIType, BaseUI> registeredUI = new Dictionary<UIType, BaseUI>();
+    private Stack<BaseUI> uiStack = new Stack<BaseUI>();
+    private bool isUIDisabledScene = false;
+    private Dictionary<GameObject, bool> originalChildStates = new Dictionary<GameObject, bool>();
 
     // Unity의 Awake 메서드 (싱글톤 초기화보다 늦게 실행되도록 override)
     protected override void Awake()
     {
-        base.Awake();  // 부모 클래스(Singleton)의 Awake 먼저 호출하여 싱글톤 초기화
+        base.Awake();
 
         // 씬이 로드될 때마다 호출될 이벤트 등록
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // 현재 씬의 모든 BaseUI 컴포넌트들을 찾아서 딕셔너리에 등록
+        // ⭐ 순서 변경: 먼저 씬별 UI 제어 확인
+        CheckCurrentSceneUIControl();
+
+        // ⭐ 그 다음에 UI 등록
         RegisterAllUI();
     }
 
     // Unity의 Start 메서드 (게임 시작 시 한 번 호출)
     void Start()
     {
-        InitializeHUD();  // 게임 시작 시 즉시 HUD 초기화 시도
+        if (!isUIDisabledScene)
+        {
+            InitializeHUD();
+        }
     }
 
     // Unity의 Update 메서드 (매 프레임마다 호출)
     void Update()
     {
-        // 조건부 컴파일: 에디터 또는 PC 플랫폼에서만 실행
-#if UNITY_EDITOR || UNITY_STANDALONE
-        // ESC키 입력 처리가 활성화되어 있고 ESC키가 눌렸다면
+        // ⭐ ESC 입력은 항상 처리하되, 디버깅 로그 추가
         if (handelEscapeInput && Input.GetKeyDown(KeyCode.Escape))
         {
-            HandleEscapeInput(); // ESC키 입력 처리 함수 호출
+            Debug.Log($"[UIManager] ESC 키 입력 감지! 현재 씬: {SceneManager.GetActiveScene().name}");
+            Debug.Log($"[UIManager] isUIDisabledScene: {isUIDisabledScene}");
+            Debug.Log($"[UIManager] handelEscapeInput: {handelEscapeInput}");
+
+            HandleEscapeInput();
         }
-#endif
     }
 
     // Unity의 OnDestroy 메서드 (오브젝트가 파괴될 때 호출)
     void OnDestroy()
     {
-        // 씬 로드 이벤트 구독 해제 (메모리 누수 방지)
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // 씬이 로드될 때마다 호출되는 이벤트 핸들러
+    // ⭐ 현재 씬이 UI 비활성화 씬인지 확인하는 메서드
+    private void CheckCurrentSceneUIControl()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        bool shouldDisableUI = uiDisabledScenes.Contains(currentSceneName);
+
+        Debug.Log($"[UIManager] 씬: {currentSceneName}, 이전 isUIDisabledScene: {isUIDisabledScene}, 새로운 값: {shouldDisableUI}");
+        Debug.Log($"[UIManager] uiDisabledScenes 목록: {string.Join(", ", uiDisabledScenes)}");
+
+        if (shouldDisableUI != isUIDisabledScene)
+        {
+            isUIDisabledScene = shouldDisableUI;
+
+            if (mainCanvasGroup != null)
+            {
+                if (isUIDisabledScene)
+                {
+                    // ⭐ UI 비활성화 씬에서는 시각적으로만 숨기기 (상호작용은 유지)
+                    mainCanvasGroup.alpha = 0f;
+                    mainCanvasGroup.interactable = false;
+                    // ⭐ blocksRaycasts는 false로 두지 않음 (ESC 입력을 위해)
+                    // mainCanvasGroup.blocksRaycasts = false;
+                    Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI를 숨겼습니다.");
+                }
+                else
+                {
+                    mainCanvasGroup.alpha = 1f;
+                    mainCanvasGroup.interactable = true;
+                    mainCanvasGroup.blocksRaycasts = true;
+                    Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI를 표시했습니다.");
+                }
+            }
+        }
+        else
+        {
+            Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI 상태 변경 없음 (isUIDisabledScene: {isUIDisabledScene})");
+        }
+    }
+
+    // ⭐ 외부에서 특정 씬을 UI 비활성화 씬으로 추가하는 공개 메서드
+    public void AddUIDisabledScene(string sceneName)
+    {
+        if (!uiDisabledScenes.Contains(sceneName))
+        {
+            uiDisabledScenes.Add(sceneName);
+            Debug.Log($"[UIManager] '{sceneName}' 씬이 UI 비활성화 씬 목록에 추가되었습니다.");
+        }
+    }
+
+    // ⭐ 외부에서 특정 씬을 UI 비활성화 씬에서 제거하는 공개 메서드
+    public void RemoveUIDisabledScene(string sceneName)
+    {
+        if (uiDisabledScenes.Remove(sceneName))
+        {
+            Debug.Log($"[UIManager] '{sceneName}' 씬이 UI 비활성화 씬 목록에서 제거되었습니다.");
+        }
+    }
+
+    // ⭐ 현재 씬이 UI 비활성화 씬인지 확인하는 공개 메서드
+    public bool IsUIDisabledScene()
+    {
+        return isUIDisabledScene;
+    }
+
+    // ⭐ 씬이 로드될 때마다 호출되는 이벤트 핸들러 - 실행 순서 수정
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 기존 UI 등록 정보를 모두 초기화 (새로운 씬의 UI들로 갱신하기 위해)
-        registeredUI.Clear(); // 등록된 UI 딕셔너리 비우기
-        uiStack.Clear();      // UI 스택 비우기
+        Debug.Log($"[UIManager] OnSceneLoaded 시작 - 씬: {scene.name}");
 
-        RegisterAllUI(); // 새로운 씬의 모든 BaseUI 컴포넌트들을 찾아서 다시 등록
+        // ⭐ 먼저 모든 열린 UI를 닫기 (씬 전환 시 UI 상태 초기화)
+        CloseAllOpenUI();
 
-        // 씬 로드 후 HUD 초기화 (약간의 지연을 두고 실행)
-        StartCoroutine(DelayedHUDInitialization());
+        // 기존 UI 등록 정보를 모두 초기화
+        registeredUI.Clear();
+        uiStack.Clear();
+
+        // ⭐ 순서 변경: 먼저 씬별 UI 제어 확인
+        CheckCurrentSceneUIControl();
+
+        // ⭐ 그 다음에 UI 등록 (이제 isUIDisabledScene이 올바르게 설정됨)
+        RegisterAllUI();
+
+        // UI가 비활성화된 씬이 아닐 때만 HUD 초기화
+        if (!isUIDisabledScene)
+        {
+            StartCoroutine(DelayedHUDInitialization());
+        }
+
+        Debug.Log($"[UIManager] OnSceneLoaded 완료 - 등록된 UI 개수: {registeredUI.Count}");
+    }
+
+    // ⭐ 모든 열린 UI를 닫는 메서드 추가
+    private void CloseAllOpenUI()
+    {
+        Debug.Log($"[UIManager] 모든 열린 UI 닫기 - 현재 스택 개수: {uiStack.Count}");
+
+        // 스택에 있는 모든 UI를 닫기
+        while (uiStack.Count > 0)
+        {
+            BaseUI topUI = uiStack.Pop();
+            if (topUI != null && topUI.gameObject.activeInHierarchy)
+            {
+                topUI.gameObject.SetActive(false); // 강제로 비활성화
+                Debug.Log($"[UIManager] {topUI.UIType} UI 강제 닫기");
+            }
+        }
+
+        // 혹시 놓친 UI들을 위해 모든 BaseUI 컴포넌트 확인
+        BaseUI[] allUIs = FindObjectsByType<BaseUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (BaseUI ui in allUIs)
+        {
+            if (ui != null && ui.gameObject.activeInHierarchy && ui.UIType != UIType.None)
+            {
+                ui.gameObject.SetActive(false);
+                Debug.Log($"[UIManager] {ui.UIType} UI 추가 강제 닫기");
+            }
+        }
+
+        uiStack.Clear(); // 스택 완전히 비우기
     }
 
     // 씬 로드 후 약간의 지연을 두고 HUD를 초기화하는 코루틴
-    private System.Collections.IEnumerator DelayedHUDInitialization()
+    private IEnumerator DelayedHUDInitialization()
     {
-        yield return new WaitForEndOfFrame(); // 현재 프레임이 끝날 때까지 대기 (모든 오브젝트가 완전히 로드되도록)
-        InitializeHUD(); // HUD 초기화 실행
+        yield return new WaitForEndOfFrame();
+        InitializeHUD();
     }
 
     // HUD를 초기화하는 메서드 (PlayerStats와 연결)
     private void InitializeHUD()
     {
-        Debug.Log("UIManager: HUD 초기화 시작"); // HUD 초기화 시작 로그
+        if (isUIDisabledScene) return;
 
-        // HUD 컨트롤러가 Inspector에서 할당되지 않았다면 자동으로 찾기
+        Debug.Log("UIManager: HUD 초기화 시작");
+
         if (hudController == null)
         {
-            hudController = FindAnyObjectByType<HUD>(); // 씬에서 HUD 컴포넌트 자동 검색
-            Debug.Log($"HUD 자동 검색 결과: {hudController != null}"); // 검색 결과 로그
+            hudController = FindAnyObjectByType<HUD>();
+            Debug.Log($"HUD 자동 검색 결과: {hudController != null}");
         }
 
-        // PlayerStats 컴포넌트를 씬에서 찾기
         PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
-        Debug.Log($"PlayerStats 검색 결과: {playerStats != null}"); // 검색 결과 로그
+        Debug.Log($"PlayerStats 검색 결과: {playerStats != null}");
 
-        // HUD와 PlayerStats가 모두 존재한다면
         if (hudController != null && playerStats != null)
         {
-            // HUD에 PlayerStats 컴포넌트를 직접 전달하여 초기화
             hudController.InitializeWithPlayer(playerStats);
-            Debug.Log("UIManager: HUD와 PlayerStats 연결 완료!"); // 연결 성공 로그
+            Debug.Log("UIManager: HUD와 PlayerStats 연결 완료!");
         }
         else
         {
-            // 초기화 실패 시 경고 로그 (어떤 컴포넌트가 없는지 표시)
             Debug.LogWarning($"HUD 초기화 실패 - HUD: {hudController != null}, PlayerStats: {playerStats != null}");
         }
     }
@@ -112,91 +232,185 @@ public class UIManager : Singleton<UIManager>
     // GameManager에서 캐릭터 로드가 완료되었을 때 호출될 공개 메서드
     public void OnCharacterLoaded()
     {
-        Debug.Log("UIManager: 캐릭터 로드 완료, 게임 UI 활성화 시작"); // 캐릭터 로드 완료 로그
-        InitializeHUD(); // HUD 다시 초기화 (새로 로드된 캐릭터 정보로)
+        if (isUIDisabledScene) return;
+
+        Debug.Log("UIManager: 캐릭터 로드 완료, 게임 UI 활성화 시작");
+        InitializeHUD();
     }
 
     // 특정 타입의 UI를 열고 해당 UI 컴포넌트를 반환하는 공개 메서드
     public BaseUI OpenUI(UIType uiType)
     {
-        // 딕셔너리에서 해당 타입의 UI가 등록되어 있는지 확인
+        // ⭐ 옵션 UI는 예외적으로 항상 열 수 있음
+        if (uiType == UIType.Option)
+        {
+            // ⭐ 등록된 옵션 UI가 파괴되었는지 확인
+            if (registeredUI.TryGetValue(uiType, out BaseUI optionUI))
+            {
+                if (optionUI == null) // 파괴된 경우
+                {
+                    Debug.LogWarning("[UIManager] 등록된 옵션 UI가 파괴됨, 재등록 시도");
+                    registeredUI.Remove(uiType); // 딕셔너리에서 제거
+                    ForceRegisterOptionUI(); // 다시 찾아서 등록
+
+                    // 재등록 후 다시 시도
+                    if (registeredUI.TryGetValue(uiType, out optionUI) && optionUI != null)
+                    {
+                        optionUI.OpenUI();
+                        return optionUI;
+                    }
+                }
+                else // 유효한 경우
+                {
+                    optionUI.OpenUI();
+                    return optionUI;
+                }
+            }
+
+            // 등록되지 않았거나 재등록 실패한 경우
+            Debug.LogWarning($"[UIManager] 옵션 UI를 찾을 수 없습니다!");
+            ForceRegisterOptionUI(); // 한 번 더 시도
+            if (registeredUI.TryGetValue(uiType, out optionUI) && optionUI != null)
+            {
+                optionUI.OpenUI();
+                return optionUI;
+            }
+            return null;
+        }
+
+        // UI가 비활성화된 씬에서는 다른 UI를 열지 않음
+        if (isUIDisabledScene)
+        {
+            Debug.LogWarning($"[UIManager] UI가 비활성화된 씬에서는 UI를 열 수 없습니다: {uiType}");
+            return null;
+        }
+
+        // ⭐ 다른 UI들도 파괴 체크 추가
         if (registeredUI.TryGetValue(uiType, out BaseUI ui))
         {
-            ui.OpenUI(); // BaseUI의 OpenUI() 메서드 호출 (이 메서드가 자동으로 스택에 추가함)
-            return ui;   // 열린 UI 컴포넌트 반환
+            if (ui == null) // 파괴된 경우
+            {
+                Debug.LogWarning($"[UIManager] 등록된 {uiType} UI가 파괴됨, 딕셔너리에서 제거");
+                registeredUI.Remove(uiType);
+                return null;
+            }
+
+            ui.OpenUI();
+            return ui;
         }
         else
         {
-            // 등록되지 않은 UI 타입인 경우 경고 로그 출력
             Debug.LogWarning($"[UIManager] 등록된 UI가 없습니다: {uiType}");
-            return null; // null 반환
+            return null;
         }
     }
 
     // 특정 타입의 UI를 닫는 공개 메서드
     public void CloseUI(UIType uiType)
     {
-        // 딕셔너리에서 해당 타입의 UI가 등록되어 있는지 확인
         if (registeredUI.TryGetValue(uiType, out BaseUI ui))
         {
-            ui.CloseUI(); // BaseUI의 CloseUI() 메서드 호출 (이 메서드가 자동으로 스택에서 제거함)
+            ui.CloseUI();
         }
         else
         {
-            // 등록되지 않은 UI를 닫으려고 시도한 경우 경고 로그 출력
             Debug.LogWarning($"[UIManager] 등록되지 않은 UI를 닫으려 시도: {uiType}");
         }
     }
 
-    // 현재 씬의 모든 BaseUI 컴포넌트들을 찾아서 딕셔너리에 등록하는 메서드
+    // ⭐ 현재 씬의 모든 BaseUI 컴포넌트들을 찾아서 딕셔너리에 등록하는 메서드 - 디버깅 로그 추가
     private void RegisterAllUI()
     {
+        Debug.Log($"[UIManager] RegisterAllUI 호출 - isUIDisabledScene: {isUIDisabledScene}");
+
         // 현재 활성화/비활성화 상태에 관계없이 모든 BaseUI 컴포넌트를 찾기
-        // FindObjectsInactive.Include: 비활성화된 오브젝트도 포함해서 검색
         BaseUI[] uis = FindObjectsByType<BaseUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        Debug.Log($"[UIManager] 찾은 BaseUI 개수: {uis.Length}");
 
         // 찾은 모든 BaseUI 컴포넌트들을 하나씩 등록
         foreach (BaseUI ui in uis)
         {
-            RegisterUI(ui); // 개별 UI 등록 메서드 호출
+            Debug.Log($"[UIManager] UI 등록 시도: {ui.UIType}");
+            RegisterUI(ui);
+        }
+
+        Debug.Log($"[UIManager] 최종 등록된 UI 개수: {registeredUI.Count}");
+        foreach (var kvp in registeredUI)
+        {
+            Debug.Log($"[UIManager] 등록된 UI: {kvp.Key}");
         }
     }
 
     // 개별 UI를 딕셔너리에 등록하는 공개 메서드 (외부에서도 호출 가능)
     public void RegisterUI(BaseUI ui)
     {
-        // UI 타입이 None이 아니고, 아직 딕셔너리에 등록되지 않은 경우에만 등록
+        // ⭐ null 체크 추가
+        if (ui == null)
+        {
+            Debug.LogWarning("[UIManager] null UI를 등록하려 시도함");
+            return;
+        }
+
+        // 옵션 UI는 예외적으로 항상 등록
+        if (ui.UIType == UIType.Option)
+        {
+            if (!registeredUI.ContainsKey(ui.UIType))
+            {
+                registeredUI[ui.UIType] = ui;
+                Debug.Log($"[UIManager] 옵션 UI 강제 등록 완료");
+            }
+            return;
+        }
+
+        // UI가 비활성화된 씬에서는 다른 UI 등록하지 않음
+        if (isUIDisabledScene)
+        {
+            Debug.Log($"[UIManager] UI 비활성화 씬이므로 {ui.UIType} UI 등록을 건너뜁니다.");
+            return;
+        }
+
         if (ui.UIType != UIType.None && !registeredUI.ContainsKey(ui.UIType))
         {
-            registeredUI[ui.UIType] = ui; // 딕셔너리에 UIType을 키로 하여 UI 등록
+            registeredUI[ui.UIType] = ui;
+            Debug.Log($"[UIManager] {ui.UIType} UI 등록 완료");
         }
     }
 
     // BaseUI.OpenUI()에서 호출되어 열린 UI를 스택에 추가하는 메서드
     public void RegisterOpenedUI(BaseUI ui)
     {
-        // 스택에 이미 해당 UI가 있는지 확인 (중복 방지)
+        // ⭐ 옵션 UI는 예외적으로 항상 스택에 추가 가능
+        if (ui.UIType == UIType.Option)
+        {
+            if (!uiStack.Contains(ui))
+            {
+                uiStack.Push(ui);
+            }
+            return;
+        }
+
+        // UI가 비활성화된 씬에서는 다른 UI를 스택에 추가하지 않음
+        if (isUIDisabledScene) return;
+
         if (!uiStack.Contains(ui))
         {
-            uiStack.Push(ui); // UI를 스택의 최상위에 추가 (LIFO 구조)
+            uiStack.Push(ui);
         }
     }
 
     // BaseUI.CloseUI()에서 호출되어 닫힌 UI를 스택에서 제거하는 메서드
     public void UnRegisterCloseUI(BaseUI ui)
     {
-        // 스택의 최상위 UI를 닫는 일반적인 경우
         if (uiStack.Count > 0 && uiStack.Peek() == ui)
         {
-            uiStack.Pop(); // 최상위 UI를 스택에서 제거 (Pop)
+            uiStack.Pop();
         }
-        else // 스택의 최상위가 아닌 중간의 UI가 닫힐 경우 (특수한 경우)
+        else
         {
-            var tempList = uiStack.ToList(); // 스택을 임시 리스트로 변환
-            if (tempList.Remove(ui))         // 리스트에서 해당 UI 제거 (성공하면 true 반환)
+            var tempList = uiStack.ToList();
+            if (tempList.Remove(ui))
             {
-                uiStack.Clear(); // 기존 스택 완전히 비우기
-                // 원래 스택의 순서를 유지하면서 다시 Push (LIFO 구조 유지)
+                uiStack.Clear();
                 foreach (var item in tempList.Reverse<BaseUI>())
                 {
                     uiStack.Push(item);
@@ -208,27 +422,53 @@ public class UIManager : Singleton<UIManager>
     // 현재 최상위에 있는 UI를 반환하는 공개 메서드
     public BaseUI GetTopUI()
     {
-        if (uiStack.Count > 0)    // 스택에 UI가 하나 이상 있다면
-            return uiStack.Peek(); // 최상단 UI 반환 (제거하지 않고 조회만)
+        if (uiStack.Count > 0)
+            return uiStack.Peek();
 
-        return null; // 열린 UI가 없으면 null 반환
+        return null;
     }
 
     // ESC키 입력을 처리하는 메서드
     private void HandleEscapeInput()
     {
-        BaseUI topUI = GetTopUI(); // 현재 최상위 UI 가져오기
+        Debug.Log($"[UIManager] ESC 입력 감지 - 현재 씬: {SceneManager.GetActiveScene().name}, UI비활성화씬: {isUIDisabledScene}");
 
-        // 최상위 UI가 있고 해당 UI가 ESC키 처리를 허용한다면
+        BaseUI topUI = GetTopUI();
+
         if (topUI != null && topUI.CanHandleEscape())
         {
-            topUI.CloseUI(); // 해당 UI 닫기
+            Debug.Log($"[UIManager] 최상위 UI 닫기: {topUI.UIType}");
+            topUI.CloseUI();
         }
-        else if (topUI == null) // 열린 UI가 전혀 없다면
+        else if (topUI == null)
         {
-            // 옵션 UI 열기 (UIType.Option은 미리 정의된 UI 타입)
+            Debug.Log("[UIManager] ESC키로 옵션 UI 열기 시도");
+            // ⭐ 옵션 UI가 등록되지 않았다면 강제로 등록 시도
+            if (!registeredUI.ContainsKey(UIType.Option))
+            {
+                Debug.Log("[UIManager] 옵션 UI가 등록되지 않음, 강제 등록 시도");
+                ForceRegisterOptionUI();
+            }
             OpenUI(UIType.Option);
         }
-        // 최상위 UI가 있지만 ESC키 처리를 허용하지 않는 경우는 아무것도 하지 않음
+    }
+
+    // ⭐ 옵션 UI를 강제로 등록하는 메서드
+    private void ForceRegisterOptionUI()
+    {
+        Debug.Log("[UIManager] 옵션 UI 강제 등록 시도");
+        BaseUI[] allUIs = FindObjectsByType<BaseUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (BaseUI ui in allUIs)
+        {
+            if (ui != null && ui.UIType == UIType.Option)
+            {
+                registeredUI[UIType.Option] = ui;
+                Debug.Log("[UIManager] 옵션 UI 강제 등록 완료");
+                return;
+            }
+        }
+
+        Debug.LogError("[UIManager] 옵션 UI를 찾을 수 없습니다! 씬에 OptionUI가 존재하는지 확인하세요.");
     }
 }
