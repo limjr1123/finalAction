@@ -16,7 +16,8 @@ public class BossGetHitState : EnemyState<BossController>
     {
         if (boss.stats.currentHealth <= 0)
         {
-            boss.stateMachine.ChangeState(boss.stateDict[BossStates.Battle]);
+            Debug.Log("Boss is dead, changing state to Dead.");
+            boss.stateMachine.ChangeState(boss.stateDict[BossStates.Dead]);
         }
         else { boss.stateMachine.ChangeState(boss.stateDict[BossStates.Battle]); }
     }
