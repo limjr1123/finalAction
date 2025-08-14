@@ -36,6 +36,7 @@ public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상�
 
     // === 내부 변수들 ===
     private PlayerStats playerStats;             // 현재 연결된 플레이어 스탯 컴포넌트 참조
+    private PlayerStateMachine playerStateMachine;  // 플레이어 상태 머신 참조
     private bool isInitialized = false;          // HUD가 초기화되었는지 확인하는 플래그
 
     void Start()  // Unity의 Start 메서드, 게임 시작 시 한 번 호출됨
@@ -47,6 +48,7 @@ public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상�
         {
             StartCoroutine(AutoFindPlayerStats());  // 코루틴으로 비동기적으로 PlayerStats 찾기
         }
+        playerStateMachine = playerStats.GetComponent<PlayerStateMachine>();
     }
 
     // PlayerStats 컴포넌트를 자동으로 찾는 코루틴
@@ -303,32 +305,32 @@ public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상�
 
     private void OnJumpButton()     // 점프 버튼 클릭 시 호출
     {
-        // TODO: 점프 로직 구현
+        playerStateMachine?.currentState?.OnJump();
     }
 
     private void OnEvasionButton()  // 회피 버튼 클릭 시 호출
     {
-        // TODO: 회피 로직 구현
+        playerStateMachine?.currentState?.OnDodge();
     }
 
     private void OnCounterButton()  // 반격 버튼 클릭 시 호출
     {
-        // TODO: 반격 로직 구현
+        playerStateMachine?.currentState?.OnGuard();
     }
 
     private void OnAttackButton()   // 공격 버튼 클릭 시 호출
     {
-        // TODO: 공격 로직 구현
+        playerStateMachine?.currentState?.OnAttack();
     }
 
     private void OnSkillButton1()   // 스킬 1 버튼 클릭 시 호출
     {
-        // TODO: 스킬 1 로직 구현
+        playerStateMachine?.currentState?.OnSkill(0);
     }
 
     private void OnSkillButton2()   // 스킬 2 버튼 클릭 시 호출
     {
-        // TODO: 스킬 2 로직 구현
+        playerStateMachine?.currentState?.OnSkill(1);
     }
 
     private void OnConsumeButton1() // 소모품 1 버튼 클릭 시 호출
