@@ -71,6 +71,8 @@ public class PlayerStats : MonoBehaviour
     private int _previousLevel;
     private int _previousEXP;
 
+    private Coroutine _regenerateCoroutine;
+
     public int currentHealth
     {
         get => _currentHealth;
@@ -190,7 +192,11 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(RegenerateResources());
+        if (_regenerateCoroutine != null)
+        {
+            StopCoroutine(_regenerateCoroutine);
+        }
+        _regenerateCoroutine = StartCoroutine(RegenerateResources());
     }
 
     // Unity Editor에서 Inspector 값이 변경될 때 호출됨
@@ -410,6 +416,11 @@ public class PlayerStats : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+        if (_regenerateCoroutine != null)
+        {
+            StopCoroutine(_regenerateCoroutine);
+            _regenerateCoroutine = null;
+        }
         stateMachine?.Die();
         OnPlayerDied?.Invoke();
     }
@@ -609,6 +620,13 @@ public class PlayerStats : MonoBehaviour
         isDead = false;
         stateMachine.Animator.SetTrigger("Respawn");
         currentHealth = maxHealth.GetValue();
+        currentMana = maxMana.GetValue();
+        currentStamina = maxStamina.GetValue();
         stateMachine.ChangeState(stateMachine.IdleState);
+        if (_regenerateCoroutine != null)
+        {
+            StopCoroutine(_regenerateCoroutine);
+        }
+        _regenerateCoroutine = StartCoroutine(RegenerateResources());
     }
 }
