@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: QuestDatabase
   m_EditorClassIdentifier: 
   quests:
-  - desription: "\uB358\uC8041 \uB4E4\uC5B4\uAC00\uAE30 \uD018\uC2A4\uD2B8"
+  - desription: "\uB9C8\uC744 \uCD0C\uC7A5\uACFC \uB300\uD654\uD558\uAE30 1"
+    questData: {fileID: 11400000, guid: bbbae8bbc2f54094d91f401583de46eb, type: 2}
+  - desription: "\uB358\uC8041 \uB4E4\uC5B4\uAC00\uAE30"
     questData: {fileID: 11400000, guid: 61eb05bd8ae93274d87c4960541a428c, type: 2}
-  - desription: "\uB358\uC8041 \uD074\uB9AC\uC5B4 \uD018\uC2A4\uD2B8"
+  - desription: "\uB358\uC8041 \uD074\uB9AC\uC5B4"
     questData: {fileID: 11400000, guid: 8bb83ec2eb2c56c4f938e92e87517f4b, type: 2}
+  - desription: "\uB9C8\uC744 \uCD0C\uC7A5\uACFC \uB300\uD654\uD558\uAE30 2"
+    questData: {fileID: 11400000, guid: 038ac8d7336e22d4e912ccd6456f58de, type: 2}
+  - desription: "\uB358\uC8042 \uB3C4\uB2EC\uD558\uAE30"
+    questData: {fileID: 11400000, guid: ce6b4cebe1e54bb42b659d7392355e05, type: 2}

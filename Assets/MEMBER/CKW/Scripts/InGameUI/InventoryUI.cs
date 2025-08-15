@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,8 +39,14 @@ public class InventoryUI : BaseUI
     private InventorySlotUI[] consumableSlots;
     private InventorySlotUI[] etcSlots;
 
-    // 현재 선택된 슬롯(툴팁과 판매의 기준)
     private InventorySlotUI _selectedSlot;
+    private int _selectedIndex = -1;
+    private string _selectedUid;
+    public int SelectedSlotIndex => _selectedIndex;
+    public string SelectedSlotUid => _selectedUid;
+
+    private enum Tab { Equip, Consumable, Etc }
+    private Tab _currentTab = Tab.Equip;
 
     void Awake()
     {
@@ -47,17 +54,14 @@ public class InventoryUI : BaseUI
         ConsumableSlotArea.gameObject.SetActive(false);
         EtcSlotArea.gameObject.SetActive(false);
 
-        // 슬롯 자동 할당 (비활성 슬롯도 포함)
         equipmentSlots = EquipmentSlotArea.GetComponentsInChildren<InventorySlotUI>(true);
         consumableSlots = ConsumableSlotArea.GetComponentsInChildren<InventorySlotUI>(true);
         etcSlots = EtcSlotArea.GetComponentsInChildren<InventorySlotUI>(true);
 
-        // 툴팁UI 할당
         SubscribeSlotClicks(equipmentSlots);
         SubscribeSlotClicks(consumableSlots);
         SubscribeSlotClicks(etcSlots);
 
-        // ToggleGroup 연결
         EquipmentTabToggle.group = TabToggleGroup;
         ConsumableTabToggle.group = TabToggleGroup;
         EtcTabToggle.group = TabToggleGroup;
@@ -65,17 +69,13 @@ public class InventoryUI : BaseUI
 
     void Start()
     {
-        if (closeButton != null)
-            closeButton.onClick.AddListener(CloseInventoryUI);
-
-        if (sellButton != null)
-            sellButton.onClick.AddListener(SellItem);
+        if (closeButton != null) closeButton.onClick.AddListener(CloseInventoryUI);
+        if (sellButton != null) sellButton.onClick.AddListener(SellItem);
 
         EquipmentTabToggle.onValueChanged.AddListener(OnEquipmentTabToggle);
         ConsumableTabToggle.onValueChanged.AddListener(OnConsumableTabToggle);
         EtcTabToggle.onValueChanged.AddListener(OnEtcTabToggle);
 
-        // 시작 시 첫 탭 활성화 (Inspector에서 isOn 조정 가능)
         if (EquipmentTabToggle.isOn) ShowEquipmentTab();
         else if (ConsumableTabToggle.isOn) ShowConsumableTab();
         else if (EtcTabToggle.isOn) ShowEtcTab();
@@ -83,16 +83,15 @@ public class InventoryUI : BaseUI
         UpdateGoldUI();
     }
 
-
     private void CloseInventoryUI()
     {
-        SelectSlot(null);
+        SelectSlot(null, -1, null);
         CloseUI();
     }
 
+    // ===== 판매 =====
     private void SellItem()
     {
-        // 1) 선택 슬롯이 있는지 확인
         if (_selectedSlot == null || _selectedSlot.ItemData == null)
         {
             Debug.LogWarning("[InventoryUI] 판매할 아이템이 선택되지 않았습니다.");
@@ -101,46 +100,37 @@ public class InventoryUI : BaseUI
 
         var item = _selectedSlot.ItemData;
         int count = _selectedSlot.Count;
-        if (count <= 0)
-        {
-            Debug.LogWarning("[InventoryUI] 선택된 슬롯의 수량이 0입니다.");
-            return;
-        }
+        string uid = _selectedUid;
 
-        // 2) 판매 가격 계산 (개당 가격 × 개수)
-        int unitPrice = item.Gold; // <-- 필요 시 확장 포인트
+        if (count <= 0) { Debug.LogWarning("[InventoryUI] 선택된 슬롯 수량 0"); return; }
+
+        int unitPrice = item.Gold;
         int totalPrice = unitPrice * count;
 
-        // 3) 인벤토리에서 제거
+        // 장착 슬롯인지 미리 체크
+        EquipmentItemData eq = item as EquipmentItemData;
+        bool sellingEquipped = (eq != null) && EquipmentState.IsEquipped(eq.EquipType, uid);
+
         InventoryManager.Instance.RemoveItem(item.ItemID, count);
 
-        // 4) 골드 추가 
-        var goldSystem = FindAnyObjectByType<GoldSystem>();
-        if (goldSystem != null)
+        // 장착 중이던 슬롯을 팔았다면 즉시 장착 해제(아이콘 원복)
+        if (sellingEquipped && eq != null)
         {
-            goldSystem.AddCurrency(totalPrice);
-        }
-        else
-        {
-            Debug.LogError("[InventoryUI] GoldSystem을 찾을 수 없어 골드를 지급하지 못했습니다.");
+            EquipmentState.Clear(eq.EquipType);
+            SetWeaponSlot(eq, false);
         }
 
-        // 5) UI 갱신 + 선택 해제 + 툴팁 닫기
+        var goldSystem = FindAnyObjectByType<GoldSystem>();
+        if (goldSystem != null) goldSystem.AddCurrency(totalPrice);
+
         RefreshCurrentTab();
-        SelectSlot(null);
+        SelectSlot(null, -1, null);
         UpdateGoldUI();
 
-        Debug.Log($"[InventoryUI] {item.ItemName} {count}개 판매 → {totalPrice} 골드 획득");
+        Debug.Log($"[InventoryUI] {item.ItemName} {count}개 판매 → {totalPrice} 골드");
     }
 
-    // 현재 켜져 있는 탭을 다시 그림
-    private void RefreshCurrentTab()
-    {
-        if (EquipmentTabToggle.isOn) ShowEquipmentTab();
-        else if (ConsumableTabToggle.isOn) ShowConsumableTab();
-        else if (EtcTabToggle.isOn) ShowEtcTab();
-    }
-
+    // ===== 골드 UI =====
     private void UpdateGoldUI()
     {
         if (goldText == null) return;
@@ -148,76 +138,90 @@ public class InventoryUI : BaseUI
         goldText.text = goldSystem != null ? goldSystem.GetBalance().ToString() : "0";
     }
 
-
-    #region 슬롯 클릭/선택 & 툴팁
+    // ===== 슬롯 클릭/선택 =====
     private void SubscribeSlotClicks(IEnumerable<InventorySlotUI> slots)
     {
-        foreach (var slot in slots)
-        {
-            slot.onClick = OnSlotClicked;
-        }
+        foreach (var slot in slots) slot.onClick = OnSlotClicked;
     }
 
     private void OnSlotClicked(InventorySlotUI slot, Vector2 screenPos)
     {
-        // 빈 슬롯이면 선택 해제
         if (slot == null || slot.ItemData == null)
         {
-            SelectSlot(null);
+            SelectSlot(null, -1, null);
             return;
         }
 
-        // 선택 갱신
-        SelectSlot(slot);
+        int index = -1;
+        if (EquipmentSlotArea.gameObject.activeSelf)
+        {
+            for (int i = 0; i < equipmentSlots.Length; i++) if (equipmentSlots[i] == slot) { index = i; break; }
+        }
+        else if (ConsumableSlotArea.gameObject.activeSelf)
+        {
+            for (int i = 0; i < consumableSlots.Length; i++) if (consumableSlots[i] == slot) { index = i; break; }
+        }
+        else if (EtcSlotArea.gameObject.activeSelf)
+        {
+            for (int i = 0; i < etcSlots.Length; i++) if (etcSlots[i] == slot) { index = i; break; }
+        }
 
-        // 툴팁 표시
+        SelectSlot(slot, index, slot.Uid);
+
         if (toolTipUI != null)
         {
             toolTipUI.Set(slot.ItemData, screenPos);
         }
     }
 
-    private void SelectSlot(InventorySlotUI slot)
+    private void SelectSlot(InventorySlotUI slot, int index, string uid)
     {
         _selectedSlot = slot;
+        _selectedIndex = index;
+        _selectedUid = uid;
 
-        // 선택 해제 시 툴팁 닫기
         if (_selectedSlot == null && toolTipUI != null)
-        {
             toolTipUI.Clear();
-        }
     }
-    #endregion
 
-    #region 토글에 따라 인벤토리 슬롯 보여주기
-
+    // ===== 탭 전환/표시 =====
     void OnEquipmentTabToggle(bool isOn)
     {
-        if (isOn) ShowEquipmentTab();
+        if (isOn) { _currentTab = Tab.Equip; ShowEquipmentTab(); }
         else EquipmentSlotArea.gameObject.SetActive(false);
     }
     void OnConsumableTabToggle(bool isOn)
     {
-        if (isOn) ShowConsumableTab();
+        if (isOn) { _currentTab = Tab.Consumable; ShowConsumableTab(); }
         else ConsumableSlotArea.gameObject.SetActive(false);
     }
     void OnEtcTabToggle(bool isOn)
     {
-        if (isOn) ShowEtcTab();
+        if (isOn) { _currentTab = Tab.Etc; ShowEtcTab(); }
         else EtcSlotArea.gameObject.SetActive(false);
     }
-
 
     void ShowEquipmentTab()
     {
         SetActiveAreas(EquipmentSlotArea.transform);
         var list = InventoryManager.Instance.GetAllEquipmentInventory;
+
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
             if (i < list.Count)
-                equipmentSlots[i].Set(list[i].data, list[i].count);
+            {
+                var slot = list[i];
+                equipmentSlots[i].Set(slot.data, slot.count, slot.uid);
+
+                if (slot.data is EquipmentItemData eq)
+                    equipmentSlots[i].SetEquipped(EquipmentState.IsEquipped(eq.EquipType, slot.uid));
+                else
+                    equipmentSlots[i].SetEquipped(false);
+            }
             else
+            {
                 equipmentSlots[i].Clear();
+            }
         }
     }
 
@@ -225,12 +229,18 @@ public class InventoryUI : BaseUI
     {
         SetActiveAreas(ConsumableSlotArea.transform);
         var list = InventoryManager.Instance.GetAllConsumableInventory;
+
         for (int i = 0; i < consumableSlots.Length; i++)
         {
             if (i < list.Count)
-                consumableSlots[i].Set(list[i].data, list[i].count);
+            {
+                var slot = list[i];
+                consumableSlots[i].Set(slot.data, slot.count, slot.uid);
+            }
             else
+            {
                 consumableSlots[i].Clear();
+            }
         }
     }
 
@@ -238,12 +248,18 @@ public class InventoryUI : BaseUI
     {
         SetActiveAreas(EtcSlotArea.transform);
         var list = InventoryManager.Instance.GetAllEtcInventory;
+
         for (int i = 0; i < etcSlots.Length; i++)
         {
             if (i < list.Count)
-                etcSlots[i].Set(list[i].data, list[i].count);
+            {
+                var slot = list[i];
+                etcSlots[i].Set(slot.data, slot.count, slot.uid);
+            }
             else
+            {
                 etcSlots[i].Clear();
+            }
         }
     }
 
@@ -253,35 +269,39 @@ public class InventoryUI : BaseUI
         ConsumableSlotArea.gameObject.SetActive(activeArea == ConsumableSlotArea);
         EtcSlotArea.gameObject.SetActive(activeArea == EtcSlotArea);
     }
-    #endregion
 
+    // ===== 장착/해제 (툴팁에서 호출) =====
+    public void EquipSelected(EquipmentItemData eq, bool equipOn)
+    {
+        if (eq == null || _currentTab != Tab.Equip || string.IsNullOrEmpty(_selectedUid)) return;
 
-    // 장비 슬롯 UI 갱신 함수
+        if (equipOn)
+            EquipmentState.SetEquipped(eq.EquipType, _selectedUid);
+        else
+            EquipmentState.Clear(eq.EquipType);
+
+        SetWeaponSlot(eq, equipOn); // 장비창 이미지 반영
+        ShowEquipmentTab();         // 리스트 오버레이 반영
+    }
+
+    // 장비 슬롯 UI 갱신
     public void SetWeaponSlot(EquipmentItemData equipmentItemData, bool flag)
     {
         switch (equipmentItemData.EquipType)
         {
             case EquipType.Weapon:
-                {
-                    weaponSlotImage.sprite = flag ? equipmentItemData.ItemSprite : originWeaponSlotImage;
-                    break;
-                }
+                weaponSlotImage.sprite = flag ? equipmentItemData.ItemSprite : originWeaponSlotImage; break;
             case EquipType.Body:
-                {
-                    bodySlotImage.sprite = flag ? equipmentItemData.ItemSprite : originBodySlotImage;
-                    break;
-                }
+                bodySlotImage.sprite = flag ? equipmentItemData.ItemSprite : originBodySlotImage; break;
             case EquipType.Accessory:
-                {
-                    accessoryImage.sprite = flag ? equipmentItemData.ItemSprite : originAccessoryImage;
-                    break;
-                }
+                accessoryImage.sprite = flag ? equipmentItemData.ItemSprite : originAccessoryImage; break;
         }
-
     }
 
-
-
-
+    private void RefreshCurrentTab()
+    {
+        if (EquipmentTabToggle.isOn) ShowEquipmentTab();
+        else if (ConsumableTabToggle.isOn) ShowConsumableTab();
+        else if (EtcTabToggle.isOn) ShowEtcTab();
+    }
 }
-
