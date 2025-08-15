@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questID: Dungeon1Clear
   questType: 0
-  title: "\uB358\uC8041 \uD074\uB9AC\uC5B4"
-  desription: "(\uC774\uC57C\uAE30) \uB358\uC804 \uD074\uB9AC\uC5B4!"
+  title: "\uB358\uC8041 \uD074\uB9AC\uC5B4\uD558\uB77C"
+  desription: "\uB358\uC8041\uC758 \uC704\uD611\uC744 \uC81C\uAC70\uD558\uACE0 \uC815\uD654\uD558\uC790"
   questObjectives:
   - desription: "\uB358\uC8041 \uD074\uB9AC\uC5B4"
     type: 0
@@ -23,6 +23,6 @@ MonoBehaviour:
     targetAmount: 1
   rewards:
   - type: 0
-    amount: 0
+    amount: 1000
     itemId: 
-  nextQuestID: 
+  nextQuestID: ReturnToChief1
