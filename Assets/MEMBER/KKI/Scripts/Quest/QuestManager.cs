@@ -1,26 +1,21 @@
 ﻿using System.Collections.Generic;
 using GameSave;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class QuestManager : Singleton<QuestManager>
 {
-    [Header("Database")]
     [SerializeField] private QuestDatabase questDatabase;
-    public QuestDatabase GetQuestDataBase => questDatabase;
-
-
-    [Header("Active Quests (runtime)")]
     private List<QuestProgress> activeQuests = new List<QuestProgress>();
-
-
+    public QuestDatabase GetQuestDataBase => questDatabase;
 
     void Start()
     {
-        QuestData startQuest = questDatabase.GetQuestByID("TalkToChief1");
-        if (startQuest != null)
+        QuestData questData = questDatabase.GetQuestByID("Dungeon1Reach");
+        if (questData != null)
         {
-            Debug.Log(startQuest.title + " 퀘스트 등록!");
-            AddQuest(startQuest);
+            Debug.Log(questData.title + "퀘스트 등록!");
+            AddQuest(questData);
         }
 
     }
@@ -42,7 +37,6 @@ public class QuestManager : Singleton<QuestManager>
         GameEvents.OnItemGet += OnItemGet;
         GameEvents.OnDungeonReach += OnDungeonReach;
         GameEvents.OnDungeonClear += OnDungeonClear;
-        GameEvents.OnNPCTalked += OnNPCTalked;
     }
 
     private void OnDisable()
@@ -51,14 +45,11 @@ public class QuestManager : Singleton<QuestManager>
         GameEvents.OnItemGet -= OnItemGet;
         GameEvents.OnDungeonReach -= OnDungeonReach;
         GameEvents.OnDungeonClear -= OnDungeonClear;
-        GameEvents.OnNPCTalked -= OnNPCTalked;
     }
 
 
     public void AddQuest(QuestData questData)
     {
-        // 중복 등록 방지
-        if (GetProgressByID(questData.questID) != null) return;
         activeQuests.Add(new QuestProgress(questData));
     }
 
@@ -101,54 +92,56 @@ public class QuestManager : Singleton<QuestManager>
         return true;
     }
 
-    public void CompleteQuest(QuestProgress progress)
+    public void CompleteQuest(QuestProgress prograss)
     {
-        Debug.Log(progress.questData.title + " 완료!");
-        progress.isCompleted = true;
+        Debug.Log(prograss.questData.title + "완료!");
+        // 1. 완료 퀘스트 등록하기
+        prograss.isCompleted = true;
 
-        // TODO: 보상 지급
-        foreach (var r in progress.questData.rewards)
-        {
-            // Inventory.Add(r.itemId, r.amount);
-            // PlayerStats.Gold += r.gold;
-        }
+        // 2. 퀘스트 보상 받기
+        // prograss.questData.rewards;
 
-        if (!string.IsNullOrEmpty(progress.questData.nextQuestID))
+        // 3. 다음 퀘스트 있으면 자동 등록
+        if (!string.IsNullOrEmpty(prograss.questData.nextQuestID))
         {
-            var next = questDatabase.GetQuestByID(progress.questData.nextQuestID);
-            if (next != null)
+            QuestData questData = questDatabase.GetQuestByID(prograss.questData.nextQuestID);
+            if (questData != null)
             {
-                AddQuest(next);
-                Debug.Log(next.title + " 퀘스트 등록!");
+                AddQuest(questData);
+                Debug.Log(questData.title + "퀘스트 등록!");
             }
+
         }
     }
 
-
     #endregion
 
 
 
-    #region 이벤트 → 업데이트 매핑
-
-    private void OnEnemyKilled(string enemyID) => UpdateObjective(enemyID, ObjectiveType.Kill);
-    private void OnItemGet(string itemID, int amount = 1) => UpdateObjective(itemID, ObjectiveType.Collect, amount);
-    private void OnDungeonReach(string dungeonID) => UpdateObjective(dungeonID, ObjectiveType.Reach);
-    private void OnDungeonClear(string dungeonID) => UpdateObjective(dungeonID, ObjectiveType.Clear);
-    private void OnNPCTalked(string npcID) => UpdateObjective(npcID, ObjectiveType.Talk, 1);
-
-    #endregion
-
-
-
-    #region 편의 메서드 (외부에서 조회)
-
-    public QuestProgress GetProgressByID(string questID)
+    #region 퀘스트 업데이트 등록 함수
+    private void OnEnemyKilled(string enemyID)
     {
-        return activeQuests.Find(q => q.questData.questID == questID);
+        UpdateObjective(enemyID, ObjectiveType.Kill);
     }
 
+    private void OnItemGet(string itemID, int amount = 1)
+    {
+        UpdateObjective(itemID, ObjectiveType.Collect, amount);
+    }
+
+    private void OnDungeonReach(string dungeonID)
+    {
+        UpdateObjective(dungeonID, ObjectiveType.Reach);
+    }
+
+    private void OnDungeonClear(string dungeonID)
+    {
+        UpdateObjective(dungeonID, ObjectiveType.Clear);
+    }
+
+
     #endregion
+
 
     #region 퀘스트 데이터 저장 및 로드
 

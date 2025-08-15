@@ -10,14 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be7d3d2150c2447128ba913bfae27765, type: 3}
-  m_Name: Chief
+  m_Name: NPC3
   m_EditorClassIdentifier: 
-  npcID: Chief
+  npcID: NPC3
   npcName: "\uCD0C\uC7A5"
   dialogueID:
-  - Chief_Start_BeforeAccept
-  - Chief_While_Reaching
-  - Chief_After_Reached_Before_Clear
-  - Chief_Reward
-  - Chief_Dungeon2_Start
-  npcType: 1
+  - TestDialogue1
+  npcType: 0

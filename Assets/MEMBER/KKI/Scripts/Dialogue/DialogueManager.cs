@@ -2,13 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
+
+// 대화 데이터를 불러오고 대화 실행 및 끝났을 때 사용하는 매니저.
 public class DialogueManager : Singleton<DialogueManager>
 {
     private Dictionary<string, DialogueData> dialogueMap;
     private DialogueSystem dialoguePanel;
-
-    // 현재 대화 중인 상호작용자 보관
-    private INPCInteractable currentInteractor;
 
     protected override void Awake()
     {
@@ -18,50 +17,36 @@ public class DialogueManager : Singleton<DialogueManager>
 
     void LoadDatabase()
     {
+        // 리소스 파일에서 json 파일인 "dialogues"를 가져오기
         TextAsset jsonText = Resources.Load<TextAsset>("dialogues");
         var db = JsonUtility.FromJson<DialogueDatabase>(jsonText.text);
+        // db 다이어로그 데이터 형태로 딕셔너리로 변환
         dialogueMap = db.dialogues.ToDictionary(d => d.dialogueID);
-
-        foreach (var kv in dialogueMap)
-        {
-            var d = kv.Value;
-            Debug.Log($"[DialogueDB] {d.dialogueID} rq={d.requiredQuestID} rs={d.requiredQuestStatus}");
-            break;
-        }
     }
 
-    public DialogueData GetDialogueData(string dialogueID)
+
+    void Start()
     {
-        dialogueMap.TryGetValue(dialogueID, out DialogueData data);
-        return data;
+        // UIManager에서 참조해야 할 듯
+        dialoguePanel = FindAnyObjectByType<DialogueSystem>(FindObjectsInactive.Include);
     }
 
-    public void StartDialogue(string dialogueID, INPCInteractable interactor = null)
+    public void StartDialogue(string dialogueID)
     {
         if (dialoguePanel == null)
             dialoguePanel = FindAnyObjectByType<DialogueSystem>(FindObjectsInactive.Include);
 
         if (!dialogueMap.TryGetValue(dialogueID, out DialogueData data)) return;
 
-        // interactor가 전달되면 현재 화자로 등록, null이면 기존 값 유지
-        if (interactor != null)
-            currentInteractor = interactor;
-
+        // 패널 활성화
         dialoguePanel.gameObject.SetActive(true);
+        // 대화 시작
         dialoguePanel.StartDialogue(data);
     }
 
     public void EndDialogue()
     {
-        // 대화 UI 닫기
-        if (dialoguePanel != null)
-            dialoguePanel.gameObject.SetActive(false);
-
-        // 여기서 상호작용 종료 신호 보내기
-        if (currentInteractor != null)
-        {
-            currentInteractor.EndInteraction();
-            currentInteractor = null;
-        }
+        dialoguePanel.gameObject.SetActive(false);
     }
+
 }

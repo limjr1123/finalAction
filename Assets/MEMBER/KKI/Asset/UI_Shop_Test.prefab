@@ -2303,7 +2303,6 @@ MonoBehaviour:
   equipmentPanel: {fileID: 5894883455922966706}
   consumptionPanel: {fileID: 663772636747441507}
   closeButton: {fileID: 5253152093315846533}
-  goldText: {fileID: 5082894004154707154}
 --- !u!1 &789436353682865079
 GameObject:
   m_ObjectHideFlags: 0
