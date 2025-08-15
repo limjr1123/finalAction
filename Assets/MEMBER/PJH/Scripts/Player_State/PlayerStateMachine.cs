@@ -141,11 +141,6 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnDodge();
         }
 
-        //if (Input.GetKeyDown(KeyCode.LeftControl)) // 패링
-        //{
-        //    currentState?.OnParry();
-        //}
-
         if (Input.GetKeyDown(KeyCode.Tab))  // 가드
         {
             currentState?.OnGuard();
@@ -263,25 +258,15 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void AnimationEvent_ChangeLayerToEvasion()
     {
-        SetLayerRecursively(this.gameObject, _evasionLayer);
+        this.gameObject.layer = _evasionLayer;
     }
 
     public void AnimationEvent_RevertLayer()
     {
-        SetLayerRecursively(this.gameObject, _playerLayer);
+        this.gameObject.layer = _playerLayer;
     }
 
-    private void SetLayerRecursively(GameObject obj, int newLayer)
-    {
-        if (obj == null) return;
-        obj.layer = newLayer;
-
-        foreach (Transform child in obj.transform)
-        {
-            if (child == null) continue;
-            SetLayerRecursively(child.gameObject, newLayer);
-        }
-    }
+ 
 
     void OnDisable()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 [System.Serializable]
@@ -69,6 +70,8 @@ public class PlayerStats : MonoBehaviour
     private int _previousStamina;
     private int _previousLevel;
     private int _previousEXP;
+
+    private Coroutine _regenerateCoroutine;
 
     public int currentHealth
     {
@@ -189,7 +192,11 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(RegenerateResources());
+        if (_regenerateCoroutine != null)
+        {
+            StopCoroutine(_regenerateCoroutine);
+        }
+        _regenerateCoroutine = StartCoroutine(RegenerateResources());
     }
 
     // Unity Editor에서 Inspector 값이 변경될 때 호출됨
@@ -409,6 +416,11 @@ public class PlayerStats : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+        if (_regenerateCoroutine != null)
+        {
+            StopCoroutine(_regenerateCoroutine);
+            _regenerateCoroutine = null;
+        }
         stateMachine?.Die();
         OnPlayerDied?.Invoke();
     }
@@ -601,5 +613,20 @@ public class PlayerStats : MonoBehaviour
     {
         currentHealth -= 10; // 방어력 무시하고 직접 10 감소
         Debug.Log($"테스트: HP 10 직접 감소, 현재 HP: {currentHealth}");
+    }
+
+    public void Respawn()
+    {
+        isDead = false;
+        stateMachine.Animator.SetTrigger("Respawn");
+        currentHealth = maxHealth.GetValue();
+        currentMana = maxMana.GetValue();
+        currentStamina = maxStamina.GetValue();
+        stateMachine.ChangeState(stateMachine.IdleState);
+        if (_regenerateCoroutine != null)
+        {
+            StopCoroutine(_regenerateCoroutine);
+        }
+        _regenerateCoroutine = StartCoroutine(RegenerateResources());
     }
 }

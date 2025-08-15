@@ -49,3 +49,7 @@ MonoBehaviour:
   blockEffectPrefab: {fileID: 5077499309858829997, guid: ea8565aee79226b41a07fe0e0a9bc58e, type: 3}
   attackReadyEffectPrefab: {fileID: 8653212954368013651, guid: 739d4dc41953dfe4e8ef090ea707bc0a, type: 3}
   initialPoolSize: 10
+  allowedScenes:
+  - Dungeon
+  - LJR_Monster
+  audioClips: {fileID: 8300000, guid: 6cdf2b6afcdf03c4fb959f056819ba48, type: 3}

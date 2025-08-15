@@ -555,6 +555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_GreatSword
       objectReference: {fileID: 0}
+    - target: {fileID: 4135597747535975543, guid: 31c8378b0adb3a54eb69e020538a12c8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5517697180281672466, guid: 31c8378b0adb3a54eb69e020538a12c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.18
@@ -688,7 +692,7 @@ Transform:
   m_GameObject: {fileID: 1790969972}
   serializedVersion: 2
   m_LocalRotation: {x: -0.07057956, y: -0.016178023, z: -0.0011448439, w: 0.9973743}
-  m_LocalPosition: {x: -7.260978, y: 1.8684125, z: -0.9942615}
+  m_LocalPosition: {x: -6.247258, y: 1.8494126, z: -1.2475114}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1156,6 +1160,10 @@ PrefabInstance:
     - target: {fileID: 8041625000620411998, guid: b67fa170c9a19a448ab7c7c7c0551611, type: 3}
       propertyPath: m_Name
       value: Player_DualSword
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041625000620411998, guid: b67fa170c9a19a448ab7c7c7c0551611, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9137863335174550983, guid: b67fa170c9a19a448ab7c7c7c0551611, type: 3}
       propertyPath: m_LocalPosition.x

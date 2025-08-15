@@ -1,84 +1,159 @@
+using System.Collections;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CreateCharacter : MonoBehaviour
 {
-    [SerializeField] GameObject nicknameWindow; // 닉네임 입력 UI 창
-    [SerializeField] Button nicknameButton; // 닉네임 확정(캐릭터 생성) 버튼
-    [SerializeField] Button closeButton; // 닉네임 창 닫기 버튼
+    [SerializeField] GameObject nicknameWindow;
+    [SerializeField] Button nicknameButton;
+    [SerializeField] Button closeButton;
     [SerializeField] GameObject characterCreateWindow;
     [SerializeField] GameObject characterSelectWindow;
 
-    [Header("Nickname Input")] // UI 인스펙터에서 닉네임 입력 섹션 헤더
-    [SerializeField] TMP_InputField nicknameInputField; // 닉네임을 입력받을 TMP_InputField 컴포넌트
+    [Header("Nickname Input")]
+    [SerializeField] TMP_InputField nicknameInputField;
 
-    void Start() // Unity의 Start 메서드 - 객체가 활성화될 때 한 번 실행
+    private string lastValidText = "";
+    private bool isProcessing = false;
+
+    void Start()
     {
-        if (nicknameButton != null) // 닉네임 확정 버튼이 존재하면
-            nicknameButton.onClick.AddListener(CreateCharacters); // 클릭 시 CreateCharacters 메서드 호출 리스너 추가
+        if (nicknameButton != null)
+            nicknameButton.onClick.AddListener(CreateCharacters);
 
-        if (closeButton != null) // 닫기 버튼이 존재하면
-            closeButton.onClick.AddListener(CloseNickname); // 클릭 시 CloseNickname 메서드 호출 리스너 추가
+        if (closeButton != null)
+            closeButton.onClick.AddListener(CloseNickname);
+
+        if (nicknameInputField != null)
+        {
+            // 모바일에서는 기본 제한을 사용하지 않음
+            nicknameInputField.characterLimit = 0;
+            nicknameInputField.onValidateInput = null;
+
+            // 텍스트 변경 이벤트만 사용
+            nicknameInputField.onValueChanged.AddListener(OnTextChanged);
+
+            lastValidText = "";
+        }
     }
 
-    private void CreateCharacters() // 캐릭터 생성 버튼 클릭 시 호출되는 메서드
+    private void OnTextChanged(string newText)
     {
-        if (nicknameInputField == null || string.IsNullOrEmpty(nicknameInputField.text.Trim())) // 닉네임 입력 필드가 비어있거나 공백만 있는 경우
+        if (isProcessing) return;
+
+        isProcessing = true;
+
+        // 허용된 문자만 남기기
+        string cleanText = Regex.Replace(newText, @"[^0-9a-zA-Z가-힣]", "");
+
+        // 6글자 초과 시 이전 유효한 텍스트로 되돌리기
+        string finalText;
+        if (cleanText.Length > 6)
         {
-            Debug.LogWarning("닉네임을 입력해주세요!"); // 경고 로그 출력
-            return; // 메서드 종료
+            finalText = lastValidText; // 7글자가 되려고 하면 이전 상태로 되돌림
+        }
+        else
+        {
+            finalText = cleanText;
+            lastValidText = finalText; // 유효한 텍스트 저장
         }
 
-        JobData selectedJob = CharacterCreateManager.Instance?.GetSelectedJobData(); // CharacterCreateManager에서 현재 선택된 직업 데이터 가져오기
-        if (selectedJob == null) // 선택된 직업이 없는 경우
+        // 텍스트가 바뀌었으면 업데이트
+        if (finalText != newText)
         {
-            Debug.LogWarning("직업이 선택되지 않았습니다!"); // 경고 로그 출력
-            return; // 메서드 종료
+            nicknameInputField.text = finalText;
+            nicknameInputField.caretPosition = finalText.Length;
         }
 
-        string characterName = nicknameInputField.text.Trim(); // 입력된 닉네임 가져오기
-        GameDataSaveLoadManager.Instance.CreateCharacter(characterName, selectedJob); // 게임 데이터 매니저를 통해 새 캐릭터 생성 및 저장
+        isProcessing = false;
+    }
 
-        Debug.Log($"캐릭터 생성 완료: {characterName}, 직업: {selectedJob.jobName}"); // 생성 완료 로그 출력
-        CloseNickname(); // 닉네임 입력 창 닫기
+    // 모바일에서는 Update로 지속적으로 모니터링
+    void Update()
+    {
+        if (nicknameInputField != null && !isProcessing)
+        {
+            string currentText = nicknameInputField.text;
+
+            // 6글자 초과하면 강제로 마지막 유효한 텍스트로 되돌리기
+            if (currentText.Length > 6)
+            {
+                isProcessing = true;
+                nicknameInputField.text = lastValidText;
+                nicknameInputField.caretPosition = lastValidText.Length;
+                isProcessing = false;
+            }
+        }
+    }
+
+    private void CreateCharacters()
+    {
+        string nickname = nicknameInputField.text.Trim();
+
+        if (nickname.Length < 2)
+        {
+            Debug.LogWarning("닉네임은 최소 2글자 이상이어야 합니다!");
+            return;
+        }
+
+        if (nickname.Length > 6)
+        {
+            Debug.LogWarning("닉네임은 최대 6글자까지만 가능합니다!");
+            return;
+        }
+
+        JobData selectedJob = CharacterCreateManager.Instance?.GetSelectedJobData();
+        if (selectedJob == null)
+        {
+            Debug.LogWarning("직업이 선택되지 않았습니다!");
+            return;
+        }
+
+        GameDataSaveLoadManager.Instance.CreateCharacter(nickname, selectedJob);
+
+        Debug.Log($"캐릭터 생성 완료: {nickname}, 직업: {selectedJob.jobName}");
+        CloseNickname();
         characterCreateWindow.SetActive(false);
         characterSelectWindow.SetActive(true);
-        RefreshCharacterUI(); // 캐릭터 UI를 새로고침하는 메서드 호출
-        ResetCharacterCreation(); // 캐릭터 생성 관련 UI 초기화
+        RefreshCharacterUI();
+        ResetCharacterCreation();
     }
 
-    private void RefreshCharacterUI() // 캐릭터 UI를 새로고침하고 마지막 캐릭터를 선택하는 메서드
+    private void RefreshCharacterUI()
     {
-        // 씬에서 CharacterInfoToggles 인스턴스를 찾음 (비활성화된 오브젝트도 포함하여 찾기)
         CharacterInfoToggles characterInfoToggles = FindAnyObjectByType<CharacterInfoToggles>(FindObjectsInactive.Include);
 
-        if (characterInfoToggles != null) // CharacterInfoToggles 인스턴스를 찾은 경우
+        if (characterInfoToggles != null)
         {
-            characterInfoToggles.RefreshCharacterData(); // 캐릭터 데이터를 새로고침하여 UI 업데이트
+            characterInfoToggles.RefreshCharacterData();
 
-            int lastIndex = GameDataSaveLoadManager.Instance.GameData.characters.Count - 1; // 새로 생성된 캐릭터의 인덱스 (마지막 인덱스)
-            if (lastIndex >= 0) // 유효한 인덱스인 경우
+            int lastIndex = GameDataSaveLoadManager.Instance.GameData.characters.Count - 1;
+            if (lastIndex >= 0)
             {
-                characterInfoToggles.SelectCharacterByIndex(lastIndex); // 새로 생성된(마지막) 캐릭터를 자동으로 선택
+                characterInfoToggles.SelectCharacterByIndex(lastIndex);
             }
 
-            Debug.Log("캐릭터 UI 업데이트 완료"); // 업데이트 완료 로그 출력
+            Debug.Log("캐릭터 UI 업데이트 완료");
         }
-        else // CharacterInfoToggles 인스턴스를 찾지 못한 경우
+        else
         {
-            Debug.LogWarning("CharacterInfoToggles를 찾을 수 없습니다!"); // 경고 로그 출력
+            Debug.LogWarning("CharacterInfoToggles를 찾을 수 없습니다!");
         }
     }
 
-    private void CloseNickname() // 닉네임 입력 창을 닫는 메서드
+    private void CloseNickname()
     {
-        nicknameWindow.SetActive(false); // 닉네임 창 비활성화
+        nicknameWindow.SetActive(false);
     }
 
-    private void ResetCharacterCreation() // 캐릭터 생성 관련 UI를 초기화하는 메서드
+    private void ResetCharacterCreation()
     {
-        if (nicknameInputField != null) // 닉네임 입력 필드가 존재하면
-            nicknameInputField.text = ""; // 입력 필드의 텍스트를 비움
+        if (nicknameInputField != null)
+        {
+            nicknameInputField.text = "";
+            lastValidText = "";
+        }
     }
 }

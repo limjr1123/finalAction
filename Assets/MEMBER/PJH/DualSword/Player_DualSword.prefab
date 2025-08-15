@@ -516,7 +516,7 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  guardExitDuration: 0.6
+  guardExitDuration: 0.4
 --- !u!114 &7829641435140839935
 MonoBehaviour:
   m_ObjectHideFlags: 0
