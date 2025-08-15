@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopUI : BaseUI
 {
@@ -17,6 +18,9 @@ public class ShopUI : BaseUI
     [Header("버튼")]
     [SerializeField] private Button closeButton;
 
+    [Header("Gold")]
+    [SerializeField] private TextMeshProUGUI goldText;
+
     private ShopItemSlotUI[] equipmentSlots;
     private ShopItemSlotUI[] consumptionSlots;
 
@@ -27,6 +31,12 @@ public class ShopUI : BaseUI
 
         equipmentSlots = equipmentPanel.GetComponentsInChildren<ShopItemSlotUI>(true);
         consumptionSlots = consumptionPanel.GetComponentsInChildren<ShopItemSlotUI>(true);
+    }
+
+    private void OnEnable()
+    {
+        // 상점 창이 열릴 때 골드 동기화
+        UpdateGoldUI();
     }
 
     void Start()
@@ -43,6 +53,9 @@ public class ShopUI : BaseUI
         {
             ShowConsumptionPanel();
         }
+
+        // 시작 시 골드 표시 1회 보정
+        UpdateGoldUI();
     }
 
     private void CloseInventoryUI()
@@ -55,6 +68,7 @@ public class ShopUI : BaseUI
         if (isOn)
         {
             ShowEquipmentPanel();
+            UpdateGoldUI(); // 탭 전환 시도 때도 갱신
         }
     }
 
@@ -63,6 +77,7 @@ public class ShopUI : BaseUI
         if (isOn)
         {
             ShowConsumptionPanel();
+            UpdateGoldUI(); // 탭 전환 시도 때도 갱신
         }
     }
 
@@ -136,10 +151,22 @@ public class ShopUI : BaseUI
                 RefreshEquipmentSlots();
             else if (consumptionPanel.activeSelf)
                 RefreshConsumptionSlots();
+
+            // 골드 감소 반영
+            UpdateGoldUI();
         }
         else
         {
             Debug.Log("구매 실패(돈 부족)");
+            // 실패해도 혹시 외부에서 변동됐을 수 있으니 한 번 동기화
+            UpdateGoldUI();
         }
+    }
+
+    public void UpdateGoldUI()
+    {
+        if (goldText == null) return;
+        var goldSystem = FindAnyObjectByType<GoldSystem>();
+        goldText.text = goldSystem != null ? goldSystem.GetBalance().ToString() : "0";
     }
 }
