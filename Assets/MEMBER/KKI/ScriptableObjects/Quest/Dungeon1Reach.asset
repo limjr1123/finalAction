@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questID: Dungeon1Reach
   questType: 0
-  title: "\uB9C8\uC744 \uCD0C\uC7A5\uACFC \uB300\uD654"
-  desription: "(\uC774\uC57C\uAE30) \uCD0C\uC7A5\uC744 \uCC3E\uC544\uAC00 \uC774\uC57C\uAE30
-    \uD558\uC138"
+  title: "\uB358\uC804 1\uC5D0 \uB3C4\uB2EC\uD558\uB77C"
+  desription: "\uCD0C\uC7A5\uC758 \uC9C0\uC2DC\uC5D0 \uB530\uB77C \uB358\uC8041 \uC785\uAD6C\uAE4C\uC9C0
+    \uAC00\uC790."
   questObjectives:
-  - desription: "\uCD0C\uC7A5\uACFC \uC774\uC57C\uAE30 \uD558"
+  - desription: "\uB358\uC804 1\uC5D0 \uB3C4\uB2EC"
     type: 4
-    targetId: NPC3
+    targetId: Dungeon1
     targetAmount: 1
   rewards:
   - type: 1
