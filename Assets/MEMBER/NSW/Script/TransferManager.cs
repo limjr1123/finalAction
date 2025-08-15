@@ -8,7 +8,6 @@ public class TransferManager : Singleton<TransferManager>
 
     public IEnumerator TransformPlayer(GameObject player)
     {
-        // SceneLoader가 씬 로딩을 시작했으므로 이 코루틴의 역할은 끝났습니다.
         yield return new WaitForSeconds(5f);
 
         if (player != null)

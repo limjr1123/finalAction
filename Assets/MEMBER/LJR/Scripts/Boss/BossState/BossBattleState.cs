@@ -75,7 +75,7 @@ public class BossBattleState : EnemyState<BossController>
                 {
                     float dot = Vector3.Dot(boss.transform.forward, directionToPlayer);
 
-                    if (dot < 0.9f)
+                    if (dot < 0.98f)
                     {
                         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
                         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);

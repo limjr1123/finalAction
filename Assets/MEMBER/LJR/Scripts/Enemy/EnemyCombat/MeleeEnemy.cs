@@ -19,6 +19,11 @@ public class MeleeEnemy : MonoBehaviour
     public event Action OnGoHit;
     public event Action OnHitComplete;
 
+    [SerializeField] AudioClip slash;
+    [SerializeField] AudioClip swing;
+    [field:SerializeField] public HitEffectType hitEffectType { get; private set; }
+    Dictionary<HitEffectType, AudioClip> attackAudioDict = new Dictionary<HitEffectType, AudioClip>();
+
     // 캐릭터의 애니메이터 컴포넌트
     Animator anim;
 
@@ -48,6 +53,9 @@ public class MeleeEnemy : MonoBehaviour
             weaponCollider = weapon.GetComponent<BoxCollider>();
         }
         DisableAllCollider();
+
+        attackAudioDict.Add(HitEffectType.Slash, slash);
+        attackAudioDict.Add(HitEffectType.Hit, swing);
     }
 
     // 공격 중이 아닐 때만 Attack 코루틴을 시작합니다.
@@ -76,6 +84,8 @@ public class MeleeEnemy : MonoBehaviour
         anim.CrossFade(animName, 0.2f);
         yield return null;  // 프레임 대기하여 애니메이션 정보를 확인
 
+        // 공격 시작 시 사운드 재생
+        SoundManager.Instance.PlaySkillSFX(attackAudioDict[hitEffectType]);
         //GetNextAnimatorStateInfo 애니매이션 상태 정보를 가져옵니다.
         var animState = anim.GetNextAnimatorStateInfo(1);
 
@@ -95,7 +105,7 @@ public class MeleeEnemy : MonoBehaviour
                     isParry = attacks[comboCounter].isParry; // 패링 가능한 공격인지 확인
                     attackState = EnemyAttackStateInfo.Impact;
                     //콜라이더 켜기
-                    EnableHitbox(attacks[comboCounter]);
+                    EnableHitbox(attacks[comboCounter], normalizedTime);
                 }
             }
             else if (attackState == EnemyAttackStateInfo.Impact)
@@ -104,7 +114,7 @@ public class MeleeEnemy : MonoBehaviour
                 {
                     attackState = EnemyAttackStateInfo.AttackDelay;
                     //콜라이더 끄기
-                    DisableAllCollider();
+                    DisableAllCollider(normalizedTime);
                     isParry = false; // 초기화
                 }
             }
@@ -124,8 +134,9 @@ public class MeleeEnemy : MonoBehaviour
         inAction = false;
     }
 
-    void DisableAllCollider()
+    void DisableAllCollider(float? normalizedTime = 0)
     {
+        Debug.Log(normalizedTime);
         // 초기에는 콜라이더를 비활성화합니다.
         if (weaponCollider != null)
             weaponCollider.enabled = false;
@@ -139,8 +150,9 @@ public class MeleeEnemy : MonoBehaviour
             rightFootCollider.enabled = false;
     }
 
-    void EnableHitbox(EnemyAttackData attack)
+    void EnableHitbox(EnemyAttackData attack,float normalizedTime)
     {
+        Debug.Log(normalizedTime);
         switch (attack.hitboxToUse)
         {
             case AttackHitbox.LeftHand:

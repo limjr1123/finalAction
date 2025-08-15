@@ -7,6 +7,7 @@ public enum EnemyType
 {
     Melee,  // 근접 적
     Range,  // 원거리 적
+    MeleeBoss, // 근접 보스
 }
 
 // EnemyStates : 적의 상태를 정의하는 열거형
@@ -32,6 +33,7 @@ public class EnemyController : MonoBehaviour
     public Dictionary<EnemyStates, EnemyState<EnemyController>> stateDict { get; private set; }
     public EnemyStateMachine<EnemyController> stateMachine { get; private set; }
     public Animator anim { get; private set; }
+    public Collider collider { get; private set; }
     public bool isAttacking { get; set; } = false;
     [field: SerializeField] public GameObject target { get; set; } = null;
     public NavMeshAgent navAgent { get; private set; }
@@ -67,6 +69,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         enemyVision = GetComponentInChildren<EnemyVision>();
         navAgent = GetComponent<NavMeshAgent>();    // NavMeshAgent 컴포넌트 가져오기
+        collider = GetComponent<Collider>(); // Collider 컴포넌트 가져오기
 
         stateDict = new Dictionary<EnemyStates, EnemyState<EnemyController>>();
         stateDict[EnemyStates.Idle] = GetComponent<EnemyIdleState>();

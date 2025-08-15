@@ -4078,8 +4078,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8965796938777824018}
   - component: {fileID: 6171023876659593165}
-  - component: {fileID: 3390924520076152458}
   - component: {fileID: 6603156982500087270}
+  - component: {fileID: 8560448656374090255}
   m_Layer: 10
   m_Name: weapon1_right
   m_TagString: HitBox
@@ -4124,19 +4124,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04072879, y: 0.4069171, z: 0.12735756}
   m_Center: {x: -0.005164365, y: 0.22412273, z: -0.004991397}
---- !u!114 &3390924520076152458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4551269542360482261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitEffectType: 1
 --- !u!54 &6603156982500087270
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4164,6 +4151,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 3
+--- !u!114 &8560448656374090255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4551269542360482261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b286df60c8688489a591268a4de2f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffectType: 1
 --- !u!1 &4568434904723787076
 GameObject:
   m_ObjectHideFlags: 0
@@ -6500,6 +6500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 360
   <target>k__BackingField: {fileID: 0}
+  <enemyType>k__BackingField: 2
 --- !u!114 &4969914013863043999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6720,6 +6721,9 @@ MonoBehaviour:
   leftFootCollider: {fileID: 0}
   rightFootCollider: {fileID: 0}
   warningSignPrefab: {fileID: 1619254214636677203, guid: 196c78e7d39965742ada35250ada5516, type: 3}
+  slash: {fileID: 8300000, guid: 4dda7f07341f61543bd6d9d221dca8f2, type: 3}
+  swing: {fileID: 8300000, guid: 2f792b6be34227242ad1a80f141a024c, type: 3}
+  <hitEffectType>k__BackingField: 1
   attackState: 0
 --- !u!114 &5813383280603892727
 MonoBehaviour:
@@ -8133,8 +8137,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1704791443734334864}
   - component: {fileID: 7273248178523153974}
-  - component: {fileID: 1066624762092154965}
   - component: {fileID: 1803569818850946200}
+  - component: {fileID: 2310774185703398143}
   m_Layer: 10
   m_Name: weapon2_left
   m_TagString: HitBox
@@ -8179,19 +8183,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.037510566, y: 0.4226023, z: 0.13046728}
   m_Center: {x: 0.008587191, y: 0.22234805, z: -0.015489154}
---- !u!114 &1066624762092154965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8712201174804230301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitEffectType: 1
 --- !u!54 &1803569818850946200
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8219,6 +8210,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 3
+--- !u!114 &2310774185703398143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8712201174804230301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b286df60c8688489a591268a4de2f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffectType: 1
 --- !u!1 &8868632699484906431
 GameObject:
   m_ObjectHideFlags: 0

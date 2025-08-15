@@ -28,6 +28,13 @@ public class MeleeBoss : MonoBehaviour
 
     [SerializeField] GameObject warningSignPrefab; // 경고표시
 
+    [SerializeField] AudioClip slash;
+    [SerializeField] AudioClip swing;
+    
+    [field: SerializeField] public HitEffectType hitEffectType { get; private set; }
+
+    Dictionary<HitEffectType, AudioClip> attackAudioDict = new Dictionary<HitEffectType, AudioClip>();
+
     // 캐릭터의 애니메이터 컴포넌트
     Animator anim;
     int attackIndex = 0;
@@ -42,6 +49,8 @@ public class MeleeBoss : MonoBehaviour
         // 컴포넌트가 활성화될 때 애니메이터를 초기화합니다.
         anim = GetComponent<Animator>();
         bossStat = GetComponent<EnemyStat>();
+        attackAudioDict.Add(HitEffectType.Slash, slash);
+        attackAudioDict.Add(HitEffectType.Hit, swing);
     }
 
     private void Start()
@@ -89,7 +98,7 @@ public class MeleeBoss : MonoBehaviour
         string animName = attacks[attackIndex].animName;
         anim.CrossFade(animName, 0.2f);
         yield return null; // 프레임 대기하여 애니메이션 정보를 확인
-
+        
         // 애니메이션 상태 정보 가져오기
         var animState = anim.GetNextAnimatorStateInfo(1);
 
@@ -209,6 +218,7 @@ public class MeleeBoss : MonoBehaviour
                     yield return null; // 프레임 대기하여 애니메이션 정보를 확인
                     timer = 0f; // 타이머 초기화
                     animState = anim.GetNextAnimatorStateInfo(1); // 다음 애니메이션 상태 정보 갱신
+                    SoundManager.Instance.PlaySkillSFX(attackAudioDict[hitEffectType]); // 공격 시작 시 사운드 재생
                 }
             }
             else if (attackState == EnemyAttackStateInfo.Windup)

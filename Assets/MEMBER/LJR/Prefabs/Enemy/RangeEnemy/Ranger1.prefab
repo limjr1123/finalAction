@@ -6539,6 +6539,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wooden Bow
       objectReference: {fileID: 0}
+    - target: {fileID: 5859209656441176702, guid: e0d6f1e01ed6314418385afb3a206991, type: 3}
+      propertyPath: bowDrawSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 699b912cc46ba4f4fad8fa38e997e232, type: 3}
+    - target: {fileID: 5859209656441176702, guid: e0d6f1e01ed6314418385afb3a206991, type: 3}
+      propertyPath: bowShootSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 24252664d1f41c140864d611ea092c18, type: 3}
     - target: {fileID: 6971884785383264845, guid: e0d6f1e01ed6314418385afb3a206991, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.249

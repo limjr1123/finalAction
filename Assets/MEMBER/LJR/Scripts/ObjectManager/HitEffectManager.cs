@@ -25,6 +25,7 @@ public class HitEffectManager : MonoBehaviour
     [SerializeField] private GameObject attackReadyEffectPrefab;  // 가불기 전조 이펙트 프리팹
 
     private Dictionary<HitEffectType, GameObject> effectPrefabs;
+    private Dictionary<HitEffectType, AudioClip> audioClips;
     private Dictionary<HitEffectType, Queue<GameObject>> effectPools;
 
     [Header("Pool Settings")]
@@ -34,7 +35,10 @@ public class HitEffectManager : MonoBehaviour
     [SerializeField] private string[] allowedScenes = { "Dungeon", "LJR_Monster" }; // DontDestroyOnLoad를 적용할 씬들
 
     [Header("Audio Settings")]
-    [SerializeField] AudioClip audioClips; // 오디오 클립
+    [SerializeField] AudioClip hit; // 오디오 클립
+    [SerializeField] AudioClip slash; // 오디오 클립 배열
+    [SerializeField] AudioClip block; // 오디오 클립 배열
+    [SerializeField] AudioClip attackReady; // 오디오 클립 배열
 
     void Awake()
     {
@@ -60,6 +64,13 @@ public class HitEffectManager : MonoBehaviour
             { HitEffectType.Slash, slashEffectPrefab },
             { HitEffectType.Block, blockEffectPrefab },
             { HitEffectType.AttackReady, attackReadyEffectPrefab }
+        };
+        audioClips = new Dictionary<HitEffectType, AudioClip>
+        {
+            { HitEffectType.Hit, hit },
+            { HitEffectType.Slash, slash },
+            { HitEffectType.Block, block },
+            { HitEffectType.AttackReady, attackReady }
         };
 
         effectPools = new Dictionary<HitEffectType, Queue<GameObject>>();
@@ -119,8 +130,7 @@ public class HitEffectManager : MonoBehaviour
         effect.SetActive(true);
 
         //사운드 이펙트 추가
-        SoundManager.Instance.PlaySkillSFX(audioClips);
-
+        SoundManager.Instance.PlaySkillSFX(audioClips[effectType]);
 
         if (effectType == HitEffectType.AttackReady)
         {
