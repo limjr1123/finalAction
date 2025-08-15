@@ -192,13 +192,11 @@ public class MeleeBoss : MonoBehaviour
 
         while (timer <= animState.length && currentPhaseIndex < unblockableAttacks[unblockableAttackIndex].attackPhases.Length)
         {
+            Debug.Log("phases :"+unblockableAttacks[unblockableAttackIndex].attackPhases.Length);
             timer += Time.deltaTime;
             float normalizedTime = timer / animState.length;
 
             var currentPhase = unblockableAttacks[unblockableAttackIndex].attackPhases[currentPhaseIndex];
-            anim.CrossFade(currentPhase.animName, 0.2f);
-            yield return null; // 프레임 대기하여 애니메이션 정보를 확인
-            animState = anim.GetNextAnimatorStateInfo(1); // 다음 애니메이션 상태 정보 갱신
 
             if (attackState == EnemyAttackStateInfo.Charge)
             {
@@ -230,7 +228,7 @@ public class MeleeBoss : MonoBehaviour
                     attackState = EnemyAttackStateInfo.Windup;
                     DisableAllCollider(); // collider 끄기
                     currentPhaseIndex++; // 다음 phase로 이동
-
+                    Debug.Log("Unblockable Attack Phase Index: " + currentPhaseIndex);
                     if (currentPhaseIndex > unblockableAttacks[unblockableAttackIndex].attackPhases.Length - 1)
                     {
                         attackState = EnemyAttackStateInfo.Idle;
@@ -238,10 +236,12 @@ public class MeleeBoss : MonoBehaviour
                         break;
                     }
                     animName = unblockableAttacks[unblockableAttackIndex].attackPhases[currentPhaseIndex].animName;
+                    Debug.Log(animName);
                     anim.CrossFade(animName, 0.2f);
                     yield return null; // 프레임 대기하여 애니메이션 정보를 확인
                     timer = 0f; // 타이머 초기화
                     animState = anim.GetNextAnimatorStateInfo(1); // 다음 애니메이션 상태 정보 갱신
+                    continue;
                 }
             }
             yield return null;
@@ -253,7 +253,8 @@ public class MeleeBoss : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         GameObject warning = Instantiate(warningSignPrefab, swordWindAim.position, swordWindAim.rotation); // 경고 표시 생성
-        warning.transform.position = new Vector3(warning.transform.position.x, 0, warning.transform.position.z);
+        warning.transform.Translate(Vector3.up * -1.5f); // 경고 표시를 약간 아래로 이동
+        //warning.transform.position = new Vector3(warning.transform.position.x, 0, warning.transform.position.z);
         yield return new WaitForSeconds(0.2f); // 경고 표시가 보이는 시간
         Destroy(warning); // 경고 표시 제거
     }

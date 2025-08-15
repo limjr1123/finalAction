@@ -19,13 +19,21 @@ MonoBehaviour:
   <impactEndTime>k__BackingField: 0
   <isParry>k__BackingField: 0
   <attackPhases>k__BackingField:
-  - animName: 
+  - animName: attack24_ready
     hitboxToUse: 0
-    impactStartTime: 0.2
-    impactEndTime: 0.5
+    impactStartTime: 0
+    impactEndTime: 0
     isParry: 0
-  - animName: 
+    attackZAngle: 0
+  - animName: attack24_slash
     hitboxToUse: 0
-    impactStartTime: 0.6
-    impactEndTime: 0.8
+    impactStartTime: 0.1
+    impactEndTime: 1
     isParry: 0
+    attackZAngle: 35
+  - animName: attack24_slash1
+    hitboxToUse: 0
+    impactStartTime: 0.1
+    impactEndTime: 1
+    isParry: 0
+    attackZAngle: -35

@@ -101,6 +101,7 @@ public class PlayerRespawnManager : MonoBehaviour
         // 예: currentPlayerStats.Respawn();
         // SendMessage는 해당 함수가 없어도 오류를 발생시키지 않아 안전합니다.
         currentPlayerStats?.SendMessage("Respawn", SendMessageOptions.DontRequireReceiver);
+        currentPlayerStats?.Respawn();
     }
 
     // 현재 씬에서 플레이어 오브젝트를 찾아 참조를 설정하는 핵심 함수

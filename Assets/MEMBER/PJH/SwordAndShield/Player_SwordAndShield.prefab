@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 8972015357510120095}
   - component: {fileID: 6940807383702814480}
   - component: {fileID: 5535381962496330264}
+  - component: {fileID: 6547754175232819371}
   m_Layer: 0
   m_Name: Paladin_J_Nordstrom_Sword
   m_TagString: Untagged
@@ -248,7 +249,7 @@ Transform:
   m_GameObject: {fileID: 565531306504328052}
   serializedVersion: 2
   m_LocalRotation: {x: -0.66916656, y: 0.14884974, z: 0.7275794, w: 0.026232237}
-  m_LocalPosition: {x: -0.29, y: 0.774, z: 0.502}
+  m_LocalPosition: {x: -0.176, y: 0.494, z: 0.633}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -381,6 +382,18 @@ SkinnedMeshRenderer:
     m_Extent: {x: 0.85128236, y: 0.9120832, z: 0.17926334}
   m_DirtyAABB: 0
 --- !u!114 &5535381962496330264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565531306504328052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafde58d97d831a41b8fd5ad5e1d13f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6547754175232819371
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1434,8 +1447,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4460276401954797781}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07057957, y: -0.016177995, z: -0.0011448415, w: 0.99737436}
-  m_LocalPosition: {x: 0.13374186, y: 1.3394126, z: -4.1215115}
+  m_LocalRotation: {x: -0.07212953, y: -0.0157754, z: 0.0003361082, w: 0.9972705}
+  m_LocalPosition: {x: 0.12577221, y: 1.326779, z: -4.1258483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1719,8 +1732,8 @@ GameObject:
   - component: {fileID: 5168353133453131900}
   - component: {fileID: 9119243131022835790}
   - component: {fileID: 6711030526590164055}
-  - component: {fileID: -7692234641649496527}
   - component: {fileID: -5907857265412452075}
+  - component: {fileID: 101152555682535977}
   m_Layer: 6
   m_Name: Player_SwordAndShield
   m_TagString: Player
@@ -1853,10 +1866,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   guardExitDuration: 0.6
-  interactableCollider: {fileID: 0}
+  interactableCollider: {fileID: 4008157404343250664}
   interactableLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16384
 --- !u!114 &6711030526590164055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1870,7 +1883,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: "\uD14C\uC2A4\uD2B8\uD14C\uC2A4"
+  characterName: test
   characterJob: 
   _currentHealth: 100
   _currentMana: 0
@@ -1939,18 +1952,6 @@ MonoBehaviour:
     max: 0
   damageRange: 0.2
   currentPos: {x: 0, y: 0, z: 0}
---- !u!114 &-7692234641649496527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4537231057524668981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2991538ef9654d546bf4a72dd1ac5859, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-5907857265412452075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1965,6 +1966,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconType: 0
   iconSize: 3
+--- !u!114 &101152555682535977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537231057524668981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca58de4b73124f468f650db05cd6728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 100
 --- !u!1 &4571937434902477264
 GameObject:
   m_ObjectHideFlags: 0

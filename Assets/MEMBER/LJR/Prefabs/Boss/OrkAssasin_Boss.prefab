@@ -4079,6 +4079,7 @@ GameObject:
   - component: {fileID: 8965796938777824018}
   - component: {fileID: 6171023876659593165}
   - component: {fileID: 3390924520076152458}
+  - component: {fileID: 6603156982500087270}
   m_Layer: 10
   m_Name: weapon1_right
   m_TagString: HitBox
@@ -4136,6 +4137,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffectType: 1
+--- !u!54 &6603156982500087270
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4551269542360482261}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 3
 --- !u!1 &4568434904723787076
 GameObject:
   m_ObjectHideFlags: 0
@@ -6401,6 +6429,7 @@ GameObject:
   - component: {fileID: 4969914013863043999}
   - component: {fileID: 8147109047752590406}
   - component: {fileID: 9149152606887067}
+  - component: {fileID: -402267362530182737}
   - component: {fileID: 7243629593781811806}
   - component: {fileID: 3563294702803966678}
   - component: {fileID: 9091332601149075076}
@@ -6510,6 +6539,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7162883426991b846bb9a8c04db93f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-402267362530182737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917158064638926932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5432196c65bfe46bbe37d759f95081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7243629593781811806
@@ -6662,10 +6703,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 89e91e425bb7d1b43a798a85ac1f15ec, type: 2}
   - {fileID: 11400000, guid: d3ac5812a1a3ba74a86dcb9322029f53, type: 2}
   - {fileID: 11400000, guid: d1b40752c491b614b96146f52a01f9fb, type: 2}
-  - {fileID: 11400000, guid: 822891b17913e194eb9fcf0bdb3c87df, type: 2}
   - {fileID: 11400000, guid: 40f94c8783c68ac40bbbd961b7e5fcde, type: 2}
   unblockableAttacks:
   - {fileID: 11400000, guid: c99ef6a37b7441b4e9c311b7db3d3c8a, type: 2}
+  - {fileID: 11400000, guid: 1d3f80dca73a2314b836d4e18c83c662, type: 2}
+  - {fileID: 11400000, guid: 822891b17913e194eb9fcf0bdb3c87df, type: 2}
   rageAttack: []
   rightAttackImpactPosition: {fileID: 5488145276540531036}
   leftAttackImpactPosition: {fileID: 5715893124317679332}
@@ -8092,6 +8134,7 @@ GameObject:
   - component: {fileID: 1704791443734334864}
   - component: {fileID: 7273248178523153974}
   - component: {fileID: 1066624762092154965}
+  - component: {fileID: 1803569818850946200}
   m_Layer: 10
   m_Name: weapon2_left
   m_TagString: HitBox
@@ -8149,6 +8192,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffectType: 1
+--- !u!54 &1803569818850946200
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8712201174804230301}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 3
 --- !u!1 &8868632699484906431
 GameObject:
   m_ObjectHideFlags: 0

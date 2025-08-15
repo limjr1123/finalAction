@@ -23,6 +23,7 @@ public class BossController : MonoBehaviour
     public Animator anim { get; private set; }
     public bool isAttacking { get; set; } = false;
     [field: SerializeField] public GameObject target { get; set; } = null;
+    public PlayerStats targetStats { get; set; } = null;
     public NavMeshAgent navAgent { get; private set; }
     public EnemyVision enemyVision { get; internal set; }
 
@@ -78,12 +79,23 @@ public class BossController : MonoBehaviour
         anim.SetFloat("strafeAmount", strafeSpeed, 0.2f, Time.deltaTime); // 애니메이터의 측면 이동 속도 설정
 
         prevPos = transform.position; // 현재 위치 저장
+
+        if (stats.currentHealth <= 0)
+        {
+            Debug.Log("Boss is dead, changing state to Dead.");
+            // 애니메이션을 재시작하여 Dead 상태로 전환
+            anim.enabled = false;
+            anim.enabled = true;  
+            stateMachine.ChangeState(stateDict[BossStates.Dead]);
+        }
+        else { stateMachine.ChangeState(stateDict[BossStates.Battle]); }
     }
 
     // 타겟 설정 메서드(enemyVision함수에 의해 호출됨)
     public void SetTarget(GameObject newTarget)
     {
         target = newTarget;
+        targetStats = target.GetComponent<PlayerStats>();
     }
     public void TargetChaseDirection(Vector3 _direction)
     {
