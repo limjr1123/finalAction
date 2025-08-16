@@ -104,6 +104,7 @@ public class CharacterCreateManager : MonoBehaviour
 
     private void BackCharacterSelectionWindow()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         selectCharacterWindow.SetActive(true);
         characterCreationWindow.SetActive(false);
     }
@@ -116,7 +117,7 @@ public class CharacterCreateManager : MonoBehaviour
             Debug.LogWarning("직업을 먼저 선택해주세요!");
             return;
         }
-
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         nickNameCreationWindow.SetActive(true);
     }
 

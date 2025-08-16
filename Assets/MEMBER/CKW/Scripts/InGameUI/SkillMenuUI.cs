@@ -20,6 +20,7 @@ public class SkillMenuUI : BaseUI
 
     private void CloseSkillMenuUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         CloseUI();
     }
 
