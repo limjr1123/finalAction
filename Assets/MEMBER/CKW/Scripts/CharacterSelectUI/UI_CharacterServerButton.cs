@@ -71,6 +71,7 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void StartGame() // 게임 시작 버튼 클릭 시 호출되는 메서드
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         selectedCharacterData = CharacterInfoToggles.GetCurrentSelectedCharacter();
         Debug.Log($"selectedCharacterData: {(selectedCharacterData != null ? selectedCharacterData.playerSaveData.characterName : "NULL")}");
 
@@ -96,6 +97,7 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void ExitGame() // 게임 종료 버튼 클릭 시 호출되는 메서드
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
 #if UNITY_EDITOR // Unity 에디터에서 실행 중인 경우
         EditorApplication.isPlaying = false; // 에디터 플레이 모드 종료
 #else // 빌드된 애플리케이션인 경우
@@ -105,11 +107,13 @@ public class UI_CharacterServerButton : MonoBehaviour
 
     private void ServerChange() // 서버 변경 버튼 클릭 시 호출되는 메서드
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         SceneManager.LoadScene("CKW_TitleScene"); // "CKW_TitleScene" 씬 로드
     }
 
     private void CharacterCreate() // 캐릭터 생성 버튼 클릭 시 호출되는 메서드
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         SelectCharacterWindow.SetActive(false); // 캐릭터 선택 창 비활성화
         characterSelectionWindow.SetActive(true); // 캐릭터 생성/선택 창 활성화
     }
@@ -117,6 +121,7 @@ public class UI_CharacterServerButton : MonoBehaviour
     // ⭐ 삭제 확인 창 표시 (기존 CharacterDelete 메서드 대체)
     private void ShowDeleteConfirmation() // 캐릭터 삭제 버튼 클릭 시 확인 창 표시
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (selectedCharacterData == null) // 삭제할 캐릭터가 선택되지 않은 경우
         {
             Debug.LogWarning("삭제할 캐릭터가 선택되지 않았습니다!"); // 경고 로그 출력
@@ -133,6 +138,7 @@ public class UI_CharacterServerButton : MonoBehaviour
     // ⭐ 삭제 확인 - 실제 캐릭터 삭제 실행
     private void ConfirmCharacterDelete() // 삭제 확인 버튼 클릭 시 호출되는 메서드
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (selectedCharacterData == null) // 삭제할 캐릭터가 없는 경우
         {
             Debug.LogWarning("삭제할 캐릭터 데이터가 없습니다!");
@@ -165,6 +171,7 @@ public class UI_CharacterServerButton : MonoBehaviour
     // ⭐ 삭제 취소 - 확인 창 닫기
     private void CancelCharacterDelete() // 삭제 취소 버튼 클릭 시 호출되는 메서드
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (deletePanel != null) // 삭제 확인 패널이 존재하는 경우
         {
             deletePanel.SetActive(false); // 삭제 확인 패널 비활성화

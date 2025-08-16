@@ -10,6 +10,7 @@ public enum BGMList
     CKW_TitleScene,
     CKW_CharacterSelectScene,       // 캐릭터 선택 씬
     Field,                          // 필드(첫 맵) 씬
+    Dungeon
 
 }
 #endregion
@@ -17,7 +18,9 @@ public enum BGMList
 #region  UI 효과음 모음
 public enum UISFXList
 {
-    MainUIClick,
+    Server,
+    Button,
+    Select
 
 }
 #endregion
@@ -90,6 +93,7 @@ public class SoundManager : Singleton<SoundManager>
                                volumeSettings.uiSFXVolume * volumeSettings.masterVolume;
             uiSFXSource.volume = finalVolume;
         }
+        UpdateAllVolumes();
     }
 
     void Start()
@@ -250,11 +254,33 @@ public class SoundManager : Singleton<SoundManager>
     #region  UI SFX 플레이
     public void PlayUISFX(UISFXList _uiSFX)
     {
+        Debug.Log($"PlayUISFX 호출됨: {_uiSFX}");
+
         if (uiSFXSource != null && uiSFXClips != null)
         {
             int index = (int)_uiSFX;
+            Debug.Log($"인덱스: {index}, 클립 배열 길이: {uiSFXClips.Length}");
+
             if (index < uiSFXClips.Length && index >= 0)
-                uiSFXSource.PlayOneShot(uiSFXClips[index]);
+            {
+                if (uiSFXClips[index] != null)
+                {
+                    Debug.Log($"오디오 클립 재생: {uiSFXClips[index].name}");
+                    uiSFXSource.PlayOneShot(uiSFXClips[index]);
+                }
+                else
+                {
+                    Debug.Log("오디오 클립이 null입니다");
+                }
+            }
+            else
+            {
+                Debug.Log("인덱스가 범위를 벗어남");
+            }
+        }
+        else
+        {
+            Debug.Log($"uiSFXSource: {uiSFXSource}, uiSFXClips: {uiSFXClips}");
         }
     }
     #endregion
