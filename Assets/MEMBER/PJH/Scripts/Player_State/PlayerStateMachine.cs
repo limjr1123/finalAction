@@ -1,11 +1,10 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerStateMachine : MonoBehaviour
 {
-    public static PlayerStateMachine Instance { get; private set; }
-
     public PlayerState currentState { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -72,12 +71,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
 
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
@@ -94,12 +87,6 @@ public class PlayerStateMachine : MonoBehaviour
         GuardState = new PlayerGuardState(this, gameObject, Animator, guardExitDuration);
         SkillState = new PlayerSkillState(this, gameObject, Animator);
 
-        // 만약 씬에 조이스틱이 없거나 비활성화되어 있다면 경고 메시지를 출력합니다.
-        if (joyStick == null)
-        {
-            Debug.LogWarning("씬에 활성화된 FixedJoystick이 없습니다. 조이스틱이 작동하지 않을 수 있습니다.");
-        }
-
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화
 
         _playerLayer = LayerMask.NameToLayer("Player"); 
@@ -107,12 +94,12 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     void Start()
-    {
-        joyStick = FindFirstObjectByType<FixedJoystick>();
-        if (Stats != null)
-        {
-            PlayerStats.OnPlayerDied += Die;
-        }
+    { 
+        //if (Stats != null)
+        //{
+        //    PlayerStats.OnPlayerDied += Die;
+        //}
+        //joyStick = FindFirstObjectByType<FixedJoystick>();
 
         ChangeState(IdleState);
     }
@@ -124,11 +111,11 @@ public class PlayerStateMachine : MonoBehaviour
             ResetCombo();
         }
 
-        //if (joyStick != null)
-        //{
-        //    InputX = joyStick.Horizontal;
-        //    InputY = joyStick.Vertical;
-        //}
+        if (joyStick != null)
+        {
+            InputX = joyStick.Horizontal;
+            InputY = joyStick.Vertical;
+        }
 
         CalculateMoveDirection();
         HandleInput();
@@ -149,6 +136,27 @@ public class PlayerStateMachine : MonoBehaviour
     {
         currentState?.FixedUpdate();
     }
+
+    //private void OnEnable()
+    //{
+    //    // sceneLoaded 이벤트에 FindJoystick 함수를 구독(연결)합니다.
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
+
+    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    // 새로운 씬에서 조이스틱을 다시 찾습니다.
+    //    joyStick = FindFirstObjectByType<FixedJoystick>();
+    //    if (joyStick == null)
+    //    {
+    //        Debug.Log("새로운 씬에서 조이스틱을 찾지 못했습니다.");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("새로운 씬에서 조이스틱을 성공적으로 다시 연결했습니다.");
+    //    }
+    //}
+
 
     void HandleInput()
     {
@@ -312,6 +320,8 @@ public class PlayerStateMachine : MonoBehaviour
         {
             PlayerStats.OnPlayerDied -= Die;
         }
+
+        //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnTriggerEnter(Collider other)
