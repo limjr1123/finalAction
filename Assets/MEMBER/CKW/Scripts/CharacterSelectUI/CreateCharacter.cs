@@ -110,7 +110,7 @@ public class CreateCharacter : MonoBehaviour
             Debug.LogWarning("직업이 선택되지 않았습니다!");
             return;
         }
-
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         GameDataSaveLoadManager.Instance.CreateCharacter(nickname, selectedJob);
 
         Debug.Log($"캐릭터 생성 완료: {nickname}, 직업: {selectedJob.jobName}");
@@ -145,6 +145,7 @@ public class CreateCharacter : MonoBehaviour
 
     private void CloseNickname()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         nicknameWindow.SetActive(false);
     }
 

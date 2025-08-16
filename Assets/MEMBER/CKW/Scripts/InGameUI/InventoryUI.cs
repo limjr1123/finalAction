@@ -85,6 +85,7 @@ public class InventoryUI : BaseUI
 
     private void CloseInventoryUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         SelectSlot(null, -1, null);
         CloseUI();
     }

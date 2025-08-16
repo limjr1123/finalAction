@@ -62,6 +62,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OpenInventoryUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (UIManager.Instance != null && inventoryUIObject != null)
         {
             BaseUI inventoryBaseUI = inventoryUIObject.GetComponent<BaseUI>();
@@ -74,6 +75,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OpenSkillWindowUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (UIManager.Instance != null && skillWindowUIObject != null)
         {
             BaseUI skillWindowBaseUI = skillWindowUIObject.GetComponent<BaseUI>();
@@ -86,6 +88,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OpenCharacterInfoUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (UIManager.Instance != null && characterInfoUIObject != null)
         {
             BaseUI characterInfoBaseUI = characterInfoUIObject.GetComponent<BaseUI>();
@@ -98,6 +101,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OpenShopUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (UIManager.Instance != null && shopUIObject != null)
         {
             BaseUI shopBaseUI = shopUIObject.GetComponent<BaseUI>();
@@ -110,6 +114,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OpenOptionUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         if (UIManager.Instance != null && optionUIObject != null)
         {
             BaseUI optionBaseUI = optionUIObject.GetComponent<BaseUI>();
