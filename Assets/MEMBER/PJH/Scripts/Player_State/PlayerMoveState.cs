@@ -1,3 +1,4 @@
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerState
@@ -18,7 +19,7 @@ public class PlayerMoveState : PlayerState
     {
         if (stateMachine.InputX == 0 && stateMachine.InputY == 0)
         {
-            stateMachine.ChangeState(new PlayerIdleState(stateMachine, player, animator));
+            stateMachine.ChangeState(stateMachine.IdleState);
             return;
         }
 
@@ -90,8 +91,10 @@ public class PlayerMoveState : PlayerState
 
     private void Move(float fixedDeltaTime)
     {
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        float moveAmount = Mathf.Clamp01(Mathf.Abs(stateMachine.InputX) + Mathf.Abs(stateMachine.InputY));
         float currentSpeed;
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        //bool isSprinting = moveAmount > 0.8f;
 
         if (isSprinting)
         {
@@ -134,6 +137,7 @@ public class PlayerMoveState : PlayerState
         animator.SetFloat("Speed", moveAmount, 0.1f, deltaTime);
 
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        //bool isSprinting = moveAmount > 0.8f;
         animator.SetBool("IsSprint", isSprinting);
     }
 }

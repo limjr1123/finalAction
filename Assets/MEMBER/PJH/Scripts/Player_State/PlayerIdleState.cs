@@ -12,7 +12,7 @@ public class PlayerIdleState : PlayerState
 
     public override void Update()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) // 이동상태 전환
+        if (Mathf.Abs(stateMachine.InputX) > 0.1f || Mathf.Abs(stateMachine.InputY) > 0.1f)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
         }

@@ -1,8 +1,11 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    public static PlayerStateMachine Instance { get; private set; }
+
     public PlayerState currentState { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -64,8 +67,18 @@ public class PlayerStateMachine : MonoBehaviour
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
 
+    //public FixedJoystick joyStick;
+    private FixedJoystick joyStick;
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
         Stats = GetComponent<PlayerStats>();
@@ -81,6 +94,12 @@ public class PlayerStateMachine : MonoBehaviour
         GuardState = new PlayerGuardState(this, gameObject, Animator, guardExitDuration);
         SkillState = new PlayerSkillState(this, gameObject, Animator);
 
+        // 만약 씬에 조이스틱이 없거나 비활성화되어 있다면 경고 메시지를 출력합니다.
+        if (joyStick == null)
+        {
+            Debug.LogWarning("씬에 활성화된 FixedJoystick이 없습니다. 조이스틱이 작동하지 않을 수 있습니다.");
+        }
+
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화
 
         _playerLayer = LayerMask.NameToLayer("Player"); 
@@ -89,6 +108,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     void Start()
     {
+        joyStick = FindFirstObjectByType<FixedJoystick>();
         if (Stats != null)
         {
             PlayerStats.OnPlayerDied += Die;
@@ -103,9 +123,18 @@ public class PlayerStateMachine : MonoBehaviour
         {
             ResetCombo();
         }
+
+        //if (joyStick != null)
+        //{
+        //    InputX = joyStick.Horizontal;
+        //    InputY = joyStick.Vertical;
+        //}
+
         CalculateMoveDirection();
         HandleInput();
         currentState?.Update();
+
+       
 
         for (int i = 0; i < skillCooldowns.Length; i++)  // 쿨타임 계산
         {
@@ -125,6 +154,15 @@ public class PlayerStateMachine : MonoBehaviour
     {
         InputX = Input.GetAxisRaw("Horizontal");
         InputY = Input.GetAxisRaw("Vertical");
+
+        float keyboardX = Input.GetAxisRaw("Horizontal");
+        float keyboardY = Input.GetAxisRaw("Vertical");
+
+        if (InputX != 0 || InputY != 0)
+        {
+            InputX = keyboardX;
+            InputY = keyboardY;
+        }
 
         if (Input.GetMouseButtonDown(0))  // 공격
         {
