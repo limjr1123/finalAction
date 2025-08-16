@@ -253,7 +253,8 @@ public class MeleeBoss : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         GameObject warning = Instantiate(warningSignPrefab, swordWindAim.position, swordWindAim.rotation); // 경고 표시 생성
-        warning.transform.position = new Vector3(warning.transform.position.x, 0, warning.transform.position.z);
+        warning.transform.Translate(Vector3.up * -1.5f); // 경고 표시를 약간 아래로 이동
+        //warning.transform.position = new Vector3(warning.transform.position.x, 0, warning.transform.position.z);
         yield return new WaitForSeconds(0.2f); // 경고 표시가 보이는 시간
         Destroy(warning); // 경고 표시 제거
     }

@@ -38,6 +38,16 @@ public class BossBattleState : EnemyState<BossController>
                 return;
             }
         }
+        else
+        {
+            if(boss.targetStats.currentHealth <=0)
+            {
+                boss.target = null; // 타겟이 죽었을 경우 타겟을 null로 설정
+                boss.ChangeState(BossStates.Idle);
+                return;
+            }
+        }
+
         // 거리가 먼 경우 추격 상태로 변경
         if (Vector3.Distance(boss.target.transform.position, boss.transform.position) > distanceToStand + adjustDistanceThreshold)
         {

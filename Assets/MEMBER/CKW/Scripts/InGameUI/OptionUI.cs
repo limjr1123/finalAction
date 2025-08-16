@@ -301,11 +301,13 @@ public class OptionUI : BaseUI
 
     private void MoveCharacterSelect()
     {
-        SceneManager.LoadScene(1);
+        GameManager.Instance.SaveGame();
+        SceneLoader.LoadSceneAsync("CKW_CharacterSelectScene");
     }
 
     private void ExitGame()
     {
+        GameManager.Instance.SaveGame();
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
 #else

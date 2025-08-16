@@ -1,28 +1,29 @@
 using System.Collections.Generic;
 
-public enum DialogueTriggerType
+public enum DialogueQuestStatus
 {
     None,
-    OpenShop,
-    AcceptQuest,
-    GiveItem,
+    NotAccepted,
+    InProgress,
+    Completed,
 }
-
 
 [System.Serializable]
 public class DialogueLine
 {
     public string text;
-    // 후에 추가.
 }
 
 [System.Serializable]
 public class DialogueData
 {
-    public string dialogueID;       // 대화 식별 ID
-    public string npcName;          // NPC 이름
-    public DialogueLine[] lines;    // 대화 내용
-    public string nextDialogueID;   // 다음 대화 ID
+    public string dialogueID;
+    public string npcName;
+    public DialogueLine[] lines;
+    public string nextDialogueID;
+
+    public string requiredQuestID;
+    public DialogueQuestStatus requiredQuestStatus;
 }
 
 [System.Serializable]

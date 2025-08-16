@@ -33,6 +33,8 @@ public class HitEffectManager : MonoBehaviour
     [Header("Scene Settings")]
     [SerializeField] private string[] allowedScenes = { "Dungeon", "LJR_Monster" }; // DontDestroyOnLoad를 적용할 씬들
 
+    [Header("Audio Settings")]
+    [SerializeField] AudioClip audioClips; // 오디오 클립
 
     void Awake()
     {
@@ -116,7 +118,11 @@ public class HitEffectManager : MonoBehaviour
         effect.transform.rotation = rotation ?? Quaternion.identity;
         effect.SetActive(true);
 
-        if(effectType == HitEffectType.AttackReady)
+        //사운드 이펙트 추가
+        SoundManager.Instance.PlaySkillSFX(audioClips);
+
+
+        if (effectType == HitEffectType.AttackReady)
         {
             effect.transform.SetParent(target); // 공격 준비 이펙트는 타겟에 부모로 설정
         }
