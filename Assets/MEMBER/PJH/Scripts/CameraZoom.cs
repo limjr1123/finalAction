@@ -29,33 +29,33 @@ public class CameraZoom : MonoBehaviour
     {
         //------------ PC 기준---------------------------------------------------
 
-        // 1. 마우스 휠 입력 받기
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        // 2. 목표 줌 값 계산
-        targetZoom -= scrollInput * zoomSpeed;
+        //// 1. 마우스 휠 입력 받기
+        //float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        //// 2. 목표 줌 값 계산
+        //targetZoom -= scrollInput * zoomSpeed;
 
         //------------ 모바일 기준---------------------------------------------------
 
-        //if (Input.touchCount == 2)
-        //{
-        //    // 두 개의 터치 정보를 가져옵니다.
-        //    Touch touchZero = Input.GetTouch(0);
-        //    Touch touchOne = Input.GetTouch(1);
+        if (Input.touchCount == 2)
+        {
+            // 두 개의 터치 정보를 가져옵니다.
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
 
-        //    // 현재 프레임과 이전 프레임에서의 두 터치 지점 위치를 찾습니다.
-        //    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-        //    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+            // 현재 프레임과 이전 프레임에서의 두 터치 지점 위치를 찾습니다.
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
 
-        //    // 이전 프레임과 현재 프레임의 두 터치 사이의 거리를 계산합니다.
-        //    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-        //    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+            // 이전 프레임과 현재 프레임의 두 터치 사이의 거리를 계산합니다.
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
 
-        //    // 거리의 차이를 계산하여 줌의 변화량으로 사용합니다.
-        //    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+            // 거리의 차이를 계산하여 줌의 변화량으로 사용합니다.
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-        //    // 목표 줌 값을 변경합니다.
-        //    targetZoom += deltaMagnitudeDiff * pinchZoomSpeed;
-        //}
+            // 목표 줌 값을 변경합니다.
+            targetZoom += deltaMagnitudeDiff * pinchZoomSpeed;
+        }
 
         //---------------------------------------------------------------------------------
 
