@@ -1994,6 +1994,8 @@ MonoBehaviour:
   leftfootstepClip: {fileID: 8300000, guid: e3bc11f57a63b0d4bbe05fa4bb8ec4b8, type: 3}
   rightfootstepClip: {fileID: 8300000, guid: 84a13944b736d8f46b2cea3dcc4af8d9, type: 3}
   LevelUpClip: {fileID: 8300000, guid: 8ac691dde6421d64192f862797058ffe, type: 3}
+  buffSkillClip: {fileID: 8300000, guid: 18613eabc5ef0b349bdf958138fb534b, type: 3}
+  attackSkillClip: {fileID: 8300000, guid: 84a3bdd31f87c9d499ce0d8771354349, type: 3}
 --- !u!1 &4571937434902477264
 GameObject:
   m_ObjectHideFlags: 0

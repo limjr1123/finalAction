@@ -56,3 +56,4 @@ MonoBehaviour:
   slash: {fileID: 8300000, guid: 4dda7f07341f61543bd6d9d221dca8f2, type: 3}
   block: {fileID: 8300000, guid: a09d4f34ee2ed0040b4130b3d904c078, type: 3}
   attackReady: {fileID: 8300000, guid: 6a4d50a4b82125a44a930d9c6f7eec15, type: 3}
+  playerAttack: {fileID: 8300000, guid: 787a2a1a2b794e7479c865c3166be4dc, type: 3}
