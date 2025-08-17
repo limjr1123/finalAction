@@ -5780,15 +5780,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5394e69891a4bb64b9976b5614ed6d51, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 79.89467
+      value: 76.12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5394e69891a4bb64b9976b5614ed6d51, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.6095104
+      value: 4.667
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5394e69891a4bb64b9976b5614ed6d51, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -26.433502
+      value: -22.89
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5394e69891a4bb64b9976b5614ed6d51, type: 3}
       propertyPath: m_LocalRotation.w
@@ -53611,10 +53611,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Manager
       objectReference: {fileID: 0}
-    - target: {fileID: 7991286887990547875, guid: b976900f97a4b2540811244f679e8247, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8640955164024307263, guid: b976900f97a4b2540811244f679e8247, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -53696,10 +53692,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 7397744855433018472, guid: b976900f97a4b2540811244f679e8247, type: 3}
-    - {fileID: 926750405628355777, guid: b976900f97a4b2540811244f679e8247, type: 3}
-    - {fileID: 4477527523942392497, guid: b976900f97a4b2540811244f679e8247, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b976900f97a4b2540811244f679e8247, type: 3}
@@ -67741,10 +67734,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.29129028
+  m_Radius: 0.4752731
   m_Height: 2.0822954
   m_Direction: 1
-  m_Center: {x: -0.013961792, y: 0.97427607, z: 0.041301727}
+  m_Center: {x: -0.013961793, y: 0.97427607, z: 0.015142529}
 --- !u!54 &976463917
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -104662,8 +104655,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386231207}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.070579655, y: -0.01617816, z: -0.0011448552, w: 0.9973743}
-  m_LocalPosition: {x: 78.464745, y: -9.689588, z: 50.34749}
+  m_LocalRotation: {x: -0.016072776, y: 0.97399515, z: 0.073218726, w: 0.21380876}
+  m_LocalPosition: {x: 127.501564, y: -6.3223953, z: 82.34218}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

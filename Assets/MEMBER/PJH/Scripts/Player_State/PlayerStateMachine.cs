@@ -200,14 +200,15 @@ public class PlayerStateMachine : MonoBehaviour
             Interact();
         }
     }
-
+    
     public void Interact()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, interactableLayerMask))
+        if (Physics.SphereCast(transform.position, 2f, transform.forward, out hit, interactableLayerMask))
         {
             hit.collider.GetComponent<NPC>()?.Interact();
         }
+        
     }
 
     public bool TryUseSkill(int slotIndex)
