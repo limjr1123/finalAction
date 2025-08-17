@@ -3,6 +3,7 @@ using UnityEngine;     // Unity 엔진의 기본 클래스들 사용을 위한 �
 using UnityEngine.UI;  // Unity UI 시스템 사용을 위한 네임스페이스
 using System;          // C# 기본 시스템 클래스들 사용을 위한 네임스페이스
 using GameSave;        // 게임 저장 시스템 관련 네임스페이스
+using UnityEngine.SceneManagement; // 씬 관리 관련 네임스페이스
 
 public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상속받아 Unity 컴포넌트로 사용 가능
 {
@@ -320,8 +321,17 @@ public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상�
 
     private void OnAttackButton()   // 공격 버튼 클릭 시 호출
     {
-        playerStateMachine?.currentState?.OnAttack();
-        playerStateMachine?.Interact();
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (currentSceneName == "Dungeon") // 던전에선 공격
+        {
+            playerStateMachine.currentState?.OnAttack();
+        }
+        else if (currentSceneName == "Field") // 필드에선 상호작용
+        {
+            playerStateMachine.Interact();
+        }
+
     }
 
     private void OnSkillButton1()   // 스킬 1 버튼 클릭 시 호출
