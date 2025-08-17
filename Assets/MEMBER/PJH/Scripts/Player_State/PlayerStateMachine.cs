@@ -384,6 +384,16 @@ public class PlayerStateMachine : MonoBehaviour
     {
         SoundSFX?.PlayRightFootstepSound();
     }
+
+    public void AnimationEvent_PlayAttackSKillSound()
+    {
+        SoundSFX?.PlayAttackSkillSound();
+    }
+
+    public void AnimationEvent_PlayBuffSkillSound()
+    {
+        SoundSFX?.PlayBuffSkillSound();
+    }
 }
 
 
