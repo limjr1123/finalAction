@@ -578,6 +578,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentEXP -= maxEXP.GetValue();
             LevelUp();
+            stateMachine.SoundSFX.PlayLevelUpSound(); // 레벨업 사운드 재생
         }
     }
 

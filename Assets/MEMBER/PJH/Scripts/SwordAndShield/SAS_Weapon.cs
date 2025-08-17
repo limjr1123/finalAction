@@ -5,6 +5,7 @@ public class SAS_Weapon : MonoBehaviour
 {
     private PlayerStats playerStats;
     private PlayerStateMachine stateMachine;
+    [SerializeField] private HitEffectType hitEffectType;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class SAS_Weapon : MonoBehaviour
             if (other.TryGetComponent(out EnemyStat enemyStat))
             {
                 enemyStat.TakeAttackDamage(finalDamage);
+                HitEffectManager.Instance.EffectCreate(other.transform, hitEffectType, new Vector3(0, 1f, 0));
                 MonsterHPUI.Instance.SetTarget(enemyStat);
                 MonsterHPUI.Instance.UpdateHP(enemyStat.currentHealth, enemyStat.maxHealth.GetValue());
                 HitStop.Instance.StopTime();

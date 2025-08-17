@@ -9,7 +9,7 @@ public class PlayerDeathState : PlayerState
     {
         base.Enter();
         animator.SetTrigger("Die");
-
+        stateMachine.SoundSFX.PlayDeathSound();
         // ¿òÁ÷ÀÓx
         stateMachine.Rb.linearVelocity = Vector3.zero;
         stateMachine.MoveDirection = Vector3.zero; 

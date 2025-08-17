@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    public static PlayerStateMachine Instance { get; private set; }
+
     public PlayerState currentState { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -22,6 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Transform mainCamera;
     public Rigidbody Rb { get; private set; }
     public Animator Animator { get; private set; }
+    public PlayerSoundSFX SoundSFX { get; private set; }
 
     [Header("공격 관련")]
     public float comboTime = 1f;
@@ -66,15 +69,22 @@ public class PlayerStateMachine : MonoBehaviour
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
 
-    //public FixedJoystick joyStick;
     private FixedJoystick joyStick;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            // 이미 다른 PlayerStateMachine이 존재하면, 새로운 자신을 파괴합니다.
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
 
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
         Stats = GetComponent<PlayerStats>();
+        SoundSFX = GetComponent<PlayerSoundSFX>();
 
         IdleState = new PlayerIdleState(this, gameObject, Animator);
         MoveState = new PlayerMoveState(this, gameObject, Animator);
@@ -94,12 +104,12 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     void Start()
-    { 
-        //if (Stats != null)
-        //{
-        //    PlayerStats.OnPlayerDied += Die;
-        //}
-        //joyStick = FindFirstObjectByType<FixedJoystick>();
+    {
+        if (Stats != null)
+        {
+            PlayerStats.OnPlayerDied += Die;
+        }
+        joyStick = FindFirstObjectByType<FixedJoystick>();
 
         ChangeState(IdleState);
     }
@@ -118,7 +128,7 @@ public class PlayerStateMachine : MonoBehaviour
         }
 
         CalculateMoveDirection();
-        HandleInput();
+        //HandleInput();
         currentState?.Update();
 
        
@@ -347,7 +357,7 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     public void OnGuardSuccess()
-    {
+    {                                             
         currentState?.OnGuardSuccess();
     }
 
@@ -386,6 +396,16 @@ public class PlayerStateMachine : MonoBehaviour
             }
         }
         return bestTarget;
+    }
+
+    public void AnimationEvent_PlayLeftFootstepSound()
+    {
+        SoundSFX?.PlayLeftFootstepSound();
+    }
+
+    public void AnimationEvent_PlayRightFootstepSound()
+    {
+        SoundSFX?.PlayRightFootstepSound();
     }
 }
 

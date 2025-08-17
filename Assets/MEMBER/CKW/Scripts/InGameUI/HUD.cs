@@ -325,12 +325,12 @@ public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상�
 
     private void OnSkillButton1()   // 스킬 1 버튼 클릭 시 호출
     {
-        playerStateMachine?.currentState?.OnSkill(0);
+        playerStateMachine?.currentState?.OnSkill(1);
     }
 
     private void OnSkillButton2()   // 스킬 2 버튼 클릭 시 호출
     {
-        playerStateMachine?.currentState?.OnSkill(1);
+        playerStateMachine?.currentState?.OnSkill(0);
     }
 
     private void OnConsumeButton1() // 소모품 1 버튼 클릭 시 호출

@@ -22,6 +22,7 @@ public class PlayerJumpState : PlayerState
         animator.SetBool("IsGrounded", false);
         animator.SetTrigger("Jump");
         _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        stateMachine.SoundSFX.PlayJumpSound();
     }
 
     public override void FixedUpdate()
