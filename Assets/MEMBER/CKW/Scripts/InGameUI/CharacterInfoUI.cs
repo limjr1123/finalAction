@@ -61,18 +61,18 @@ public class CharacterInfoUI : BaseUI
         }
 
         // 캐릭터 기본 정보
-        characterName.text = playerStats.characterName;
-        characterLevel.text = $"Lv.{playerStats.level}";
-        characterJob.text = playerStats.characterJob;
+        characterName.text = $"닉네임 \n{playerStats.characterName}";
+        characterLevel.text = $"Lv. {playerStats.level}";
+        characterJob.text = $"직업 : {playerStats.characterJob}";
 
         // 체력/마나 최대치
-        characterMaxHp.text = playerStats.maxHealth.GetValue().ToString();
-        characterMaxMp.text = playerStats.maxMana.GetValue().ToString();
+        characterMaxHp.text = $"공격력 : {playerStats.attackDamage.GetValue()}";
+        characterMaxMp.text = $"방어력 : {playerStats.defense.GetValue()}";
 
         // 기본 능력치
-        characterStr.text = playerStats.Str.GetValue().ToString();
-        characterDex.text = playerStats.Dex.GetValue().ToString();
-        characterInt.text = playerStats.Int.GetValue().ToString();
+        characterStr.text = $"힘 : {playerStats.Str.GetValue()}";
+        characterDex.text = $"민첩 : {playerStats.Dex.GetValue()}";
+        characterInt.text = $"지능 : {playerStats.Int.GetValue()}";
     }
 
     private void CloseInfoUI()
