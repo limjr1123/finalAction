@@ -626,7 +626,7 @@ Transform:
   m_GameObject: {fileID: 1316895533250969416}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.237, z: 0.753}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -651,7 +651,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.3
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1420385763504336386
 GameObject:
@@ -1378,13 +1378,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4379838006469239633}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.095, y: 0.263, z: -0.172}
+  m_LocalRotation: {x: -0.008946934, y: -0.0073453225, z: 0.0063999114, w: 0.99991256}
+  m_LocalPosition: {x: 0.006, y: -0.007, z: 0.039}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8972015357510120095}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.02, y: -0.848, z: 0.741}
 --- !u!65 &4523279033545623282
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1404,8 +1404,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.016612768, y: 0.06486587, z: 0.7691506}
-  m_Center: {x: 0.63971424, y: 0.2443882, z: 0.14457251}
+  m_Size: {x: 0.056496833, y: 0.12159689, z: 0.8252671}
+  m_Center: {x: 0.6400928, y: 0.24027939, z: 0.17263108}
 --- !u!114 &5201656217216862677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1450,8 +1450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4460276401954797781}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07491569, y: 0.0350844, z: 0.002637422, w: 0.99656904}
-  m_LocalPosition: {x: -0.290195, y: 1.3004646, z: -4.116378}
+  m_LocalRotation: {x: -0.016072778, y: 0.97399515, z: 0.07321873, w: 0.21380877}
+  m_LocalPosition: {x: -1.7284293, y: 1.3004646, z: 3.7471745}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1753,8 +1753,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4537231057524668981}
   serializedVersion: 2
-  m_LocalRotation: {x: -6.512966e-23, y: 0.96859473, z: -2.9308349e-22, w: 0.2486448}
-  m_LocalPosition: {x: 79.1312, y: -10.883569, z: 46.129883}
+  m_LocalRotation: {x: 0, y: -0.06148409, z: 0, w: 0.9981081}
+  m_LocalPosition: {x: 77.66712, y: -11.629566, z: 59.584087}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1762,7 +1762,7 @@ Transform:
   - {fileID: 1623873753610497915}
   - {fileID: 2728285238145016001}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -7.05, z: 0}
 --- !u!95 &2463003130210365230
 Animator:
   serializedVersion: 7
@@ -1887,11 +1887,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: 12tete
+  characterName: tt
   characterJob: "\uC804\uC0AC"
   _currentHealth: 150
   _currentMana: 100
-  _currentStamina: 70
+  _currentStamina: 100
   _level: 1
   _currentEXP: 0
   maxHealth:
@@ -1913,7 +1913,7 @@ MonoBehaviour:
     baseValue: 100
     modifiers: 
   defense:
-    baseValue: 20
+    baseValue: 40
     modifiers: 
   magicDefense:
     baseValue: 20
@@ -1934,7 +1934,7 @@ MonoBehaviour:
     baseValue: 10
     modifiers: []
   attackDamage:
-    baseValue: 40
+    baseValue: 50
     modifiers: 
   magicDamage:
     baseValue: 0

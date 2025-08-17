@@ -33,6 +33,12 @@ public class PlayerMoveState : PlayerState
         Move(Time.fixedDeltaTime);
     }
 
+    public override void Exit()
+    {
+        stateMachine.IsSprinting = false;
+        animator.SetBool("IsSprint", false);
+    }
+
     public override void OnAttack()
     {
         Transform target = stateMachine.FindAutoTarget();
