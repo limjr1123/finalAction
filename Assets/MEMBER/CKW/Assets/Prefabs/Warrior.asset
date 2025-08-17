@@ -14,7 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jobName: "\uC804\uC0AC"
   jobIcon: {fileID: 21300000, guid: 068a0f5b7f8ae9c42b6373e76c82a7df, type: 3}
-  baseHP: 100
-  baseMP: 200
-  baseAttack: 300
-  baseDefance: 400
+  baseHP: 150
+  baseMP: 100
+  baseManaRegen: 10
+  baseStamina: 100
+  baseStaminaRegen: 10
+  baseDefense: 5
+  baseMagicDefense: 20
+  baseStr: 15
+  baseDex: 10
+  baseInt: 10
+  baseAttack: 25
+  baseMagicDamage: 0
+  baseMoveSpeed: 5
+  baseSprintSpeed: 10
+  baseAttackSpeed: 1
+  baseCriRate: 0.2
+  baseCriDamage: 1.5
+  baseCriResist: 30
+  startLevel: 1
+  startMaxEXP: 100
