@@ -1,4 +1,4 @@
-using TMPro;           // TextMeshPro UI 텍스트 컴포넌트 사용을 위한 네임스페이스
+﻿using TMPro;           // TextMeshPro UI 텍스트 컴포넌트 사용을 위한 네임스페이스
 using UnityEngine;     // Unity 엔진의 기본 클래스들 사용을 위한 네임스페이스
 using UnityEngine.UI;  // Unity UI 시스템 사용을 위한 네임스페이스
 using System;          // C# 기본 시스템 클래스들 사용을 위한 네임스페이스
@@ -321,6 +321,7 @@ public class HUD : MonoBehaviour  // HUD 클래스 정의, MonoBehaviour를 상�
     private void OnAttackButton()   // 공격 버튼 클릭 시 호출
     {
         playerStateMachine?.currentState?.OnAttack();
+        playerStateMachine?.Interact();
     }
 
     private void OnSkillButton1()   // 스킬 1 버튼 클릭 시 호출

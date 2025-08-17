@@ -109,7 +109,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             PlayerStats.OnPlayerDied += Die;
         }
-        //joyStick = FindFirstObjectByType<FixedJoystick>();
+        joyStick = FindFirstObjectByType<FixedJoystick>();
 
         ChangeState(IdleState);
     }
@@ -121,14 +121,14 @@ public class PlayerStateMachine : MonoBehaviour
             ResetCombo();
         }
 
-        //if (joyStick != null)
-        //{
-        //    InputX = joyStick.Horizontal;
-        //    InputY = joyStick.Vertical;
-        //}
+        if (joyStick != null)
+        {
+            InputX = joyStick.Horizontal;
+            InputY = joyStick.Vertical;
+        }
 
         CalculateMoveDirection();
-        HandleInput();
+        //HandleInput();
         currentState?.Update();
 
        
@@ -221,7 +221,7 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    private void Interact()
+    public void Interact()
     {
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, interactableLayerMask))

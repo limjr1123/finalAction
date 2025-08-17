@@ -16,17 +16,21 @@ public class QuestManager : Singleton<QuestManager>
 
     void Start()
     {
-        QuestData startQuest = questDatabase.GetQuestByID("TalkToChief1");
-        if (startQuest != null)
-        {
-            Debug.Log(startQuest.title + " 퀘스트 등록!");
-            AddQuest(startQuest);
-        }
+        // QuestData startQuest = questDatabase.GetQuestByID("TalkToChief1");
+        // if (startQuest != null)
+        // {
+        //     Debug.Log(startQuest.title + " 퀘스트 등록!");
+        //     AddQuest(startQuest);
+        // }
 
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GameEvents.NPCTalked("Chief");
+        }
         if (Input.GetKeyDown(KeyCode.C))
         {
             GameEvents.DungeonReach("Dungeon1");
@@ -106,29 +110,29 @@ public class QuestManager : Singleton<QuestManager>
         Debug.Log(progress.questData.title + " 완료!");
         progress.isCompleted = true;
 
-        foreach (var r in progress.questData.rewards)
-        {
-            switch (r.type)
-            {
-                case RewardType.Gold:
-                    GoldSystem.Instance.AddCurrency(r.amount);
-                    Debug.Log($"+{r.amount} Gold 획득!");
-                    break;
+        // foreach (var r in progress.questData.rewards)
+        // {
+        //     switch (r.type)
+        //     {
+        //         case RewardType.Gold:
+        //             GoldSystem.Instance.AddCurrency(r.amount);
+        //             Debug.Log($"+{r.amount} Gold 획득!");
+        //             break;
 
-                case RewardType.Exp:
-                    PlayerStats.Instance.AddExp(r.amount);
-                    Debug.Log($"+{r.amount} Exp 획득!");
-                    break;
+        //         case RewardType.Exp:
+        //             PlayerStats.Instance.AddExp(r.amount);
+        //             Debug.Log($"+{r.amount} Exp 획득!");
+        //             break;
 
-                case RewardType.Item:
-                    if (!string.IsNullOrEmpty(r.itemId))
-                    {
-                        InventoryManager.Instance.AddItem(r.itemId, r.amount);
-                        Debug.Log($"{r.itemId} x{r.amount} 획득!");
-                    }
-                    break;
-            }
-        }
+        //         case RewardType.Item:
+        //             if (!string.IsNullOrEmpty(r.itemId))
+        //             {
+        //                 InventoryManager.Instance.AddItem(r.itemId, r.amount);
+        //                 Debug.Log($"{r.itemId} x{r.amount} 획득!");
+        //             }
+        //             break;
+        //     }
+        // }
 
         if (!string.IsNullOrEmpty(progress.questData.nextQuestID))
         {
