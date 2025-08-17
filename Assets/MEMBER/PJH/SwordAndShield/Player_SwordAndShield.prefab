@@ -1450,8 +1450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4460276401954797781}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.01607346, y: 0.97399163, z: 0.07321578, w: 0.21382569}
-  m_LocalPosition: {x: -1.7284317, y: 1.3004646, z: 3.7471733}
+  m_LocalRotation: {x: -0.07491569, y: 0.0350844, z: 0.002637422, w: 0.99656904}
+  m_LocalPosition: {x: -0.290195, y: 1.3004646, z: -4.116378}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1534,7 +1534,7 @@ MonoBehaviour:
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: 155.23793
+    Value: 155.23792
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -1753,8 +1753,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4537231057524668981}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 78.331, y: -11.029, z: 54.469}
+  m_LocalRotation: {x: -6.512966e-23, y: 0.96859473, z: -2.9308349e-22, w: 0.2486448}
+  m_LocalPosition: {x: 79.1312, y: -10.883569, z: 46.129883}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1889,67 +1889,67 @@ MonoBehaviour:
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
   characterName: 12tete
   characterJob: "\uC804\uC0AC"
-  _currentHealth: 100
-  _currentMana: 0
-  _currentStamina: 0
+  _currentHealth: 150
+  _currentMana: 100
+  _currentStamina: 70
   _level: 1
   _currentEXP: 0
   maxHealth:
-    baseValue: 100
+    baseValue: 150
     modifiers: 
   maxMana:
-    baseValue: 0
+    baseValue: 100
     modifiers: 
   manaRegen:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   maxStamina:
-    baseValue: 0
+    baseValue: 100
     modifiers: 
   staminaRegen:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   maxEXP:
-    baseValue: 0
+    baseValue: 100
     modifiers: 
   defense:
-    baseValue: 400
+    baseValue: 20
     modifiers: 
   magicDefense:
-    baseValue: 0
+    baseValue: 20
     modifiers: 
   Str:
-    baseValue: 0
+    baseValue: 15
     modifiers: 
   Dex:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   Int:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   moveSpeed:
-    baseValue: 0
+    baseValue: 5
     modifiers: []
   sprintSpeed:
-    baseValue: 0
+    baseValue: 10
     modifiers: []
   attackDamage:
-    baseValue: 300
+    baseValue: 40
     modifiers: 
   magicDamage:
     baseValue: 0
     modifiers: 
   attackSpeed:
-    baseValue: 0
+    baseValue: 1
     modifiers: []
   criRate:
-    baseValue: 0
+    baseValue: 0.2
     modifiers: []
   criDamage:
-    baseValue: 0
+    baseValue: 1.5
     modifiers: []
   criResist:
-    baseValue: 0
+    baseValue: 30
     modifiers: []
   attackDamageRange:
     min: 0
