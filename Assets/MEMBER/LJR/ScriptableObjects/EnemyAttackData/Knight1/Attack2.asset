@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe4ea36dde9057458c07a96f161dcab, type: 3}
   m_Name: Attack2
   m_EditorClassIdentifier: 
+  attackCount: 0
   <animName>k__BackingField: Attack2
   <hitboxToUse>k__BackingField: 3
-  <impactStartTime>k__BackingField: 0.42
-  <impactEndTime>k__BackingField: 0.6
+  <impactStartTime>k__BackingField: 0.41
+  <impactEndTime>k__BackingField: 0.65
   <isParry>k__BackingField: 1
+  <attackPhases>k__BackingField: []

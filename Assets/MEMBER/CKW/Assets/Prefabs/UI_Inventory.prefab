@@ -6354,6 +6354,10 @@ MonoBehaviour:
   weaponSlotImage: {fileID: 0}
   bodySlotImage: {fileID: 0}
   accessoryImage: {fileID: 0}
+  originWeaponSlotImage: {fileID: 0}
+  originBodySlotImage: {fileID: 0}
+  originAccessoryImage: {fileID: 0}
+  goldText: {fileID: 0}
 --- !u!1 &6885191728390639629
 GameObject:
   m_ObjectHideFlags: 0

@@ -5394,7 +5394,7 @@ Transform:
   m_GameObject: {fileID: 6651147912766037509}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.132, y: -0, z: 0}
+  m_LocalPosition: {x: -0.016, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5663,6 +5663,9 @@ MonoBehaviour:
   rightHandCollider: {fileID: 0}
   leftFootCollider: {fileID: 0}
   rightFootCollider: {fileID: 1964890573938975946}
+  slash: {fileID: 8300000, guid: 4dda7f07341f61543bd6d9d221dca8f2, type: 3}
+  swing: {fileID: 8300000, guid: 2f792b6be34227242ad1a80f141a024c, type: 3}
+  <hitEffectType>k__BackingField: 0
   attackState: 0
 --- !u!195 &4589608812321966284
 NavMeshAgent:
@@ -6274,8 +6277,9 @@ GameObject:
   - component: {fileID: 5999314989064251553}
   - component: {fileID: 6818118017921856531}
   - component: {fileID: 5012068798692959212}
+  - component: {fileID: 3451260001544341601}
   m_Layer: 10
-  m_Name: Branch
+  m_Name: BranchHitBox
   m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6383,6 +6387,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffectType: 0
+--- !u!54 &3451260001544341601
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444970341482108102}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
 --- !u!1 &8770727035520049887
 GameObject:
   m_ObjectHideFlags: 0

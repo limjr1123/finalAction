@@ -1087,6 +1087,8 @@ MonoBehaviour:
   characterInfoUIObject: {fileID: 0}
   shopUIObject: {fileID: 0}
   optionUIObject: {fileID: 0}
+  characterNameText: {fileID: 0}
+  characterPortrait: {fileID: 0}
 --- !u!1 &8411234183899110101
 GameObject:
   m_ObjectHideFlags: 0
