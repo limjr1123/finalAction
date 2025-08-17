@@ -26,6 +26,7 @@ public class PlayerIdleState : PlayerState
             Vector3 targetDir = target.position - player.transform.position;
             targetDir.y = 0;
             player.transform.rotation = Quaternion.LookRotation(targetDir);
+            stateMachine.Rb.AddForce(player.transform.forward * stateMachine.dashForce, ForceMode.Impulse);
         }
 
         if (stateMachine.Stats.TryUseStamina(stateMachine.attackStaminaCost))
