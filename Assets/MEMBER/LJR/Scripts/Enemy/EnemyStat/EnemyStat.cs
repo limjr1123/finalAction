@@ -137,6 +137,12 @@ public class EnemyStat : MonoBehaviour
         return currentHealth;
     }
 
+    public virtual int IncreaseHealth(int healAmount)
+    {
+        currentHealth = Mathf.Min(GetMaxHealth(), currentHealth + healAmount);
+        return currentHealth;
+    }
+
     protected virtual int CheckTargetArmor(EnemyStat target, int _damage)
     {
         // 방어력에 따른 피해 감소 로직

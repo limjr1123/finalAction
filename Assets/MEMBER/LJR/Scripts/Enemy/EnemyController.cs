@@ -46,7 +46,9 @@ public class EnemyController : MonoBehaviour
     Vector3 prevPos;
 
     public bool inGetHit { get; set; } = false;
+    public bool isSkillUse { get; set; } = false;
 
+    float moveSpeed;
 
     private void Awake()
     {
@@ -77,7 +79,7 @@ public class EnemyController : MonoBehaviour
         stateDict[EnemyStates.Attack] = GetComponent<EnemyAttackState>();
         stateDict[EnemyStates.Dead] = GetComponent<EnemyDeadState>();
         stateDict[EnemyStates.GetHit] = GetComponent<EnemyGetHitState>();
-        
+
         //EnemyVision OnTargetDetected에 타겟 설정 매서드 구독
         enemyVision.OnTargetDetected += SetTarget;
         enemyVision.SetAggroRange(stats.aggroRange.GetValue()); // 어그로 범위 설정
@@ -85,10 +87,11 @@ public class EnemyController : MonoBehaviour
         stateMachine = new EnemyStateMachine<EnemyController>(this);
         // Idle 상태로 시작
         stateMachine.ChangeState(stateDict[EnemyStates.Idle]);
-        
+
         CacheGetHitAnimations();
 
         navAgent.speed = stats.moveSpeed.GetValue(); // 초기 이동 속도 설정
+        moveSpeed = stats.moveSpeed.GetValue(); // 이동 속도 저장
     }
 
     void Update()
@@ -101,7 +104,7 @@ public class EnemyController : MonoBehaviour
         float forwardSpeed = Vector3.Dot(velocity, transform.forward); // 이동 방향과 속도 벡터의 내적 계산
 
         // magnitude로 이동속도 벡터의 크기를 가져와서 실제 설정된Speed에 맞게 비율을 계산(0~1)
-        anim.SetFloat("forwardSpeed", forwardSpeed / navAgent.speed, 0.2f, Time.deltaTime); // 애니메이터의 이동 속도 설정
+        anim.SetFloat("forwardSpeed", forwardSpeed / moveSpeed, 0.2f, Time.deltaTime); // 애니메이터의 이동 속도 설정
 
         float angle = Vector3.SignedAngle(transform.forward, velocity, Vector3.up);     // 이동 방향과 현재 방향의 각도 계산
 
@@ -142,7 +145,7 @@ public class EnemyController : MonoBehaviour
     // HitBox와 충돌했을 때 호출되는 메서드.
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("HitBox"))
+        if (other.CompareTag("HitBox") && !isSkillUse)
         {
             Debug.Log("타격 성공");
             if (stats.currentHealth <= 0)

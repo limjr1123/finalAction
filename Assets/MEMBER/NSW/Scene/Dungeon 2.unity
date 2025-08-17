@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savePointID: Field
-  player: {fileID: 0}
+  respawnPoint: {fileID: 0}
   saveDelay: 0.5
 --- !u!65 &234885721
 BoxCollider:
@@ -6928,9 +6928,7 @@ MonoBehaviour:
   portalID: Portal_Dungeon 2_Entry
   targetSceneName: Field
   targetPortalID: Portal_To_Dungeon 2
-  player: {fileID: 1302522701}
-  teleportDelay: 0.5
-  fadeDuration: 0.5
+  portalCooldown: 3
 --- !u!65 &978738611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12565,7 +12563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafde58d97d831a41b8fd5ad5e1d13f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 10
 --- !u!1001 &1313315438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13852,7 +13849,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaad2319c63f3d498a79d80eeaa2d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
   respawnDelay: 3
   initialSceneName: GameScene
 --- !u!65 &2009692821

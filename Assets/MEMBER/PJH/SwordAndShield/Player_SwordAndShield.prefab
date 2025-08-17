@@ -1883,8 +1883,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: test
-  characterJob: 
+  characterName: zxcv
+  characterJob: "\uC804\uC0AC"
   _currentHealth: 100
   _currentMana: 0
   _currentStamina: 0

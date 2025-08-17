@@ -5,10 +5,10 @@ using UnityEngine;
 // BowController : 적의 활을 제어하는 클래스 활 장전, 조준, 발사 등의 기능을 포함. 활에 부착된 컴포넌트
 public class BowController : MonoBehaviour
 {
-    public Animator anim { get; set; }      // 무기 애니메이터
-    [SerializeField] Transform bowAim;              // 활의 조준 위치
-    [SerializeField] Transform arrowSpawnPoint;     // 화살이 생성될 위치
-    private ArrowController arrowController;        // 생성된 화살 오브젝트
+    public Animator anim { get; set; }          // 무기 애니메이터
+    [SerializeField] Transform bowAim;          // 활의 조준 위치
+    [SerializeField] Transform arrowSpawnPoint; // 화살이 생성될 위치
+    private ArrowController arrowController;    // 생성된 화살 오브젝트
 
     public Vector3 bowDirection;            // 화살 장전 시 활의 방향 벡터(활의 애니메이션과 화살의 방향을 동기화하기 위함)
     public Vector3 arrowToTargetDirection;  // 타겟조준 방향 벡터
@@ -18,7 +18,7 @@ public class BowController : MonoBehaviour
 
     public int damage; // 화살 데미지(화살이 발사될 때 Arrow로 넘겨줌)
 
-    [SerializeField] private AudioClip bowDrawSFX; // 활 장전 사운드
+    [SerializeField] private AudioClip bowDrawSFX;  // 활 장전 사운드
     [SerializeField] private AudioClip bowShootSFX; // 활 발사 사운드
 
     void Awake()

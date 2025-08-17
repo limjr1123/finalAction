@@ -47,7 +47,6 @@ public class HitEffectManager : MonoBehaviour
             Instance = this;
             // 현재 씬이 허용된 씬 목록에 있는지 확인
             string currentSceneName = SceneManager.GetActiveScene().name;
-            Debug.Log($"Current Scene: {currentSceneName}");
             if (IsSceneAllowed(currentSceneName))
             {
                 DontDestroyOnLoad(gameObject); // 허용된 씬에서만 파괴되지 않도록 설정

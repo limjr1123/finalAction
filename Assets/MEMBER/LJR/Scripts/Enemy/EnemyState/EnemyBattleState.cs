@@ -58,12 +58,6 @@ public class EnemyBattleState : EnemyState<EnemyController>
             }
         }
 
-        // 거리가 먼 경우 추격 상태로 변경
-        //if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) > distanceToStand + adjustDistanceThreshold)
-        //{
-        //    StartChase();
-        //}
-
         if (state == AIBattleState.Idle)
         {
             if (Vector3.Distance(enemy.target.transform.position, enemy.transform.position) > distanceToStand + adjustDistanceThreshold)
@@ -84,6 +78,14 @@ public class EnemyBattleState : EnemyState<EnemyController>
             else
             {
                 enemy.navAgent.SetDestination(enemy.target.transform.position); // 타겟의 위치로 NavMeshAgent의 목적지 설정}
+                if (attackTimer > 0)
+                {
+                    enemy.navAgent.speed = walkSpeed * 0.3f; // 추격 중에는 이동 속도 유지
+                }
+                else
+                {
+                    enemy.navAgent.speed = walkSpeed; // 추격 중에는 이동 속도 유지
+                }
             }
         }
 
@@ -99,7 +101,7 @@ public class EnemyBattleState : EnemyState<EnemyController>
         Vector3 directionToPlayer = (enemy.target.transform.position - transform.position).normalized;
         Vector3 orbitPosition = enemy.target.transform.position - directionToPlayer * (enemy.stats.attackRange.GetValue() - 0.1f);
 
-        enemy.navAgent.SetDestination(orbitPosition);
+        //enemy.navAgent.SetDestination(orbitPosition);
 
         // 수동 회전 처리
         directionToPlayer.y = 0;

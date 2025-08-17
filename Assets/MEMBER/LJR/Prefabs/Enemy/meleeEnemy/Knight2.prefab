@@ -465,6 +465,7 @@ GameObject:
   - component: {fileID: 2607855955814472235}
   - component: {fileID: 5918032771431542466}
   - component: {fileID: 8495542276290204197}
+  - component: {fileID: 2701491053115546060}
   m_Layer: 7
   m_Name: Knight2
   m_TagString: Enemy
@@ -500,7 +501,7 @@ Animator:
   m_GameObject: {fileID: 924168290691513576}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b549692f7f04c6c409ff3e2bf2f5e3a7, type: 3}
-  m_Controller: {fileID: 9100000, guid: 776e090532c876e438fa4502995f8ffc, type: 2}
+  m_Controller: {fileID: 9100000, guid: ed37351d91b2ba248ad819cf533cca51, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -626,6 +627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceToStand: 0
   adjustDistanceThreshold: 0.1
+  backstepDistance: 2
 --- !u!114 &1095210581449266813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +668,8 @@ MonoBehaviour:
   attacks:
   - {fileID: 11400000, guid: 46e99d0d3c823614181ca495481de1e8, type: 2}
   - {fileID: 11400000, guid: d825cb3feb27f834cbd7314c5bbd0400, type: 2}
-  - {fileID: 11400000, guid: bf9d945c110fd374dba72fd5c02fe602, type: 2}
+  skills:
+  - {fileID: 11400000, guid: d8600f05f8663e8419a710cb98e78714, type: 2}
   weapon: {fileID: 5128795025898705238}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -676,6 +679,7 @@ MonoBehaviour:
   swing: {fileID: 8300000, guid: 2f792b6be34227242ad1a80f141a024c, type: 3}
   <hitEffectType>k__BackingField: 0
   attackState: 0
+  skillCooldownTimer: 0
 --- !u!195 &7098217310792980027
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -762,6 +766,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconType: 2
   iconSize: 3
+--- !u!114 &2701491053115546060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924168290691513576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0dac5da392f847459851d6ae03ef469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Amount: 10
+  Radius: 5
+  Duration: 5
+  cooldown: 3
+  healingEffectPrefab: {fileID: 2532579683544408496, guid: c30106d211e6ec949835a686628f71e8, type: 3}
 --- !u!1 &1003515335263784430
 GameObject:
   m_ObjectHideFlags: 0
@@ -2078,14 +2099,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4248987710678269037}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.70441604, y: -0.06162845, z: -0.06162845, w: 0.70441604}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7679644832818586780}
   m_Father: {fileID: 7618083639399115537}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: -10, z: 0}
 --- !u!1 &4278851406364667741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,8 +2640,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.08668495, y: 0.33568516, z: 0.07784003}
-  m_Center: {x: -0.0035016292, y: 0.69489366, z: 0.01318994}
+  m_Size: {x: 0.08668495, y: 0.8209977, z: 0.07784003}
+  m_Center: {x: -0.003501619, y: 0.45224386, z: 0.013189649}
 --- !u!54 &6933671263776553373
 Rigidbody:
   m_ObjectHideFlags: 0
