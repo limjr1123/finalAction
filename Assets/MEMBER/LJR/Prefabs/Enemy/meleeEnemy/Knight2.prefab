@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35490eaf5725dae40bc5bd82f41bf6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fov: 180
+  fov: 360
   <target>k__BackingField: {fileID: 0}
   <enemyType>k__BackingField: 0
 --- !u!114 &1282707661896416377

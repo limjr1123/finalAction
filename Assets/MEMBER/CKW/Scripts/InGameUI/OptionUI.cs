@@ -300,8 +300,10 @@ public class OptionUI : BaseUI
         CloseUI();
     }
 
+
     private void MoveCharacterSelect()
     {
+        PlayerStats.DestroyCurrentCharacter();
         SoundManager.Instance.PlayUISFX(UISFXList.Button);
         SceneLoader.LoadSceneAsync("CKW_CharacterSelectScene");
     }

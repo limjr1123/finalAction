@@ -263,6 +263,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
+      propertyPath: bgmClips.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
+      propertyPath: 'bgmClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: eca0da16e0cf687408267e24e2a665cf, type: 3}
+    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
+      propertyPath: 'bgmClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d3f15884249f96b4885cca7ec4f7f0ea, type: 3}
+    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
+      propertyPath: 'bgmClips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: ee5c7e03b0bd5ef4192a7f8054ab6b1a, type: 3}
+    - target: {fileID: 4773448867976958776, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
+      propertyPath: 'bgmClips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 0c842b9e4e3509e4280372cddbc3690b, type: 3}
     - target: {fileID: 6472799724841850286, guid: 64e6b0ece2fc47f4fb6c2ca3e4ac6219, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -669,7 +689,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

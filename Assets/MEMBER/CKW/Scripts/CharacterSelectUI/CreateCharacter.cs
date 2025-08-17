@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -11,6 +11,7 @@ public class CreateCharacter : MonoBehaviour
     [SerializeField] Button closeButton;
     [SerializeField] GameObject characterCreateWindow;
     [SerializeField] GameObject characterSelectWindow;
+    [SerializeField] GameObject panel;
 
     [Header("Nickname Input")]
     [SerializeField] TMP_InputField nicknameInputField;
@@ -46,14 +47,8 @@ public class CreateCharacter : MonoBehaviour
     {
         if (isProcessing) return;
 
-        // 기존 코루틴이 있으면 중지
-        if (validationCoroutine != null)
-        {
-            StopCoroutine(validationCoroutine);
-        }
-
-        // 약간의 지연을 두고 검증 (한글 조합 완료 대기)
-        validationCoroutine = StartCoroutine(ValidateTextWithDelay(newText, 0.1f));
+        // Coroutine 대신 즉시 검증
+        ValidateAndCleanText(newText);
     }
 
     private void OnEndEdit(string finalText)
@@ -64,13 +59,6 @@ public class CreateCharacter : MonoBehaviour
             StopCoroutine(validationCoroutine);
         }
         ValidateAndCleanText(finalText);
-    }
-
-    private IEnumerator ValidateTextWithDelay(string text, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ValidateAndCleanText(text);
-        validationCoroutine = null;
     }
 
     private void ValidateAndCleanText(string newText)
@@ -201,6 +189,7 @@ public class CreateCharacter : MonoBehaviour
         CloseNickname();
         characterCreateWindow.SetActive(false);
         characterSelectWindow.SetActive(true);
+        panel.SetActive(false);
         RefreshCharacterUI();
         ResetCharacterCreation();
     }
@@ -231,6 +220,7 @@ public class CreateCharacter : MonoBehaviour
     {
         SoundManager.Instance.PlayUISFX(UISFXList.Select);
         nicknameWindow.SetActive(false);
+        panel.SetActive(false);
     }
 
     private void ResetCharacterCreation()

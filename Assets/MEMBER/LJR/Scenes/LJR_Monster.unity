@@ -276,13 +276,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 427513832810078164, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
+      propertyPath: m_Radius
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1044956858299777166, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
       propertyPath: m_Name
       value: Monster_X_Black
       objectReference: {fileID: 0}
     - target: {fileID: 1044956858299777166, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4330646836132435555, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
       propertyPath: m_CollisionDetection
@@ -815,7 +819,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 300
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
