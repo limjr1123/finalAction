@@ -1211,6 +1211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_CharacterSelect
       objectReference: {fileID: 0}
+    - target: {fileID: 7463882639272413460, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9038066181178923432, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
       propertyPath: m_IsActive
       value: 0
