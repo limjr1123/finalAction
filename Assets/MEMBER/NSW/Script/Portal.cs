@@ -38,6 +38,7 @@ public class Portal : MonoBehaviour
 
     IEnumerator TeleportPlayer(GameObject player)
     {
+        GameEvents.DungeonReach("Dungeon1");
         // 쿨타임 설정
         lastTeleportTime = Time.time;
 

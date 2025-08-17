@@ -27,6 +27,7 @@ public class BossController : MonoBehaviour
     public NavMeshAgent navAgent { get; private set; }
     public EnemyVision enemyVision { get; internal set; }
 
+    public Collider Collider { get; private set; }
     public MeleeBoss meleeBoss { get; private set; }
 
     //[field: SerializeField] public EnemyType enemyType { get; set; }

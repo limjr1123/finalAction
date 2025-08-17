@@ -1,4 +1,4 @@
-using Unity.IO.LowLevel.Unsafe;
+﻿using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerState
@@ -93,8 +93,8 @@ public class PlayerMoveState : PlayerState
     {
         float moveAmount = Mathf.Clamp01(Mathf.Abs(stateMachine.InputX) + Mathf.Abs(stateMachine.InputY));
         float currentSpeed;
-        //bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        bool isSprinting = moveAmount > 0.6f;
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        //bool isSprinting = moveAmount > 0.6f;
 
         if (isSprinting)
         {
@@ -136,8 +136,8 @@ public class PlayerMoveState : PlayerState
 
         animator.SetFloat("Speed", moveAmount, 0.1f, deltaTime);
 
-        //bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        bool isSprinting = moveAmount > 0.6f;
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        //bool isSprinting = moveAmount > 0.6f;
         animator.SetBool("IsSprint", isSprinting);
     }
 }
