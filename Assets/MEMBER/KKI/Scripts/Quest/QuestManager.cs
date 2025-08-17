@@ -106,11 +106,28 @@ public class QuestManager : Singleton<QuestManager>
         Debug.Log(progress.questData.title + " 완료!");
         progress.isCompleted = true;
 
-        // TODO: 보상 지급
         foreach (var r in progress.questData.rewards)
         {
-            // Inventory.Add(r.itemId, r.amount);
-            // PlayerStats.Gold += r.gold;
+            switch (r.type)
+            {
+                case RewardType.Gold:
+                    GoldSystem.Instance.AddCurrency(r.amount);
+                    Debug.Log($"+{r.amount} Gold 획득!");
+                    break;
+
+                case RewardType.Exp:
+                    PlayerStats.Instance.AddExp(r.amount);
+                    Debug.Log($"+{r.amount} Exp 획득!");
+                    break;
+
+                case RewardType.Item:
+                    if (!string.IsNullOrEmpty(r.itemId))
+                    {
+                        InventoryManager.Instance.AddItem(r.itemId, r.amount);
+                        Debug.Log($"{r.itemId} x{r.amount} 획득!");
+                    }
+                    break;
+            }
         }
 
         if (!string.IsNullOrEmpty(progress.questData.nextQuestID))
