@@ -1869,6 +1869,7 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  dashForce: 2
   guardExitDuration: 0.6
   interactableCollider: {fileID: 4008157404343250664}
   interactableLayerMask:

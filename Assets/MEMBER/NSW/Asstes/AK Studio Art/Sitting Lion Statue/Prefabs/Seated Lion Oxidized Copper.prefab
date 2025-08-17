@@ -228,7 +228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4557017488348586985}
   - component: {fileID: 8748199307964585112}
-  - component: {fileID: 8831273725741826148}
   - component: {fileID: 3624865133729329283}
   m_Layer: 0
   m_Name: Seated Lion Oxidized Copper
@@ -282,22 +281,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 811572497187418587}
   m_Enabled: 1
---- !u!114 &8831273725741826148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780235250055182675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d3a9c85af718174fbd3fd1fdee31742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  portalID: Field
-  targetSceneName: Dungeon
-  targetPortalID: Dungeon1
-  portalCooldown: 3
 --- !u!65 &3624865133729329283
 BoxCollider:
   m_ObjectHideFlags: 0

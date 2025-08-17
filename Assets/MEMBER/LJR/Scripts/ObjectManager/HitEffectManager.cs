@@ -126,7 +126,6 @@ public class HitEffectManager : MonoBehaviour
     // 이펙트 생성
     public void EffectCreate(Transform target, HitEffectType effectType = HitEffectType.Hit, Vector3? offset = null, Quaternion? rotation = null)
     {
-        Debug.Log("이펙트 동작");
         GameObject effect = GetEffectFromPool(effectType);
         effect.transform.position = target.position + (offset ?? Vector3.zero);
         effect.transform.rotation = rotation ?? Quaternion.identity;

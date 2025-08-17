@@ -8,8 +8,8 @@ public class BossDeadState : EnemyState<BossController>
     public override void Enter(BossController owner)
     {
         boss = owner;
+        StopAllCoroutines(); 
         boss.navAgent.ResetPath();
-        StopAllCoroutines();
     }
 
     public override void Execute()

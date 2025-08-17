@@ -15,7 +15,7 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerEvasionState EvasionState { get; private set; }
     public PlayerDamagedState DamagedState { get; private set; }
     public PlayerDeathState DeathState { get; private set; }
-    public PlayerParryingState ParryingState { get; private set; }  
+    public PlayerParryingState ParryingState { get; private set; }
     public PlayerGuardState GuardState { get; private set; }
     public PlayerSkillState SkillState { get; private set; }
 
@@ -52,7 +52,7 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("소모 관련")]
     public int dodgeStaminaCost = 10;
     public int attackStaminaCost = 5;
-    public int sprintStaminaCost = 2; 
+    public int sprintStaminaCost = 2;
 
     [Header("레이어 변경 관련")]
     private int _playerLayer;
@@ -64,9 +64,9 @@ public class PlayerStateMachine : MonoBehaviour
     public LayerMask enemyLayerMask;
     public float dashForce = 5f;
 
-    [Header("가드 관련")] 
+    [Header("가드 관련")]
     public float guardExitDuration = 0.6f;
-    
+
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
 
@@ -100,7 +100,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화
 
-        _playerLayer = LayerMask.NameToLayer("Player"); 
+        _playerLayer = LayerMask.NameToLayer("Player");
         _evasionLayer = LayerMask.NameToLayer("PlayerDodge");
     }
 
@@ -132,7 +132,7 @@ public class PlayerStateMachine : MonoBehaviour
         //HandleInput();
         currentState?.Update();
 
-       
+
 
         for (int i = 0; i < skillCooldowns.Length; i++)  // 쿨타임 계산
         {
@@ -169,11 +169,11 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl)) // 점프
         {
-            currentState?.OnJump(); 
+            currentState?.OnJump();
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) // 회피
-        {   
+        {
             currentState?.OnDodge();
         }
 
@@ -195,20 +195,20 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnSkill(1);
         }
 
-        if(Input.GetKeyDown(KeyCode.G)) // 상호작용
+        if (Input.GetKeyDown(KeyCode.G)) // 상호작용
         {
             Interact();
         }
     }
-    
+
     public void Interact()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 2f, transform.forward, out hit, interactableLayerMask))
+        if (Physics.SphereCast(transform.position, 3f, transform.forward, out hit, 2, interactableLayerMask))
         {
             hit.collider.GetComponent<NPC>()?.Interact();
         }
-        
+
     }
 
     public bool TryUseSkill(int slotIndex)
@@ -278,7 +278,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void OnGuaurdAnimationEnd() // 가드 애니메이션 종료 후 상태 전환
     {
-            ChangeState(IdleState);        
+        ChangeState(IdleState);
     }
 
     public void OnSkillAnimationEnd() // 스킬 애니메이션 종료 후 상태 전환
@@ -303,7 +303,7 @@ public class PlayerStateMachine : MonoBehaviour
         this.gameObject.layer = _playerLayer;
     }
 
- 
+
 
     void OnDisable()
     {
@@ -336,7 +336,7 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     public void OnGuardSuccess()
-    {                                             
+    {
         currentState?.OnGuardSuccess();
     }
 
