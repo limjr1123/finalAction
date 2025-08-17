@@ -42,6 +42,7 @@ public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats Instance { get; private set; }
 
+
     [SerializeField]
     private PlayerStatsData baseStats;
     public static event Action OnPlayerDied;
@@ -50,6 +51,7 @@ public class PlayerStats : MonoBehaviour
 
     public string characterName;
     public string characterJob;
+    
 
     public event Action OnManaChanged;
     public event Action OnStaminaChanged;
@@ -72,6 +74,7 @@ public class PlayerStats : MonoBehaviour
     private int _previousEXP;
 
     private Coroutine _regenerateCoroutine;
+
 
     public int currentHealth
     {
@@ -575,6 +578,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentEXP -= maxEXP.GetValue();
             LevelUp();
+            stateMachine.SoundSFX.PlayLevelUpSound(); // 레벨업 사운드 재생
         }
     }
 

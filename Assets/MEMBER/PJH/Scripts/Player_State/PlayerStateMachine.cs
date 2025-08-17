@@ -1,8 +1,12 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    public static PlayerStateMachine Instance { get; private set; }
+
     public PlayerState currentState { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -20,6 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Transform mainCamera;
     public Rigidbody Rb { get; private set; }
     public Animator Animator { get; private set; }
+    public PlayerSoundSFX SoundSFX { get; private set; }
 
     [Header("공격 관련")]
     public float comboTime = 1f;
@@ -64,11 +69,22 @@ public class PlayerStateMachine : MonoBehaviour
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
 
+    private FixedJoystick joyStick;
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            // 이미 다른 PlayerStateMachine이 존재하면, 새로운 자신을 파괴합니다.
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
         Stats = GetComponent<PlayerStats>();
+        SoundSFX = GetComponent<PlayerSoundSFX>();
 
         IdleState = new PlayerIdleState(this, gameObject, Animator);
         MoveState = new PlayerMoveState(this, gameObject, Animator);
@@ -93,6 +109,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             PlayerStats.OnPlayerDied += Die;
         }
+        joyStick = FindFirstObjectByType<FixedJoystick>();
 
         ChangeState(IdleState);
     }
@@ -103,9 +120,18 @@ public class PlayerStateMachine : MonoBehaviour
         {
             ResetCombo();
         }
+
+        if (joyStick != null)
+        {
+            InputX = joyStick.Horizontal;
+            InputY = joyStick.Vertical;
+        }
+
         CalculateMoveDirection();
-        HandleInput();
+        //HandleInput();
         currentState?.Update();
+
+       
 
         for (int i = 0; i < skillCooldowns.Length; i++)  // 쿨타임 계산
         {
@@ -121,10 +147,40 @@ public class PlayerStateMachine : MonoBehaviour
         currentState?.FixedUpdate();
     }
 
+    //private void OnEnable()
+    //{
+    //    // sceneLoaded 이벤트에 FindJoystick 함수를 구독(연결)합니다.
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
+
+    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    // 새로운 씬에서 조이스틱을 다시 찾습니다.
+    //    joyStick = FindFirstObjectByType<FixedJoystick>();
+    //    if (joyStick == null)
+    //    {
+    //        Debug.Log("새로운 씬에서 조이스틱을 찾지 못했습니다.");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("새로운 씬에서 조이스틱을 성공적으로 다시 연결했습니다.");
+    //    }
+    //}
+
+
     void HandleInput()
     {
         InputX = Input.GetAxisRaw("Horizontal");
         InputY = Input.GetAxisRaw("Vertical");
+
+        float keyboardX = Input.GetAxisRaw("Horizontal");
+        float keyboardY = Input.GetAxisRaw("Vertical");
+
+        if (InputX != 0 || InputY != 0)
+        {
+            InputX = keyboardX;
+            InputY = keyboardY;
+        }
 
         if (Input.GetMouseButtonDown(0))  // 공격
         {
@@ -274,6 +330,8 @@ public class PlayerStateMachine : MonoBehaviour
         {
             PlayerStats.OnPlayerDied -= Die;
         }
+
+        //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -299,7 +357,7 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     public void OnGuardSuccess()
-    {
+    {                                             
         currentState?.OnGuardSuccess();
     }
 
@@ -338,6 +396,16 @@ public class PlayerStateMachine : MonoBehaviour
             }
         }
         return bestTarget;
+    }
+
+    public void AnimationEvent_PlayLeftFootstepSound()
+    {
+        SoundSFX?.PlayLeftFootstepSound();
+    }
+
+    public void AnimationEvent_PlayRightFootstepSound()
+    {
+        SoundSFX?.PlayRightFootstepSound();
     }
 }
 

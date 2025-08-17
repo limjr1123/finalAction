@@ -39,4 +39,5 @@ public class PlayerStatsData : ScriptableObject
     public int strPerLevel;
     public int dexPerLevel;
     public int intPerLevel;
+
 }

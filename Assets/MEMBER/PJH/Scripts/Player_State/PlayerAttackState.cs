@@ -12,6 +12,7 @@ public class PlayerAttackState : PlayerState
         animator.SetFloat("Speed", 0f);
         stateMachine.lastAttackTime = Time.time;
         stateMachine.comboCount = Mathf.Clamp(stateMachine.comboCount + 1, 1, 4);
+        stateMachine.SoundSFX.PlayAttackSound(stateMachine.comboCount);
 
         if (stateMachine.comboCount == 1)
         {

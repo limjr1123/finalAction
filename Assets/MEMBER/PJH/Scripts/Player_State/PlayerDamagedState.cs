@@ -8,7 +8,7 @@ public class PlayerDamagedState : PlayerState
     public override void Enter()
     {
         animator.SetTrigger("Damaged");
-
+        stateMachine.SoundSFX.PlayDamagedSound();
         stateMachine.MoveDirection = Vector3.zero;
         stateMachine.Rb.linearVelocity = Vector3.zero;
     }

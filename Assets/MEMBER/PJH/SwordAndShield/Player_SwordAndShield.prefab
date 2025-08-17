@@ -393,6 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafde58d97d831a41b8fd5ad5e1d13f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!114 &6547754175232819371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafde58d97d831a41b8fd5ad5e1d13f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!1 &790385929949175605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,6 +1418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafde58d97d831a41b8fd5ad5e1d13f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!1 &4460276401954797781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1447,8 +1450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4460276401954797781}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07212953, y: -0.0157754, z: 0.0003361082, w: 0.9972705}
-  m_LocalPosition: {x: 0.12577221, y: 1.326779, z: -4.1258483}
+  m_LocalRotation: {x: -0.01607346, y: 0.97399163, z: 0.07321578, w: 0.21382569}
+  m_LocalPosition: {x: -1.7284317, y: 1.3004646, z: 3.7471733}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1531,7 +1534,7 @@ MonoBehaviour:
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: -1.858582
+    Value: 155.23793
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -1541,7 +1544,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 0.93141866
+    Value: -0.24124397
     Center: 17.5
     Range: {x: -10, y: 45}
     Wrap: 0
@@ -1676,9 +1679,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92db7aa2454b9549b47c098ca8b3ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomSpeed: 20
+  zoomSpeed: 30
+  pinchZoomSpeed: 0.02
   minZoom: 30
-  maxZoom: 60
+  maxZoom: 80
 --- !u!114 &6185414214104934980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1733,7 +1737,7 @@ GameObject:
   - component: {fileID: 9119243131022835790}
   - component: {fileID: 6711030526590164055}
   - component: {fileID: -5907857265412452075}
-  - component: {fileID: 101152555682535977}
+  - component: {fileID: 2966925679150091352}
   m_Layer: 6
   m_Name: Player_SwordAndShield
   m_TagString: Player
@@ -1861,7 +1865,7 @@ MonoBehaviour:
   attackStaminaCost: 5
   sprintStaminaCost: 2
   autoTargetingDistance: 10
-  autoTargetingAngle: 180
+  autoTargetingAngle: 360
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -1883,7 +1887,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
+
   characterName: zxcv
+
   characterJob: "\uC804\uC0AC"
   _currentHealth: 100
   _currentMana: 0
@@ -1966,7 +1972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconType: 0
   iconSize: 3
---- !u!114 &101152555682535977
+--- !u!114 &2966925679150091352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1975,11 +1981,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4537231057524668981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca58de4b73124f468f650db05cd6728, type: 3}
+  m_Script: {fileID: 11500000, guid: fb1f8ce252e9064408409c18f62bcd44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 100
+  attackClips:
+  - {fileID: 8300000, guid: e104186fce7cfd849b0b9b81d8c80d17, type: 3}
+  - {fileID: 8300000, guid: 6ea81b1d7bfd813499fef3945d5cb17f, type: 3}
+  - {fileID: 8300000, guid: eb5f56de8171b9b4e991de33a0837818, type: 3}
+  - {fileID: 8300000, guid: c42ca17b17ccf824dba3cabf07af36ad, type: 3}
+  jumpClip: {fileID: 8300000, guid: ddc1e774c2c64b349bdd0e08b963470e, type: 3}
+  dodgeClip: {fileID: 8300000, guid: ddc1e774c2c64b349bdd0e08b963470e, type: 3}
+  damagedClip: {fileID: 8300000, guid: f74d677996f36fe418a9396815834d09, type: 3}
+  deathClip: {fileID: 8300000, guid: 3b35012939ae0fd4bbb89c2512bcb644, type: 3}
+  leftfootstepClip: {fileID: 8300000, guid: e3bc11f57a63b0d4bbe05fa4bb8ec4b8, type: 3}
+  rightfootstepClip: {fileID: 8300000, guid: 84a13944b736d8f46b2cea3dcc4af8d9, type: 3}
+  LevelUpClip: {fileID: 8300000, guid: 8ac691dde6421d64192f862797058ffe, type: 3}
 --- !u!1 &4571937434902477264
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,13 +2826,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6834751255879507248}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.66869617, y: -0.6224555, z: -0.24062902, w: 0.3278602}
-  m_LocalPosition: {x: -0.22837062, y: 0.16790468, z: 0.4095685}
+  m_LocalRotation: {x: -0.629165, y: -0.66526324, z: -0.25692022, w: 0.30914107}
+  m_LocalPosition: {x: -0.2818441, y: 0.14328639, z: 0.38376266}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742134155696439399}
-  m_LocalEulerAnglesHint: {x: -132.435, y: 7.352005, z: -89.14099}
+  m_LocalEulerAnglesHint: {x: -133.043, y: 7.4100037, z: -96.41699}
 --- !u!65 &6184395318422701713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2836,8 +2852,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.66981655, y: 0.42743042, z: 0.038922135}
-  m_Center: {x: -0.42682204, y: 0.2895766, z: 0.16537149}
+  m_Size: {x: 0.9424146, y: 0.71180993, z: 0.20471083}
+  m_Center: {x: -0.4113888, y: 0.32140794, z: 0.24826573}
 --- !u!54 &8540008128604999221
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3212,13 +3228,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7740473996666576218}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.66869617, y: -0.6224555, z: -0.24062902, w: 0.3278602}
-  m_LocalPosition: {x: -0.22837062, y: 0.16790468, z: 0.4095685}
+  m_LocalRotation: {x: -0.629165, y: -0.66526324, z: -0.25692022, w: 0.30914107}
+  m_LocalPosition: {x: -0.2818441, y: 0.14328639, z: 0.38376266}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742134155696439399}
-  m_LocalEulerAnglesHint: {x: -132.435, y: 7.352005, z: -89.14099}
+  m_LocalEulerAnglesHint: {x: -133.043, y: 7.4100037, z: -96.41699}
 --- !u!65 &1042393821768351857
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3238,8 +3254,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.7236327, y: 0.5151096, z: 0.038922124}
-  m_Center: {x: -0.39991388, y: 0.28003073, z: 0.16537173}
+  m_Size: {x: 0.9424146, y: 0.71180993, z: 0.20471083}
+  m_Center: {x: -0.4113888, y: 0.32140794, z: 0.24826573}
 --- !u!54 &163669136951739628
 Rigidbody:
   m_ObjectHideFlags: 0
