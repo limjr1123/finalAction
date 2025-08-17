@@ -17,6 +17,7 @@ public class CreateCharacter : MonoBehaviour
 
     private string lastValidText = "";
     private bool isProcessing = false;
+    private Coroutine validationCoroutine;
 
     void Start()
     {
@@ -32,8 +33,10 @@ public class CreateCharacter : MonoBehaviour
             nicknameInputField.characterLimit = 0;
             nicknameInputField.onValidateInput = null;
 
-            // 텍스트 변경 이벤트만 사용
+            // 텍스트 변경 이벤트 사용
             nicknameInputField.onValueChanged.AddListener(OnTextChanged);
+            // 입력 종료 이벤트도 추가
+            nicknameInputField.onEndEdit.AddListener(OnEndEdit);
 
             lastValidText = "";
         }
@@ -43,21 +46,60 @@ public class CreateCharacter : MonoBehaviour
     {
         if (isProcessing) return;
 
+        // 기존 코루틴이 있으면 중지
+        if (validationCoroutine != null)
+        {
+            StopCoroutine(validationCoroutine);
+        }
+
+        // 약간의 지연을 두고 검증 (한글 조합 완료 대기)
+        validationCoroutine = StartCoroutine(ValidateTextWithDelay(newText, 0.1f));
+    }
+
+    private void OnEndEdit(string finalText)
+    {
+        // 입력이 완료되었을 때 최종 검증
+        if (validationCoroutine != null)
+        {
+            StopCoroutine(validationCoroutine);
+        }
+        ValidateAndCleanText(finalText);
+    }
+
+    private IEnumerator ValidateTextWithDelay(string text, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ValidateAndCleanText(text);
+        validationCoroutine = null;
+    }
+
+    private void ValidateAndCleanText(string newText)
+    {
+        if (isProcessing) return;
+
         isProcessing = true;
 
-        // 허용된 문자만 남기기
-        string cleanText = Regex.Replace(newText, @"[^0-9a-zA-Z가-힣]", "");
+        // 더 관대한 한글 범위 사용 (조합 중인 한글도 포함)
+        // 0x1100-0x11FF: 한글 자모 (초성, 중성, 종성)
+        // 0x3130-0x318F: 한글 호환 자모
+        // 0xAC00-0xD7AF: 한글 완성형
+        string cleanText = Regex.Replace(newText, @"[^0-9a-zA-Z\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]", "");
 
-        // 6글자 초과 시 이전 유효한 텍스트로 되돌리기
+        // 글자 수 계산 (한글은 조합 중일 수도 있으므로 더 유연하게)
         string finalText;
-        if (cleanText.Length > 6)
+        if (GetVisualCharacterCount(cleanText) > 6)
         {
-            finalText = lastValidText; // 7글자가 되려고 하면 이전 상태로 되돌림
+            // 6글자를 초과하면 마지막 유효한 텍스트 사용
+            finalText = lastValidText;
         }
         else
         {
             finalText = cleanText;
-            lastValidText = finalText; // 유효한 텍스트 저장
+            // 조합이 완료된 것 같으면 저장
+            if (!IsKoreanComposing(finalText))
+            {
+                lastValidText = finalText;
+            }
         }
 
         // 텍스트가 바뀌었으면 업데이트
@@ -70,14 +112,52 @@ public class CreateCharacter : MonoBehaviour
         isProcessing = false;
     }
 
-    // 모바일에서는 Update로 지속적으로 모니터링
+    // 시각적으로 보이는 글자 수를 계산 (조합 중인 한글도 고려)
+    private int GetVisualCharacterCount(string text)
+    {
+        int count = 0;
+        for (int i = 0; i < text.Length; i++)
+        {
+            char c = text[i];
+            // 한글 완성형이거나 영문/숫자면 1글자로 카운트
+            if ((c >= 0xAC00 && c <= 0xD7AF) || // 한글 완성형
+                (c >= '0' && c <= '9') ||        // 숫자
+                (c >= 'a' && c <= 'z') ||        // 영문 소문자
+                (c >= 'A' && c <= 'Z'))          // 영문 대문자
+            {
+                count++;
+            }
+            // 한글 자모는 조합 중일 수 있으므로 더 복잡한 로직이 필요하지만
+            // 일단 간단하게 처리
+            else if ((c >= 0x1100 && c <= 0x11FF) || // 한글 자모
+                     (c >= 0x3130 && c <= 0x318F))   // 한글 호환 자모
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 한글이 조합 중인지 확인 (단순화된 버전)
+    private bool IsKoreanComposing(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return false;
+
+        // 마지막 문자가 한글 자모이면 조합 중일 가능성이 높음
+        char lastChar = text[text.Length - 1];
+        return (lastChar >= 0x1100 && lastChar <= 0x11FF) || // 한글 자모
+               (lastChar >= 0x3130 && lastChar <= 0x318F);   // 한글 호환 자모
+    }
+
+    // Update는 제거하거나 더 제한적으로 사용
     void Update()
     {
+        // 모바일에서 한글 입력 시 Update는 방해가 될 수 있으므로 주석 처리
+        /*
         if (nicknameInputField != null && !isProcessing)
         {
             string currentText = nicknameInputField.text;
 
-            // 6글자 초과하면 강제로 마지막 유효한 텍스트로 되돌리기
             if (currentText.Length > 6)
             {
                 isProcessing = true;
@@ -86,19 +166,23 @@ public class CreateCharacter : MonoBehaviour
                 isProcessing = false;
             }
         }
+        */
     }
 
     private void CreateCharacters()
     {
         string nickname = nicknameInputField.text.Trim();
 
-        if (nickname.Length < 2)
+        // 최종 검증에서는 완성된 한글만 허용
+        string finalNickname = Regex.Replace(nickname, @"[^0-9a-zA-Z가-힣]", "");
+
+        if (GetVisualCharacterCount(finalNickname) < 2)
         {
             Debug.LogWarning("닉네임은 최소 2글자 이상이어야 합니다!");
             return;
         }
 
-        if (nickname.Length > 6)
+        if (GetVisualCharacterCount(finalNickname) > 6)
         {
             Debug.LogWarning("닉네임은 최대 6글자까지만 가능합니다!");
             return;
@@ -111,9 +195,9 @@ public class CreateCharacter : MonoBehaviour
             return;
         }
         SoundManager.Instance.PlayUISFX(UISFXList.Select);
-        GameDataSaveLoadManager.Instance.CreateCharacter(nickname, selectedJob);
+        GameDataSaveLoadManager.Instance.CreateCharacter(finalNickname, selectedJob);
 
-        Debug.Log($"캐릭터 생성 완료: {nickname}, 직업: {selectedJob.jobName}");
+        Debug.Log($"캐릭터 생성 완료: {finalNickname}, 직업: {selectedJob.jobName}");
         CloseNickname();
         characterCreateWindow.SetActive(false);
         characterSelectWindow.SetActive(true);
