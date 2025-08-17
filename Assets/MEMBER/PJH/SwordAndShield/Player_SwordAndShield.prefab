@@ -1753,8 +1753,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4537231057524668981}
   serializedVersion: 2
-  m_LocalRotation: {x: -6.512966e-23, y: 0.96859473, z: -2.9308349e-22, w: 0.2486448}
-  m_LocalPosition: {x: 79.1312, y: -10.883569, z: 46.129883}
+  m_LocalRotation: {x: 1.390221e-13, y: 0.06148336, z: 6.255995e-13, w: -0.99810815}
+  m_LocalPosition: {x: 77.66712, y: -11.629566, z: 59.584087}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1887,11 +1887,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: 12tete
+  characterName: tt
   characterJob: "\uC804\uC0AC"
   _currentHealth: 150
   _currentMana: 100
-  _currentStamina: 70
+  _currentStamina: 100
   _level: 1
   _currentEXP: 0
   maxHealth:
@@ -1913,7 +1913,7 @@ MonoBehaviour:
     baseValue: 100
     modifiers: 
   defense:
-    baseValue: 20
+    baseValue: 40
     modifiers: 
   magicDefense:
     baseValue: 20
@@ -1934,7 +1934,7 @@ MonoBehaviour:
     baseValue: 10
     modifiers: []
   attackDamage:
-    baseValue: 40
+    baseValue: 50
     modifiers: 
   magicDamage:
     baseValue: 0
