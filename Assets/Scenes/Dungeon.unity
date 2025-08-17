@@ -7392,7 +7392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3a9c85af718174fbd3fd1fdee31742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portalID: Dungeon
+  portalID: Dungeon2
   targetSceneName: Field
   targetPortalID: Field
   portalCooldown: 3
@@ -12238,7 +12238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3a9c85af718174fbd3fd1fdee31742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portalID: Dungeon
+  portalID: Dungeon1
   targetSceneName: Field
   targetPortalID: Field
   portalCooldown: 3

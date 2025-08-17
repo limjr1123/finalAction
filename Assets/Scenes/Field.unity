@@ -26390,7 +26390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portalID: Field
   targetSceneName: Dungeon
-  targetPortalID: Dungeon
+  targetPortalID: Dungeon1
   portalCooldown: 3
 --- !u!1 &176926261
 GameObject:
