@@ -10,6 +10,7 @@ public enum HitEffectType
     Slash,      // 슬래시 이펙트
     Block,      // 블록 이펙트
     AttackReady,// 공격 준비 이펙트
+    PlayerAttack // 플레이어 공격 이펙트
 }
 
 public class HitEffectManager : MonoBehaviour
@@ -39,6 +40,7 @@ public class HitEffectManager : MonoBehaviour
     [SerializeField] AudioClip slash; // 오디오 클립 배열
     [SerializeField] AudioClip block; // 오디오 클립 배열
     [SerializeField] AudioClip attackReady; // 오디오 클립 배열
+    [SerializeField] AudioClip playerAttack;
 
     void Awake()
     {
@@ -62,14 +64,16 @@ public class HitEffectManager : MonoBehaviour
             { HitEffectType.Hit, hitEffectPrefab },
             { HitEffectType.Slash, slashEffectPrefab },
             { HitEffectType.Block, blockEffectPrefab },
-            { HitEffectType.AttackReady, attackReadyEffectPrefab }
+            { HitEffectType.AttackReady, attackReadyEffectPrefab },
+            { HitEffectType.PlayerAttack, hitEffectPrefab }
         };
         audioClips = new Dictionary<HitEffectType, AudioClip>
         {
             { HitEffectType.Hit, hit },
             { HitEffectType.Slash, slash },
             { HitEffectType.Block, block },
-            { HitEffectType.AttackReady, attackReady }
+            { HitEffectType.AttackReady, attackReady },
+            { HitEffectType.PlayerAttack, playerAttack }
         };
 
         effectPools = new Dictionary<HitEffectType, Queue<GameObject>>();
