@@ -62,6 +62,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float autoTargetingDistance = 10f; // 탐색 거리
     public float autoTargetingAngle = 60f;    // 탐색 각도
     public LayerMask enemyLayerMask;
+    public float dashForce = 5f;
 
     [Header("가드 관련")] 
     public float guardExitDuration = 0.6f;
