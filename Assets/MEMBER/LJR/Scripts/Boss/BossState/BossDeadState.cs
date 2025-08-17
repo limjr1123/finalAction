@@ -9,6 +9,7 @@ public class BossDeadState : EnemyState<BossController>
     {
         boss = owner;
         boss.navAgent.ResetPath();
+        StopAllCoroutines();
     }
 
     public override void Execute()
