@@ -8,7 +8,7 @@ public class InventorySlot
 {
     public ItemData data;
     public int count;
-    public string uid; // ★ 슬롯 고유 UID
+    public string uid;
 
     public InventorySlot(ItemData data, int count = 1)
     {
