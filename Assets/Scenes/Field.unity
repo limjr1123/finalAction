@@ -26350,48 +26350,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2501721984621820202, guid: f16496cae10264a26a76646fd4d9d155, type: 3}
   m_PrefabInstance: {fileID: 2501721984519914471}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &172528150 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3780235250055182675, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
-  m_PrefabInstance: {fileID: 196664510}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &172528153
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 172528150}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.82218206, y: 0.49861526, z: 1.141436}
-  m_Center: {x: 0.00122963, y: 0.25069237, z: 0.07071785}
---- !u!114 &172528154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 172528150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d3a9c85af718174fbd3fd1fdee31742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  portalID: Field
-  targetSceneName: Dungeon
-  targetPortalID: Dungeon1
-  portalCooldown: 3
 --- !u!1 &176926261
 GameObject:
   m_ObjectHideFlags: 0
@@ -26850,18 +26808,6 @@ PrefabInstance:
       value: Portal
       objectReference: {fileID: 0}
     - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557017488348586985, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 70.888
       objectReference: {fileID: 0}
@@ -26904,13 +26850,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3780235250055182675, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 172528154}
-    - targetCorrespondingSourceObject: {fileID: 3780235250055182675, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 172528153}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44500f88cab356d45ad1f26f05f306d2, type: 3}
 --- !u!1 &197224675
 GameObject:
@@ -53671,6 +53611,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7991286887990547875, guid: b976900f97a4b2540811244f679e8247, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8640955164024307263, guid: b976900f97a4b2540811244f679e8247, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -53752,7 +53696,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7397744855433018472, guid: b976900f97a4b2540811244f679e8247, type: 3}
+    - {fileID: 926750405628355777, guid: b976900f97a4b2540811244f679e8247, type: 3}
+    - {fileID: 4477527523942392497, guid: b976900f97a4b2540811244f679e8247, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b976900f97a4b2540811244f679e8247, type: 3}

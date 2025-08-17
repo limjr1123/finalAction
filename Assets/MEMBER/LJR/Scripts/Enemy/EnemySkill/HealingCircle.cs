@@ -57,7 +57,7 @@ public class HealingCircle : MonoBehaviour
         healingCircleCollider = GetComponent<Collider>();
 
         var main = healingCircleEffect.main;
-        main.duration = Duration;
+        //main.duration = Duration;
         main.startSize = Radius;
 
         isSkillStart = true;

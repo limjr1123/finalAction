@@ -180,6 +180,9 @@ public class PlayerStats : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
+            // 기존 Instance가 있으면 새로운 것을 파괴하지 말고 기존 것을 사용
+            Instance.transform.position = transform.position;
+            Instance.transform.rotation = transform.rotation;
             Destroy(gameObject);
             return;
         }
