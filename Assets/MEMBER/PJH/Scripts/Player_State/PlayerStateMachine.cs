@@ -147,27 +147,6 @@ public class PlayerStateMachine : MonoBehaviour
         currentState?.FixedUpdate();
     }
 
-    //private void OnEnable()
-    //{
-    //    // sceneLoaded 이벤트에 FindJoystick 함수를 구독(연결)합니다.
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //}
-
-    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    // 새로운 씬에서 조이스틱을 다시 찾습니다.
-    //    joyStick = FindFirstObjectByType<FixedJoystick>();
-    //    if (joyStick == null)
-    //    {
-    //        Debug.Log("새로운 씬에서 조이스틱을 찾지 못했습니다.");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("새로운 씬에서 조이스틱을 성공적으로 다시 연결했습니다.");
-    //    }
-    //}
-
-
     void HandleInput()
     {
         InputX = Input.GetAxisRaw("Horizontal");
@@ -330,8 +309,6 @@ public class PlayerStateMachine : MonoBehaviour
         {
             PlayerStats.OnPlayerDied -= Die;
         }
-
-        //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnTriggerEnter(Collider other)
