@@ -998,10 +998,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -200
       objectReference: {fileID: 0}
-    - target: {fileID: 6944759386087370206, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
-      propertyPath: m_KeyboardType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7005268080159309281, guid: 357a4b6bd9b4caf4bb3efe36b33e92f6, type: 3}
       propertyPath: m_Name
       value: UI_ChracaterCreationWindow
@@ -1207,61 +1203,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2660905531828012488, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2660905531828012488, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2660905531828012488, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2660905531828012488, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2660905531828012488, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 2162
-      objectReference: {fileID: 0}
-    - target: {fileID: 2660905531828012488, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1080
-      objectReference: {fileID: 0}
     - target: {fileID: 3741689182640664057, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
       propertyPath: characterSelectionWindow
       value: 
       objectReference: {fileID: 1014799381}
-    - target: {fileID: 7117743623181455684, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117743623181455684, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117743623181455684, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117743623181455684, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117743623181455684, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 2162
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117743623181455684, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1080
+    - target: {fileID: 6030905736446187398, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 2340
       objectReference: {fileID: 0}
     - target: {fileID: 7463882639272413460, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
       propertyPath: m_Name
       value: UI_CharacterSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463882639272413460, guid: 52b2ccd7de5a5b7439173427babf445f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

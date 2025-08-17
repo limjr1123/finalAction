@@ -14,6 +14,7 @@ public class CharacterCreateManager : MonoBehaviour
     [SerializeField] GameObject archerPanel;
     [SerializeField] GameObject magePanel;
     [SerializeField] GameObject thiefPanel;
+    [SerializeField] GameObject namePanel;
 
     [Header("Character Jobs")]
     [SerializeField] JobData warriorJob;
@@ -119,6 +120,7 @@ public class CharacterCreateManager : MonoBehaviour
         }
         SoundManager.Instance.PlayUISFX(UISFXList.Select);
         nickNameCreationWindow.SetActive(true);
+        namePanel.SetActive(true);
     }
 
     // 선택된 직업 데이터를 반환하는 함수 (다른 스크립트에서 사용)

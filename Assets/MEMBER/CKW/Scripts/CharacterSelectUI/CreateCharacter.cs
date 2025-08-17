@@ -11,6 +11,7 @@ public class CreateCharacter : MonoBehaviour
     [SerializeField] Button closeButton;
     [SerializeField] GameObject characterCreateWindow;
     [SerializeField] GameObject characterSelectWindow;
+    [SerializeField] GameObject panel;
 
     [Header("Nickname Input")]
     [SerializeField] TMP_InputField nicknameInputField;
@@ -201,6 +202,7 @@ public class CreateCharacter : MonoBehaviour
         CloseNickname();
         characterCreateWindow.SetActive(false);
         characterSelectWindow.SetActive(true);
+        panel.SetActive(false);
         RefreshCharacterUI();
         ResetCharacterCreation();
     }
@@ -231,6 +233,7 @@ public class CreateCharacter : MonoBehaviour
     {
         SoundManager.Instance.PlayUISFX(UISFXList.Select);
         nicknameWindow.SetActive(false);
+        panel.SetActive(false);
     }
 
     private void ResetCharacterCreation()
