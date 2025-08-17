@@ -17,7 +17,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 
     private ItemData itemData;
     private int count;
-    private string uid; // ★ 슬롯 UID
+    private string uid;
 
     public ItemData ItemData => itemData;
     public int Count => count;
@@ -25,7 +25,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 
     public void Set(ItemData data, int count, string uid)
     {
-        this.itemData = data;
+        itemData = data;
         this.count = count;
         this.uid = uid;
 
