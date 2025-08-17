@@ -15,10 +15,10 @@ public class Portal : MonoBehaviour
 
     [Header("Cooldown Settings")]
     [Tooltip("포탈 사용 후 다시 사용하기까지의 대기 시간(초)입니다.")]
-    public float portalCooldown = 3.0f;
+    public float portalCooldown = 10f;
 
     private bool isTeleporting = false;
-    private static float lastTeleportTime = -1f;
+    private float lastTeleportTime = -1f;
 
     void OnTriggerEnter(Collider other)
     {
@@ -34,6 +34,11 @@ public class Portal : MonoBehaviour
             Debug.Log($"플레이어 '{other.name}'가 포탈 '{portalID}'에 진입했습니다. 씬 '{targetSceneName}'의 '{targetPortalID}'로 이동 시도.");
             StartCoroutine(TeleportPlayer(other.gameObject));
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        isTeleporting = false;
     }
 
     IEnumerator TeleportPlayer(GameObject player)
