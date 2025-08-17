@@ -1889,10 +1889,10 @@ MonoBehaviour:
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
   characterName: test
   characterJob: "\uC804\uC0AC"
-  _currentHealth: 100
+  _currentHealth: 0
   _currentMana: 0
   _currentStamina: 0
-  _level: 1
+  _level: 0
   _currentEXP: 0
   maxHealth:
     baseValue: 100
@@ -1934,7 +1934,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: []
   attackDamage:
-    baseValue: 300
+    baseValue: 0
     modifiers: 
   magicDamage:
     baseValue: 0
