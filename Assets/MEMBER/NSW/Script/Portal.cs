@@ -98,7 +98,7 @@ public class Portal : MonoBehaviour
         if (targetPortal != null)
         {
             // 플레이어를 목적지 포탈의 위치와 방향으로 설정
-            Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * -8f;
+            Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * 6f;
             player.transform.position = destination;
             player.transform.rotation = targetPortal.transform.rotation;
             Debug.Log($"플레이어를 새로운 씬의 '{targetPortal.portalID}' 포탈 위치로 이동시켰습니다: {destination}");
