@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDataManager : Singleton<PlayerDataManager>
@@ -10,6 +10,7 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
 
     private Dictionary<string, GameObject> prefabMap;
 
+    private GameObject _currentPlayerInstance;
 
     protected override void Awake()
     {
@@ -38,38 +39,50 @@ public class PlayerDataManager : Singleton<PlayerDataManager>
 
     public void LoadCharacterSaveData(PlayerSaveData playerSaveData)
     {
-        // 캐릭터 인스턴스 생성 후에 데이터 로드하기
+        // 0) 기존 캐릭터 있으면 정리
+        if (_currentPlayerInstance != null)
+            Destroy(_currentPlayerInstance);
 
-        // 1. 플레이어 인스턴스 생성하기
-        Debug.Log("이름 : " + playerSaveData.characterJob);
-        GameObject player = prefabMap[playerSaveData.characterJob];
-        Instantiate(player);
+        // 1) 프리팹 꺼내기
+        if (!prefabMap.TryGetValue(playerSaveData.characterJob, out var prefab) || prefab == null)
+        {
+            Debug.LogError($"직업 {playerSaveData.characterJob} 프리팹을 찾을 수 없습니다.");
+            return;
+        }
 
-        // 2. 데이터 로드하기
-        var playerStats = player.GetComponent<PlayerStats>();
+        // 2) 인스턴스 생성하고 그 인스턴스에서 컴포넌트 뽑기
+        _currentPlayerInstance = Instantiate(prefab);
+        var playerStats = _currentPlayerInstance.GetComponent<PlayerStats>();
+        if (playerStats == null)
+        {
+            Debug.LogError("생성된 플레이어에 PlayerStats가 없습니다.");
+            return;
+        }
+
+        // 3) 데이터 로드
+        playerStats.ApplyBaseStats();
         playerStats.LoadData(playerSaveData);
+
+        // 4) 태그 부여
+        _currentPlayerInstance.tag = "Player";
     }
 
     private PlayerSaveData GetChracterSaveData()
     {
-        GameObject playerObject = GameObject.FindWithTag("Player");
+        GameObject playerObject = _currentPlayerInstance;
         if (playerObject == null)
         {
-            Debug.LogError("Player null");
+            Debug.LogError("현재 플레이어 인스턴스가 없습니다.");
             return null;
         }
 
-        PlayerStats playerStats = playerObject.GetComponent<PlayerStats>();
+        var playerStats = playerObject.GetComponent<PlayerStats>();
         if (playerStats == null)
         {
             Debug.LogError("PlayerStats null");
             return null;
         }
 
-        // PlayerStats를 이용해 PlayerSaveData 스냅샷을 만듭니다.
-        PlayerSaveData newPlayerSaveData = new PlayerSaveData(playerStats);
-
-        return newPlayerSaveData;
+        return new PlayerSaveData(playerStats);
     }
 }
-

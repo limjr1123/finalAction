@@ -1753,8 +1753,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4537231057524668981}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.06148409, z: 0, w: 0.9981081}
-  m_LocalPosition: {x: 77.66712, y: -11.629566, z: 59.584087}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 78.331, y: -11.029, z: 54.469}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1887,69 +1887,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dfc69886e60fecf448e7aeda20f098af, type: 2}
-  characterName: tt
+  characterName: test
   characterJob: "\uC804\uC0AC"
-  _currentHealth: 150
-  _currentMana: 100
-  _currentStamina: 100
+  _currentHealth: 100
+  _currentMana: 0
+  _currentStamina: 0
   _level: 1
   _currentEXP: 0
   maxHealth:
-    baseValue: 150
+    baseValue: 100
     modifiers: 
   maxMana:
-    baseValue: 100
+    baseValue: 0
     modifiers: 
   manaRegen:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   maxStamina:
-    baseValue: 100
+    baseValue: 0
     modifiers: 
   staminaRegen:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   maxEXP:
-    baseValue: 100
+    baseValue: 0
     modifiers: 
   defense:
-    baseValue: 40
+    baseValue: 400
     modifiers: 
   magicDefense:
-    baseValue: 20
+    baseValue: 0
     modifiers: 
   Str:
-    baseValue: 15
+    baseValue: 0
     modifiers: 
   Dex:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   Int:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   moveSpeed:
-    baseValue: 5
+    baseValue: 0
     modifiers: []
   sprintSpeed:
-    baseValue: 10
+    baseValue: 0
     modifiers: []
   attackDamage:
-    baseValue: 50
+    baseValue: 300
     modifiers: 
   magicDamage:
     baseValue: 0
     modifiers: 
   attackSpeed:
-    baseValue: 1
+    baseValue: 0
     modifiers: []
   criRate:
-    baseValue: 0.2
+    baseValue: 0
     modifiers: []
   criDamage:
-    baseValue: 1.5
+    baseValue: 0
     modifiers: []
   criResist:
-    baseValue: 30
+    baseValue: 0
     modifiers: []
   attackDamageRange:
     min: 0

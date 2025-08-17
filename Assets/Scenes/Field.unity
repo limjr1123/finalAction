@@ -53671,6 +53671,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 5820487526518461385, guid: b976900f97a4b2540811244f679e8247, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8640955164024307263, guid: b976900f97a4b2540811244f679e8247, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -104627,7 +104631,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
