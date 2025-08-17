@@ -34,7 +34,7 @@ public class BossAttackState : EnemyState<BossController>
             {
                 float dot = Vector3.Dot(boss.transform.forward, directionToPlayer);
 
-                if (dot < 0.9f)
+                if (dot < 0.98f)
                 {
                     boss.TargetChaseDirection(directionToPlayer);
                 }

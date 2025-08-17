@@ -2,12 +2,19 @@
 
 public class EnemyHitBox : MonoBehaviour
 {
-    private EnemyController enemyController;
     [SerializeField] private HitEffectType hitEffectType;
+    private Collider hitBoxCollider; // HitBox의 Collider
+    private EnemyController enemyController;
+
+    private void Awake()
+    {
+        enemyController = GetComponentInParent<EnemyController>();
+        hitBoxCollider = GetComponent<Collider>();
+    }
 
     void Start()
     {
-        enemyController = GetComponentInParent<EnemyController>();
+        hitEffectType = enemyController.meleeEnemy.hitEffectType;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -15,13 +22,14 @@ public class EnemyHitBox : MonoBehaviour
         // HitBox와 충돌했을 때 호출되는 메서드.
         if (other.CompareTag("Player"))
         {
+            hitBoxCollider.enabled = false; // HitBox 비활성화
             int finalDamage = GetComponentInParent<EnemyStat>().attackDamageRange.GetRandomDamage();
             other.GetComponent<PlayerStats>()?.TakePhysicalDamage(finalDamage);
             HitEffectManager.Instance.EffectCreate(other.transform, hitEffectType, new Vector3(0, 1f, 0));
         }
         else if (other.CompareTag("PlayerParry"))
         {
-            Debug.Log("패링 성공");
+            hitBoxCollider.enabled = false; // HitBox 비활성화
             PlayerStateMachine playerStateMachine = other.GetComponentInParent<PlayerStateMachine>();
             if (playerStateMachine != null)
             {
@@ -31,6 +39,7 @@ public class EnemyHitBox : MonoBehaviour
         }
         else if (other.CompareTag("PlayerGuard"))
         {
+            hitBoxCollider.enabled = false; // HitBox 비활성화
             PlayerStateMachine playerStateMachine = other.GetComponentInParent<PlayerStateMachine>();
             if (playerStateMachine != null)
             {

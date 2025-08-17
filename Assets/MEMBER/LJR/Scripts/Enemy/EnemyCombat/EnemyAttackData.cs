@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 // 공격 시 사용할 히트박스 종류를 정의하는 열거형입니다.
-public enum AttackHitbox { LeftHand, RightHand, TwoHand, Weapon, LeftFoot, RightFoot }
+public enum AttackHitbox { LeftHand, RightHand, TwoHand, Weapon, LeftFoot, RightFoot, None }
 public enum AttackCount { Single, Multi }
 //Enemy 공격 데이터를 정의하는 스크립트입니다.
 [CreateAssetMenu(menuName = "Combat System/Create a new Attack")]
@@ -18,6 +18,12 @@ public class EnemyAttackData : ScriptableObject
 
     [Header("연타 공격")]
     [field: SerializeField] public AttackPhase[] attackPhases { get; private set; } // 공격 단계 리스트
+
+    [Header("특수 스킬")]
+    [field: SerializeField] public bool isSkill { get; private set; } = false; // 스킬 여부
+    [field: SerializeField] public float skillCoolDown { get; private set; } = 0; // 스킬 쿨타임 (스킬이 아닐 경우 0으로 설정)
+    [field: SerializeField] public float skillCost { get; private set; } = 0; // 스킬 사용 비용 (스킬이 아닐 경우 0으로 설정)
+
 }
 
 [System.Serializable]

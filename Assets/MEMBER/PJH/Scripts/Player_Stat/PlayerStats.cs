@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
@@ -534,6 +534,7 @@ public class PlayerStats : MonoBehaviour
         if (data == null) return;
 
         this.characterName = data.characterName;
+        this.characterJob = data.characterJob;
         this.level = data.level;
         this.currentEXP = data.currentEXP;
         this.currentHealth = data.currentHealth;

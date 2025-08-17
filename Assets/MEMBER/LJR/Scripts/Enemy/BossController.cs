@@ -29,6 +29,7 @@ public class BossController : MonoBehaviour
 
     public MeleeBoss meleeBoss { get; private set; }
 
+    //[field: SerializeField] public EnemyType enemyType { get; set; }
     public List<string> getHitAnimations { get; set; } = new List<string>();
 
     Vector3 prevPos;
@@ -88,7 +89,7 @@ public class BossController : MonoBehaviour
             anim.enabled = true;  
             stateMachine.ChangeState(stateDict[BossStates.Dead]);
         }
-        else { stateMachine.ChangeState(stateDict[BossStates.Battle]); }
+        //else { stateMachine.ChangeState(stateDict[BossStates.Battle]); }
     }
 
     // 타겟 설정 메서드(enemyVision함수에 의해 호출됨)
