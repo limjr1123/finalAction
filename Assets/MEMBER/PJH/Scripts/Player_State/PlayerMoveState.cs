@@ -23,7 +23,7 @@ public class PlayerMoveState : PlayerState
             return;
         }
 
-   
+
         Rotate(Time.deltaTime);
         UpdateAnimator(Time.deltaTime);
     }
@@ -88,11 +88,8 @@ public class PlayerMoveState : PlayerState
 
     private void Rotate(float deltaTime)
     {
-        if (stateMachine.MoveDirection != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(stateMachine.MoveDirection);
-            player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, stateMachine.rotationSpeed * deltaTime);
-        }
+        // PlayerStateMachine의 CalculateMoveDirection()에서 이미 회전을 처리하므로
+        // 여기서는 추가 회전 처리하지 않음
     }
 
     private void Move(float fixedDeltaTime)

@@ -138,15 +138,20 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     // 입력 처리 메서드 (상속 클래스에서 오버라이드 가능)
     protected virtual void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
     {
-        // 데드존보다 큰 입력만 처리
-        if (magnitude > deadZone)
+        // 데드존을 0.1f 정도로 늘려서 미세한 입력 무시
+        float adjustedDeadZone = Mathf.Max(deadZone, 0.1f);
+
+        if (magnitude > adjustedDeadZone)
         {
-            // 입력값이 1보다 크면 정규화
+            // 입력값 스무딩 처리 (급격한 변화 방지)
+            float smoothedMagnitude = Mathf.SmoothStep(0f, 1f, (magnitude - adjustedDeadZone) / (1f - adjustedDeadZone));
+
             if (magnitude > 1)
-                input = normalised;
+                input = normalised * smoothedMagnitude;
+            else
+                input = normalised * smoothedMagnitude;
         }
         else
-            // 데드존 내부면 입력값 0으로 설정
             input = Vector2.zero;
     }
 
