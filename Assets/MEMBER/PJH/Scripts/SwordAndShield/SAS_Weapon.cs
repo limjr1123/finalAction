@@ -25,7 +25,7 @@ public class SAS_Weapon : MonoBehaviour
                 HitEffectManager.Instance.EffectCreate(other.transform, hitEffectType, new Vector3(0, 1f, 0));
                 MonsterHPUI.Instance.SetTarget(enemyStat);
                 MonsterHPUI.Instance.UpdateHP(enemyStat.currentHealth, enemyStat.maxHealth.GetValue());
-                HitStop.Instance.StopTime();
+                //HitStop.Instance.StopTime();
             }
         }
     }

@@ -651,8 +651,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1.3639946
+  m_Center: {x: 0, y: 0, z: -0.41495132}
 --- !u!1 &1420385763504336386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,7 +1418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafde58d97d831a41b8fd5ad5e1d13f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitEffectType: 0
+  hitEffectType: 4
 --- !u!1 &4460276401954797781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,7 +1649,7 @@ Transform:
   - {fileID: 1623873753610497915}
   - {fileID: 2728285238145016001}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -7.05, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2463003130210365230
 Animator:
   serializedVersion: 7
@@ -1756,6 +1756,7 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  dashForce: 2
   guardExitDuration: 0.6
   interactableCollider: {fileID: 4008157404343250664}
   interactableLayerMask:
@@ -1883,6 +1884,8 @@ MonoBehaviour:
   leftfootstepClip: {fileID: 8300000, guid: e3bc11f57a63b0d4bbe05fa4bb8ec4b8, type: 3}
   rightfootstepClip: {fileID: 8300000, guid: 84a13944b736d8f46b2cea3dcc4af8d9, type: 3}
   LevelUpClip: {fileID: 8300000, guid: 8ac691dde6421d64192f862797058ffe, type: 3}
+  buffSkillClip: {fileID: 8300000, guid: 18613eabc5ef0b349bdf958138fb534b, type: 3}
+  attackSkillClip: {fileID: 8300000, guid: 84a3bdd31f87c9d499ce0d8771354349, type: 3}
 --- !u!1 &4571937434902477264
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerEvasionState EvasionState { get; private set; }
     public PlayerDamagedState DamagedState { get; private set; }
     public PlayerDeathState DeathState { get; private set; }
-    public PlayerParryingState ParryingState { get; private set; }  
+    public PlayerParryingState ParryingState { get; private set; }
     public PlayerGuardState GuardState { get; private set; }
     public PlayerSkillState SkillState { get; private set; }
 
@@ -52,7 +52,7 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("소모 관련")]
     public int dodgeStaminaCost = 10;
     public int attackStaminaCost = 5;
-    public int sprintStaminaCost = 2; 
+    public int sprintStaminaCost = 2;
 
     [Header("레이어 변경 관련")]
     private int _playerLayer;
@@ -62,20 +62,15 @@ public class PlayerStateMachine : MonoBehaviour
     public float autoTargetingDistance = 10f; // 탐색 거리
     public float autoTargetingAngle = 60f;    // 탐색 각도
     public LayerMask enemyLayerMask;
+    public float dashForce = 5f;
 
-    [Header("가드 관련")] 
+    [Header("가드 관련")]
     public float guardExitDuration = 0.6f;
-    
+
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
-    private float lastRotationTime = 0f; // 마지막 회전 시간
-    private float rotationCooldown = 0.1f; // 회전 간격 (0.1초)
-    private FixedJoystick joyStick;
 
-    [Header("카메라 회전 관련")]
-    public float cameraFollowSpeed = 2f; // 카메라가 캐릭터 방향을 따라가는 속도
-    public float minInputThreshold = 0.1f; // 입력 감지 최소 임계값
-    private bool isMoving = false; // 캐릭터가 움직이고 있는지 확인
+    private FixedJoystick joyStick;
 
     private void Awake()
     {
@@ -105,14 +100,8 @@ public class PlayerStateMachine : MonoBehaviour
 
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화
 
-<<<<<<< Updated upstream
-        _playerLayer = LayerMask.NameToLayer("Player"); 
-=======
-
         _playerLayer = LayerMask.NameToLayer("Player");
->>>>>>> Stashed changes
         _evasionLayer = LayerMask.NameToLayer("PlayerDodge");
-
     }
 
     void Start()
@@ -139,26 +128,19 @@ public class PlayerStateMachine : MonoBehaviour
             InputY = joyStick.Vertical;
         }
 
-        // 캐릭터 움직임만 계산 (카메라는 건드리지 않음)
         CalculateMoveDirection();
-
+        //HandleInput();
         currentState?.Update();
 
-<<<<<<< Updated upstream
-       
+
 
         for (int i = 0; i < skillCooldowns.Length; i++)  // 쿨타임 계산
-=======
-        for (int i = 0; i < skillCooldowns.Length; i++)
->>>>>>> Stashed changes
         {
             if (skillCooldowns[i] > 0)
             {
                 skillCooldowns[i] -= Time.deltaTime;
             }
         }
-
-        // UpdateCameraToFollowPlayer() 호출 완전히 제거!
     }
 
     void FixedUpdate()
@@ -166,32 +148,6 @@ public class PlayerStateMachine : MonoBehaviour
         currentState?.FixedUpdate();
     }
 
-    private void UpdateCameraToFollowPlayer()
-    {
-        if (isMoving)
-        {
-            // 플레이어의 현재 방향을 카메라가 따라가야 할 목표 방향으로 설정
-            Vector3 playerDirection = transform.forward;
-
-            // 현재 카메라 방향과 플레이어 방향 사이의 각도 차이 계산
-            float angleDifference = Vector3.Angle(mainCamera.forward, playerDirection);
-
-            // 각도 차이가 일정 이상일 때만 회전
-            if (angleDifference > 2f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(playerDirection);
-
-                // 카메라 회전 속도도 각도에 따라 조정
-                float dynamicCameraSpeed = Mathf.Lerp(0.5f, cameraFollowSpeed, angleDifference / 90f);
-
-                mainCamera.rotation = Quaternion.Slerp(
-                    mainCamera.rotation,
-                    targetRotation,
-                    dynamicCameraSpeed * Time.deltaTime
-                );
-            }
-        }
-    }
     void HandleInput()
     {
         InputX = Input.GetAxisRaw("Horizontal");
@@ -213,11 +169,11 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl)) // 점프
         {
-            currentState?.OnJump(); 
+            currentState?.OnJump();
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) // 회피
-        {   
+        {
             currentState?.OnDodge();
         }
 
@@ -239,7 +195,7 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnSkill(1);
         }
 
-        if(Input.GetKeyDown(KeyCode.G)) // 상호작용
+        if (Input.GetKeyDown(KeyCode.G)) // 상호작용
         {
             Interact();
         }
@@ -248,10 +204,11 @@ public class PlayerStateMachine : MonoBehaviour
     public void Interact()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, interactableLayerMask))
+        if (Physics.SphereCast(transform.position, 3f, transform.forward, out hit, 2, interactableLayerMask))
         {
             hit.collider.GetComponent<NPC>()?.Interact();
         }
+
     }
 
     public bool TryUseSkill(int slotIndex)
@@ -321,7 +278,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void OnGuaurdAnimationEnd() // 가드 애니메이션 종료 후 상태 전환
     {
-            ChangeState(IdleState);        
+        ChangeState(IdleState);
     }
 
     public void OnSkillAnimationEnd() // 스킬 애니메이션 종료 후 상태 전환
@@ -346,7 +303,7 @@ public class PlayerStateMachine : MonoBehaviour
         this.gameObject.layer = _playerLayer;
     }
 
- 
+
 
     void OnDisable()
     {
@@ -365,48 +322,12 @@ public class PlayerStateMachine : MonoBehaviour
     }
     private void CalculateMoveDirection()
     {
+        Vector3 camForward = mainCamera.forward;
+        Vector3 camRight = mainCamera.right;
+        camForward.y = 0;
+        camRight.y = 0;
 
-        // 입력 강도 체크
-        float inputMagnitude = Mathf.Sqrt(InputX * InputX + InputY * InputY);
-        isMoving = inputMagnitude > minInputThreshold;
-
-        if (isMoving)
-        {
-            // 현재 카메라 방향을 기준으로 이동 방향 계산
-            Vector3 cameraForward = mainCamera.forward;
-            Vector3 cameraRight = mainCamera.right;
-
-            // Y축 제거 (수평 이동만)
-            cameraForward.y = 0;
-            cameraRight.y = 0;
-            cameraForward.Normalize();
-            cameraRight.Normalize();
-
-            // 카메라 기준 이동 방향 계산
-            Vector3 desiredMoveDirection = (cameraForward * InputY + cameraRight * InputX).normalized;
-            MoveDirection = desiredMoveDirection;
-
-            // 플레이어 회전 로직 (매우 간단한 속도 제한)
-            if (MoveDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(MoveDirection);
-
-                // 초당 최대 회전 속도를 직접 제한 (예: 120도/초)
-                float maxDegreesPerSecond = 120f;
-
-                // RotateTowards를 사용해서 속도 제한
-                transform.rotation = Quaternion.RotateTowards(
-                    transform.rotation,
-                    targetRotation,
-                    maxDegreesPerSecond * Time.deltaTime
-                );
-            }
-        }
-        else
-        {
-            MoveDirection = Vector3.zero;
-        }
-
+        MoveDirection = (camForward.normalized * InputY + camRight.normalized * InputX).normalized;
     }
 
     public void AnimationEvent_AllowCombo()
@@ -415,7 +336,7 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     public void OnGuardSuccess()
-    {                                             
+    {
         currentState?.OnGuardSuccess();
     }
 
@@ -464,6 +385,16 @@ public class PlayerStateMachine : MonoBehaviour
     public void AnimationEvent_PlayRightFootstepSound()
     {
         SoundSFX?.PlayRightFootstepSound();
+    }
+
+    public void AnimationEvent_PlayAttackSKillSound()
+    {
+        SoundSFX?.PlayAttackSkillSound();
+    }
+
+    public void AnimationEvent_PlayBuffSkillSound()
+    {
+        SoundSFX?.PlayBuffSkillSound();
     }
 }
 

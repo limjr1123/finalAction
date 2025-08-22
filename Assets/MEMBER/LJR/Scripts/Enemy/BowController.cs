@@ -33,7 +33,8 @@ public class BowController : MonoBehaviour
         if (enemyController.inGetHit)
         {
             ResetBow();
-            ArrowPool.Instance.ReturnArrow(arrowController.gameObject); // 피격 상태일 때 화살 제거
+            if (arrowController != null)
+                ArrowPool.Instance.ReturnArrow(arrowController.gameObject); // 피격 상태일 때 화살 제거
         }
     }
 
@@ -41,7 +42,7 @@ public class BowController : MonoBehaviour
     public void DrawBow()
     {
         // 적의 공격력 계산
-        damage = enemyStat.attackDamageRange.CalculateDamage(enemyStat.criticalChance.GetValue(), enemyStat.criticalMultiplier.GetValue()); 
+        damage = enemyStat.attackDamageRange.CalculateDamage(enemyStat.criticalChance.GetValue(), enemyStat.criticalMultiplier.GetValue());
 
         anim.SetBool("Draw", true);
         anim.SetBool("Shoot", false);
@@ -61,7 +62,7 @@ public class BowController : MonoBehaviour
     // 화살 발사
     public void ShootArrow()
     {
-        arrowToTargetDirection = enemyController.target.transform.position - transform.position + new Vector3(0,1f,0); // 조준 방향 벡터 계산
+        arrowToTargetDirection = enemyController.target.transform.position - transform.position + new Vector3(0, 1f, 0); // 조준 방향 벡터 계산
 
         SoundManager.Instance.PlaySkillSFX(bowShootSFX);
 

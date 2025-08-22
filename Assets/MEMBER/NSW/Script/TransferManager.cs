@@ -12,14 +12,11 @@ public class TransferManager : Singleton<TransferManager>
 
         if (player != null)
         {
-            // 현재 씬의 루트로 이동 (null을 전달하면 현재 씬으로 이동)
-            Scene activeScene = SceneManager.GetActiveScene();
+            // DontDestroyOnLoad에서 현재 씬으로 이동하지 않고 그대로 유지
+            Debug.Log("플레이어는 DontDestroyOnLoad 영역에 유지됩니다.");
 
-            if (player != null && activeScene.isLoaded)
-            {
-                SceneManager.MoveGameObjectToScene(player, activeScene);
-                Debug.Log("플레이어가 DontDestroyOnLoad에서 현재 씬으로 이동됨");
-            }
+            // 만약 위치만 조정하고 싶다면:
+            // player.transform.position = 원하는위치;
         }
     }
 

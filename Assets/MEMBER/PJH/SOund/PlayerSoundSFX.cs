@@ -10,7 +10,9 @@ public class PlayerSoundSFX : MonoBehaviour
     [SerializeField] private AudioClip deathClip;
     [SerializeField] private AudioClip leftfootstepClip;
     [SerializeField] private AudioClip rightfootstepClip;
-    [SerializeField] private AudioClip LevelUpClip; 
+    [SerializeField] private AudioClip LevelUpClip;
+    [SerializeField] private AudioClip buffSkillClip;
+    [SerializeField] private AudioClip attackSkillClip;
 
     public void PlayAttackSound(int comboCount)
     {
@@ -54,5 +56,25 @@ public class PlayerSoundSFX : MonoBehaviour
     public void PlayLevelUpSound()
     {
         SoundManager.Instance.PlaySkillSFX(LevelUpClip);
+    }
+
+    public void PlayBuffSkillSound()
+    {
+        if (buffSkillClip != null)
+        {
+            SoundManager.Instance.PlaySkillSFX(buffSkillClip);
+        }
+        else
+            return;
+    }
+
+    public void PlayAttackSkillSound()
+    {
+        if (attackSkillClip != null)
+        {
+            SoundManager.Instance.PlaySkillSFX(attackSkillClip);
+        }
+        else
+            return;
     }
 }

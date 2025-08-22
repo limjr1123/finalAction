@@ -58,7 +58,9 @@ public class BossAttackState : EnemyState<BossController>
         boss.meleeBoss.TryToAttack();
         boss.navAgent.isStopped = true;
         yield return new WaitUntil(() => boss.meleeBoss.attackState == EnemyAttackStateInfo.Idle);
-
+        
+        if (!boss.navAgent.enabled)
+            yield return null;
         boss.anim.applyRootMotion = false;
         boss.navAgent.isStopped = false;
         isAttacking = false;

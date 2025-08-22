@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerIdleState : PlayerState
 {
@@ -24,8 +24,11 @@ public class PlayerIdleState : PlayerState
         if (target != null)
         {
             Vector3 targetDir = target.position - player.transform.position;
+            float currentDistance = targetDir.magnitude;
             targetDir.y = 0;
             player.transform.rotation = Quaternion.LookRotation(targetDir);
+            if (currentDistance > 1.6f)
+                stateMachine.Rb.AddForce(player.transform.forward * stateMachine.dashForce, ForceMode.Impulse);
         }
 
         if (stateMachine.Stats.TryUseStamina(stateMachine.attackStaminaCost))

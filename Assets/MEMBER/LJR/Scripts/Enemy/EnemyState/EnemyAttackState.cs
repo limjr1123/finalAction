@@ -73,6 +73,8 @@ public class EnemyAttackState : EnemyState<EnemyController>
         enemy.navAgent.isStopped = true;
         yield return new WaitUntil(() => enemy.meleeEnemy.attackState == EnemyAttackStateInfo.Idle);
 
+        if (!enemy.navAgent.enabled)
+            yield return null;
         enemy.anim.applyRootMotion = false;
         enemy.navAgent.isStopped = false;
         isAttacking = false;
