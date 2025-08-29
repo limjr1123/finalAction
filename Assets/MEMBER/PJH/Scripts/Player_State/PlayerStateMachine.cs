@@ -287,8 +287,8 @@ public class PlayerStateMachine : MonoBehaviour
     {
         Vector3 camForward = mainCamera.forward;
         Vector3 camRight = mainCamera.right;
-        camForward.y = 0;
-        camRight.y = 0;
+        camForward = Vector3.ProjectOnPlane(mainCamera.forward, Vector3.up).normalized;
+        camRight = Vector3.ProjectOnPlane(mainCamera.right, Vector3.up).normalized;
 
         MoveDirection = (camForward.normalized * InputY + camRight.normalized * InputX).normalized;
     }

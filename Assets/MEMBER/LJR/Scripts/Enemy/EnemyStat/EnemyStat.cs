@@ -17,7 +17,7 @@ public struct DamageRange
     // 데미미지 범위에서 랜덤한 값을 반환(크리티컬 확률을 사용하지 않는 경우 사용 가능)
     public int GetRandomDamage()
     {
-        return UnityEngine.Random.Range(min, max+1);
+        return UnityEngine.Random.Range(min, max + 1);
     }
 
     // 치명타 확률과 치명타 피해량 비율을 고려하여 최종 데미지 값을 반환
@@ -108,6 +108,7 @@ public class EnemyStat : MonoBehaviour
         int finalDamage = CheckTargetArmor(this, _damage);
 
         DecreaseHealth(finalDamage);
+        DamageFontManager.Instance.ShowDamage(finalDamage, gameObject.transform);
 
         OnHealthChanged?.Invoke();
         Debug.Log($"{finalDamage} finalDamage");
@@ -139,6 +140,7 @@ public class EnemyStat : MonoBehaviour
 
     public virtual int IncreaseHealth(int healAmount)
     {
+        DamageFontManager.Instance.ShowDamage(healAmount, gameObject.transform, false, true);
         currentHealth = Mathf.Min(GetMaxHealth(), currentHealth + healAmount);
         return currentHealth;
     }

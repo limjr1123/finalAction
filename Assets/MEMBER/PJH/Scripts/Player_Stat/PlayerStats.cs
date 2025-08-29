@@ -364,6 +364,7 @@ public class PlayerStats : MonoBehaviour
         if (isDead) return;
         int finalDamage = CheckTargetArmor(this, damage);
         Debug.Log($"PlayerStats: TakePhysicalDamage - 원본 데미지: {damage}, 최종 데미지: {finalDamage}, 방어력: {defense.GetValue()}");
+        DamageFontManager.Instance.ShowDamage(finalDamage, gameObject.transform);
 
         DecreaseHealth(finalDamage);
         Debug.Log($"플레이어가 {finalDamage}의 물리 피해를 입었습니다. 현재 체력: {currentHealth}");

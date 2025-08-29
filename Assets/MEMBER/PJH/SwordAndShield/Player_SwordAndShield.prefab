@@ -1432,6 +1432,7 @@ GameObject:
   - component: {fileID: 1155808140918933729}
   - component: {fileID: 3936352581850109705}
   - component: {fileID: 6185414214104934980}
+  - component: {fileID: 187024487333784786}
   m_Layer: 0
   m_Name: BasicCam
   m_TagString: Untagged
@@ -1447,8 +1448,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4460276401954797781}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07212953, y: -0.0157754, z: 0.0003361082, w: 0.9972705}
-  m_LocalPosition: {x: 0.12577221, y: 1.326779, z: -4.1258483}
+  m_LocalRotation: {x: 0.0034076006, y: 0.97662, z: -0.015523176, w: 0.21438481}
+  m_LocalPosition: {x: -1.6781006, y: 2.122303, z: 3.6380692}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1541,14 +1542,14 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 0.93141866
-    Center: 17.5
+    Value: 20
+    Center: 20
     Range: {x: -10, y: 45}
     Wrap: 0
     Recentering:
-      Enabled: 0
-      Wait: 1
-      Time: 2
+      Enabled: 1
+      Wait: 0
+      Time: 1
     Restrictions: 0
   RadialAxis:
     Value: 1
@@ -1718,6 +1719,36 @@ MonoBehaviour:
     NearLimit: 5
     FarLimit: 30
     MaxQualityBoost: 0.2
+--- !u!114 &187024487333784786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4460276401954797781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca7de3aefa901374ba29464584a3109a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraRadius: 0.4
+  Decollision:
+    Enabled: 1
+    ObstacleLayers:
+      serializedVersion: 2
+      m_Bits: 98304
+    UseFollowTarget:
+      Enabled: 0
+      YOffset: 0
+    Damping: 0.5
+    SmoothingTime: 0.8
+  TerrainResolution:
+    Enabled: 1
+    TerrainLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    MaximumRaycast: 10
+    Damping: 0.5
 --- !u!1 &4537231057524668981
 GameObject:
   m_ObjectHideFlags: 0
@@ -1807,7 +1838,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!136 &5168353133453131900
 CapsuleCollider:
   m_ObjectHideFlags: 0

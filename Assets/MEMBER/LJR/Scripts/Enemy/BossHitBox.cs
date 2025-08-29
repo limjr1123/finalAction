@@ -11,10 +11,6 @@ public class BossHitBox : MonoBehaviour
         bossController = GetComponentInParent<BossController>();
     }
 
-    void Start()
-    {
-        //hitEffectType = bossController.meleeBoss.hitEffectType;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
