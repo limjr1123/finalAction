@@ -24,6 +24,7 @@ public class EquipmentItemData : ItemData, IEquipable
         // 1. 유저 컴포넌트 가져오고
         // user.GetComponent<>();
         // 2. 아이템 장착 함수 호출 (원래 끼고 있는 장비가 있으면 Unequip함수 호출)
+        // 3. 아이템 장착
     }
     public void Unequip(GameObject user)
     {

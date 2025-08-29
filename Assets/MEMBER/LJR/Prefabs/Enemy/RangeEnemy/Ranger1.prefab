@@ -3634,7 +3634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35490eaf5725dae40bc5bd82f41bf6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fov: 180
+  fov: 360
   <target>k__BackingField: {fileID: 0}
   <enemyType>k__BackingField: 0
 --- !u!114 &6942333746273760504
@@ -3736,6 +3736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceToStand: 0
   adjustDistanceThreshold: 0.1
+  backstepDistance: 2
 --- !u!114 &7376393779525484014
 MonoBehaviour:
   m_ObjectHideFlags: 0

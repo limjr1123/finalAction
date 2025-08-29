@@ -42,6 +42,7 @@ public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats Instance { get; private set; }
 
+
     [SerializeField]
     private PlayerStatsData baseStats;
     public static event Action OnPlayerDied;
@@ -50,6 +51,7 @@ public class PlayerStats : MonoBehaviour
 
     public string characterName;
     public string characterJob;
+
 
     public event Action OnManaChanged;
     public event Action OnStaminaChanged;
@@ -72,6 +74,7 @@ public class PlayerStats : MonoBehaviour
     private int _previousEXP;
 
     private Coroutine _regenerateCoroutine;
+
 
     public int currentHealth
     {
@@ -169,7 +172,7 @@ public class PlayerStats : MonoBehaviour
     public PlayerDamageRange attackDamageRange;
     public float damageRange = 0.2f;
 
-    public bool IsBerserk { get; private set; } = false; 
+    public bool IsBerserk { get; private set; } = false;
 
     public Vector3 currentPos;
 
@@ -177,10 +180,17 @@ public class PlayerStats : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
+            // 기존 Instance가 있으면 새로운 것을 파괴하지 말고 기존 것을 사용
+            Instance.transform.position = transform.position;
+            Instance.transform.rotation = transform.rotation;
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
         stateMachine = GetComponent<PlayerStateMachine>();
         ApplyBaseStats();
@@ -197,6 +207,15 @@ public class PlayerStats : MonoBehaviour
             StopCoroutine(_regenerateCoroutine);
         }
         _regenerateCoroutine = StartCoroutine(RegenerateResources());
+    }
+
+    public static void DestroyCurrentCharacter()
+    {
+        if (Instance != null)
+        {
+            Destroy(Instance.gameObject);
+            Instance = null;
+        }
     }
 
     // Unity Editor에서 Inspector 값이 변경될 때 호출됨
@@ -576,6 +595,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentEXP -= maxEXP.GetValue();
             LevelUp();
+            stateMachine.SoundSFX.PlayLevelUpSound(); // 레벨업 사운드 재생
         }
     }
 

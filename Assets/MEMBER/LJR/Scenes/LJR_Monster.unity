@@ -457,13 +457,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 427513832810078164, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
+      propertyPath: m_Radius
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1044956858299777166, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
       propertyPath: m_Name
       value: Monster_X_Black
       objectReference: {fileID: 0}
     - target: {fileID: 1044956858299777166, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4330646836132435555, guid: d65d062f4e7fbc74ea7545b6fe9ba9a3, type: 3}
       propertyPath: m_CollisionDetection
@@ -532,31 +536,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.2733495
+      value: -2.0406713
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3394126
+      value: 1.3004646
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.5079732
+      value: -3.5867035
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.44150865
+      value: -0.9640188
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.031243527
+      value: 0.07246874
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.89447606
+      value: -0.255046
       objectReference: {fileID: 0}
     - target: {fileID: 1623873753610497915, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.06329794
+      value: -0.019172722
       objectReference: {fileID: 0}
     - target: {fileID: 4537231057524668981, guid: b4fdbc7e702baad49a222d79d7ee50fc, type: 3}
       propertyPath: m_Name
@@ -1098,7 +1102,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 300
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1125,8 +1129,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1790969972}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07057958, y: -0.016178023, z: -0.0011448442, w: 0.9973743}
-  m_LocalPosition: {x: 4.903742, y: 1.9519125, z: -2.9115114}
+  m_LocalRotation: {x: -0.01607277, y: 0.97399515, z: 0.0732187, w: 0.21380876}
+  m_LocalPosition: {x: 3.0415716, y: 1.9129646, z: 4.9571743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1908,22 +1912,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4799145956107220348, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
-      propertyPath: hit
-      value: 
-      objectReference: {fileID: 8300000, guid: dacec6a3363b1704d8046fa5aa018362, type: 3}
-    - target: {fileID: 4799145956107220348, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
-      propertyPath: block
-      value: 
-      objectReference: {fileID: 8300000, guid: a09d4f34ee2ed0040b4130b3d904c078, type: 3}
-    - target: {fileID: 4799145956107220348, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
-      propertyPath: slash
-      value: 
-      objectReference: {fileID: 8300000, guid: 4dda7f07341f61543bd6d9d221dca8f2, type: 3}
-    - target: {fileID: 4799145956107220348, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
-      propertyPath: attackReady
-      value: 
-      objectReference: {fileID: 8300000, guid: 6a4d50a4b82125a44a930d9c6f7eec15, type: 3}
     - target: {fileID: 9045441081114076483, guid: afdae25021a59d440a09c7f722881c0e, type: 3}
       propertyPath: m_Name
       value: HitEffectManager

@@ -296,18 +296,21 @@ public class OptionUI : BaseUI
 
     private void CloseOptionUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         CloseUI();
     }
 
+
     private void MoveCharacterSelect()
     {
-        GameManager.Instance.SaveGame();
+        PlayerStats.DestroyCurrentCharacter();
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
         SceneLoader.LoadSceneAsync("CKW_CharacterSelectScene");
     }
 
     private void ExitGame()
     {
-        GameManager.Instance.SaveGame();
+        SoundManager.Instance.PlayUISFX(UISFXList.Button);
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
 #else

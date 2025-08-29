@@ -91,12 +91,11 @@ public class UIManager : Singleton<UIManager>
             {
                 if (isUIDisabledScene)
                 {
-                    // ⭐ UI 비활성화 씬에서는 시각적으로만 숨기기 (상호작용은 유지)
+                    // UI 비활성화 씬에서는 완전히 숨기고 상호작용 차단
                     mainCanvasGroup.alpha = 0f;
                     mainCanvasGroup.interactable = false;
-                    // ⭐ blocksRaycasts는 false로 두지 않음 (ESC 입력을 위해)
-                    // mainCanvasGroup.blocksRaycasts = false;
-                    Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI를 숨겼습니다.");
+                    mainCanvasGroup.blocksRaycasts = false; // ⭐ 이 줄의 주석을 해제
+                    Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI를 완전히 비활성화했습니다.");
                 }
                 else
                 {
@@ -106,10 +105,6 @@ public class UIManager : Singleton<UIManager>
                     Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI를 표시했습니다.");
                 }
             }
-        }
-        else
-        {
-            Debug.Log($"[UIManager] '{currentSceneName}' 씬에서 UI 상태 변경 없음 (isUIDisabledScene: {isUIDisabledScene})");
         }
     }
 

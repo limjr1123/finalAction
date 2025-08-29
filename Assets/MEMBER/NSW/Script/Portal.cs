@@ -15,10 +15,10 @@ public class Portal : MonoBehaviour
 
     [Header("Cooldown Settings")]
     [Tooltip("포탈 사용 후 다시 사용하기까지의 대기 시간(초)입니다.")]
-    public float portalCooldown = 3.0f;
+    public float portalCooldown = 10f;
 
     private bool isTeleporting = false;
-    private static float lastTeleportTime = -1f;
+    private float lastTeleportTime = -1f;
 
     void OnTriggerEnter(Collider other)
     {
@@ -36,8 +36,14 @@ public class Portal : MonoBehaviour
         }
     }
 
+    void OnTriggerExit(Collider other)
+    {
+        isTeleporting = false;
+    }
+
     IEnumerator TeleportPlayer(GameObject player)
     {
+        GameEvents.DungeonReach("Dungeon1");
         // 쿨타임 설정
         lastTeleportTime = Time.time;
 
@@ -97,7 +103,7 @@ public class Portal : MonoBehaviour
         if (targetPortal != null)
         {
             // 플레이어를 목적지 포탈의 위치와 방향으로 설정
-            Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * 1.5f;
+            Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * 6f;
             player.transform.position = destination;
             player.transform.rotation = targetPortal.transform.rotation;
             Debug.Log($"플레이어를 새로운 씬의 '{targetPortal.portalID}' 포탈 위치로 이동시켰습니다: {destination}");

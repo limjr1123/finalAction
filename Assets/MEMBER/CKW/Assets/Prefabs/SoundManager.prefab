@@ -60,9 +60,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f9371e5b4991208459d9ddefce684ff5, type: 3}
   - {fileID: 8300000, guid: e92396fb344edb74fbcec607dcae9db2, type: 3}
   uiSFXClips:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 580c45279e0bb9b4fb35e5a97282e87f, type: 3}
+  - {fileID: 8300000, guid: e49874f19fdb7114bbf776cb9e5f53c0, type: 3}
+  - {fileID: 8300000, guid: c230389cdba1a4d47bda71c4d0e2b6f9, type: 3}
 --- !u!82 &2507145662163861339
 AudioSource:
   m_ObjectHideFlags: 0

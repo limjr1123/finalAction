@@ -18,7 +18,7 @@ public class PlayerEvasionState : PlayerState
     public override void Enter()
     {
         animator.SetTrigger("Evasion");
-
+        stateMachine.SoundSFX.PlayDodgeSound();
         player.layer = _dodgingLayer;
 
         if (stateMachine.InputX != 0 || stateMachine.InputY != 0)

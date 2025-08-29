@@ -60,6 +60,7 @@ public class ShopUI : BaseUI
 
     private void CloseInventoryUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         CloseUI();
     }
 

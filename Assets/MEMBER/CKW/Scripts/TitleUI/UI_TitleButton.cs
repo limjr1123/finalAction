@@ -19,6 +19,7 @@ public class UI_TitleButton : MonoBehaviour
 
     private void OnEnterServer()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Server);
         loadingServerMessage.SetActive(true);
     }
 

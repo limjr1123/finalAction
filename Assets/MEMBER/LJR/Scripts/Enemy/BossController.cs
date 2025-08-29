@@ -27,12 +27,15 @@ public class BossController : MonoBehaviour
     public NavMeshAgent navAgent { get; private set; }
     public EnemyVision enemyVision { get; internal set; }
 
+    public Collider Collider { get; set; }
     public MeleeBoss meleeBoss { get; private set; }
 
     //[field: SerializeField] public EnemyType enemyType { get; set; }
     public List<string> getHitAnimations { get; set; } = new List<string>();
 
     Vector3 prevPos;
+
+    float moveSpeed;
 
     public bool inGetHit { get; set; } = false;
 
@@ -43,6 +46,7 @@ public class BossController : MonoBehaviour
         enemyVision = GetComponentInChildren<EnemyVision>();
         navAgent = GetComponent<NavMeshAgent>();
         meleeBoss = GetComponent<MeleeBoss>();
+        Collider = GetComponent<Collider>();
 
         stateDict = new Dictionary<BossStates, EnemyState<BossController>>();
         stateDict[BossStates.Idle] = GetComponent<BossIdleState>();
@@ -60,6 +64,7 @@ public class BossController : MonoBehaviour
         stateMachine.ChangeState(stateDict[BossStates.Idle]);
 
         navAgent.speed = stats.moveSpeed.GetValue(); // 초기 이동 속도 설정
+        moveSpeed = stats.moveSpeed.GetValue(); // 초기 이동 속도 설정
     }
 
     // Update is called once per frame
@@ -73,7 +78,7 @@ public class BossController : MonoBehaviour
         float forwardSpeed = Vector3.Dot(velocity, transform.forward); // 이동 방향과 속도 벡터의 내적 계산
 
         // magnitude로 이동속도 벡터의 크기를 가져와서 실제 설정된Speed에 맞게 비율을 계산(0~1)
-        anim.SetFloat("forwardSpeed", forwardSpeed / navAgent.speed, 0.2f, Time.deltaTime); // 애니메이터의 이동 속도 설정
+        anim.SetFloat("forwardSpeed", forwardSpeed / moveSpeed, 0.2f, Time.deltaTime); // 애니메이터의 이동 속도 설정
 
         float angle = Vector3.SignedAngle(transform.forward, velocity, Vector3.up);     // 이동 방향과 현재 방향의 각도 계산
         float strafeSpeed = Mathf.Sin(angle * Mathf.Deg2Rad);

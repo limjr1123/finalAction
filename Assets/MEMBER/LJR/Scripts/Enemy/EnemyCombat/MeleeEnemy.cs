@@ -91,10 +91,11 @@ public class MeleeEnemy : MonoBehaviour
         }
 
         EnemyAttackData attackData;
-
-        if (!enemyController.isSkillUse && skillCooldownTimer <= 0)
+        Debug.Log(skillList);
+        if (!enemyController.isSkillUse && skillCooldownTimer <= 0 && skillList.Length > 0)
         {
             // skills 리스트에서 애니매이션을 선택
+            Debug.Log("스킬리스트에서 애니메이션 선택");
             comboCounter = UnityEngine.Random.Range(0, skills.Count);
             attackData = skills[comboCounter];
         }

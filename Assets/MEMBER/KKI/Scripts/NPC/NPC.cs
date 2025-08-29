@@ -22,7 +22,10 @@ public class NPC : MonoBehaviour, INPCInteractable
 
         // 2) 그 다음에 '말 걸었다' 이벤트로 Talk 목표 처리
         if (npcData != null && !string.IsNullOrEmpty(npcData.npcID))
+        {
             GameEvents.NPCTalked(npcData.npcID);
+        }
+
 
         // 3) 마지막으로 (촌장 등) 규칙 평가: 다음 챕터 퀘스트 지급 등
         var giver = GetComponent<QuestGiverOnTalk>();
@@ -48,7 +51,7 @@ public class NPC : MonoBehaviour, INPCInteractable
             if (data == null) continue;
 
             bool ok = IsQuestConditionMet(data);
-            Debug.Log($"[DialoguePick] id={id}, reqQuest={data.requiredQuestID}, reqStatus={data.requiredQuestStatus}, pass={ok}");
+            // Debug.Log($"[DialoguePick] id={id}, reqQuest={data.requiredQuestID}, reqStatus={data.requiredQuestStatus}, pass={ok}");
             if (ok) return id;
         }
 

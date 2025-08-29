@@ -85,6 +85,7 @@ public class InventoryUI : BaseUI
 
     private void CloseInventoryUI()
     {
+        SoundManager.Instance.PlayUISFX(UISFXList.Select);
         SelectSlot(null, -1, null);
         CloseUI();
     }
@@ -275,13 +276,56 @@ public class InventoryUI : BaseUI
     {
         if (eq == null || _currentTab != Tab.Equip || string.IsNullOrEmpty(_selectedUid)) return;
 
-        if (equipOn)
-            EquipmentState.SetEquipped(eq.EquipType, _selectedUid);
-        else
-            EquipmentState.Clear(eq.EquipType);
+        // 0) 기존 같은 부위 장착되어 있던 아이템의 효과 제거
+        string prevUid = EquipmentState.GetEquippedUid(eq.EquipType);
+        if (!string.IsNullOrEmpty(prevUid) && prevUid != _selectedUid)
+        {
+            var prev = FindEquipmentByUid(prevUid);
+            if (prev != null) ApplyEquipEffects(prev, false);  // ❎ 이전 효과 제거
+        }
 
-        SetWeaponSlot(eq, equipOn); // 장비창 이미지 반영
-        ShowEquipmentTab();         // 리스트 오버레이 반영
+        // 1) 이번 아이템 장착/해제에 따른 효과 반영
+        ApplyEquipEffects(eq, equipOn);                         // ✅ 효과 적용/해제
+
+        // 2) 장착 상태 기록 및 UI 반영(기존 코드 유지)
+        if (equipOn) EquipmentState.SetEquipped(eq.EquipType, _selectedUid);
+        else EquipmentState.Clear(eq.EquipType);
+
+        SetWeaponSlot(eq, equipOn); // 장비창 이미지 변경
+        ShowEquipmentTab();         // 리스트 오버레이 갱신
+    }
+
+    // === 보조: UID로 장비 데이터 찾기 ===
+    private EquipmentItemData FindEquipmentByUid(string uid)
+    {
+        var list = InventoryManager.Instance.GetAllEquipmentInventory;
+        foreach (var s in list)
+            if (s.uid == uid) return s.data as EquipmentItemData;
+        return null;
+    }
+
+    // === 보조: 실제 스탯 가감 ===
+    private void ApplyEquipEffects(EquipmentItemData eq, bool on)
+    {
+        var stats = PlayerStats.Instance;
+        if (stats == null) return;
+
+        int atk = Mathf.RoundToInt(eq.Attack);
+        int def = Mathf.RoundToInt(eq.Defence);
+
+        if (on)
+        {
+            stats.attackDamage.AddModifier(atk);
+            stats.defense.AddModifier(def);
+        }
+        else
+        {
+            stats.attackDamage.RemoveModifier(atk);
+            stats.defense.RemoveModifier(def);
+        }
+
+        // 공격력은 Str/Dex에 따라 재계산 로직이 있으니 최종 재계산 호출
+        stats.UpdateFinalStats();
     }
 
     // 장비 슬롯 UI 갱신

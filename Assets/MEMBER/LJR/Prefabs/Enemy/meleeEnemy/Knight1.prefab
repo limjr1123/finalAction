@@ -5515,7 +5515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35490eaf5725dae40bc5bd82f41bf6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fov: 180
+  fov: 360
   <target>k__BackingField: {fileID: 0}
   <enemyType>k__BackingField: 0
 --- !u!114 &8231802546328517659
@@ -5617,6 +5617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceToStand: 0
   adjustDistanceThreshold: 0.1
+  backstepDistance: 2
 --- !u!114 &7698062488717601441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5658,6 +5659,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 46e99d0d3c823614181ca495481de1e8, type: 2}
   - {fileID: 11400000, guid: d825cb3feb27f834cbd7314c5bbd0400, type: 2}
   - {fileID: 11400000, guid: bf9d945c110fd374dba72fd5c02fe602, type: 2}
+  skills: []
   weapon: {fileID: 8444970341482108102}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -5667,6 +5669,7 @@ MonoBehaviour:
   swing: {fileID: 8300000, guid: 2f792b6be34227242ad1a80f141a024c, type: 3}
   <hitEffectType>k__BackingField: 0
   attackState: 0
+  skillCooldownTimer: 0
 --- !u!195 &4589608812321966284
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5686,7 +5689,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: -0.1
+  m_BaseOffset: -0.3
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &48100047721050166

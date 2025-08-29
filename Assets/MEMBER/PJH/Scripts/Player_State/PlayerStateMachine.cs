@@ -1,8 +1,12 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    public static PlayerStateMachine Instance { get; private set; }
+
     public PlayerState currentState { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -11,7 +15,7 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerEvasionState EvasionState { get; private set; }
     public PlayerDamagedState DamagedState { get; private set; }
     public PlayerDeathState DeathState { get; private set; }
-    public PlayerParryingState ParryingState { get; private set; }  
+    public PlayerParryingState ParryingState { get; private set; }
     public PlayerGuardState GuardState { get; private set; }
     public PlayerSkillState SkillState { get; private set; }
 
@@ -20,6 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Transform mainCamera;
     public Rigidbody Rb { get; private set; }
     public Animator Animator { get; private set; }
+    public PlayerSoundSFX SoundSFX { get; private set; }
 
     [Header("공격 관련")]
     public float comboTime = 1f;
@@ -47,7 +52,7 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("소모 관련")]
     public int dodgeStaminaCost = 10;
     public int attackStaminaCost = 5;
-    public int sprintStaminaCost = 2; 
+    public int sprintStaminaCost = 2;
 
     [Header("레이어 변경 관련")]
     private int _playerLayer;
@@ -57,18 +62,30 @@ public class PlayerStateMachine : MonoBehaviour
     public float autoTargetingDistance = 10f; // 탐색 거리
     public float autoTargetingAngle = 60f;    // 탐색 각도
     public LayerMask enemyLayerMask;
+    public float dashForce = 5f;
 
-    [Header("가드 관련")] 
+    [Header("가드 관련")]
     public float guardExitDuration = 0.6f;
-    
+
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
 
+    private FixedJoystick joyStick;
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            // 이미 다른 PlayerStateMachine이 존재하면, 새로운 자신을 파괴합니다.
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
         Stats = GetComponent<PlayerStats>();
+        SoundSFX = GetComponent<PlayerSoundSFX>();
 
         IdleState = new PlayerIdleState(this, gameObject, Animator);
         MoveState = new PlayerMoveState(this, gameObject, Animator);
@@ -83,7 +100,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         skillCooldowns = new float[skills.Length]; // 스킬 쿨타임 초기화
 
-        _playerLayer = LayerMask.NameToLayer("Player"); 
+        _playerLayer = LayerMask.NameToLayer("Player");
         _evasionLayer = LayerMask.NameToLayer("PlayerDodge");
     }
 
@@ -93,6 +110,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             PlayerStats.OnPlayerDied += Die;
         }
+        joyStick = FindFirstObjectByType<FixedJoystick>();
 
         ChangeState(IdleState);
     }
@@ -103,9 +121,18 @@ public class PlayerStateMachine : MonoBehaviour
         {
             ResetCombo();
         }
+
+        if (joyStick != null)
+        {
+            InputX = joyStick.Horizontal;
+            InputY = joyStick.Vertical;
+        }
+
         CalculateMoveDirection();
-        HandleInput();
+        //HandleInput();
         currentState?.Update();
+
+
 
         for (int i = 0; i < skillCooldowns.Length; i++)  // 쿨타임 계산
         {
@@ -126,6 +153,15 @@ public class PlayerStateMachine : MonoBehaviour
         InputX = Input.GetAxisRaw("Horizontal");
         InputY = Input.GetAxisRaw("Vertical");
 
+        float keyboardX = Input.GetAxisRaw("Horizontal");
+        float keyboardY = Input.GetAxisRaw("Vertical");
+
+        if (InputX != 0 || InputY != 0)
+        {
+            InputX = keyboardX;
+            InputY = keyboardY;
+        }
+
         if (Input.GetMouseButtonDown(0))  // 공격
         {
             currentState?.OnAttack();
@@ -133,11 +169,11 @@ public class PlayerStateMachine : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl)) // 점프
         {
-            currentState?.OnJump(); 
+            currentState?.OnJump();
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) // 회피
-        {   
+        {
             currentState?.OnDodge();
         }
 
@@ -159,19 +195,20 @@ public class PlayerStateMachine : MonoBehaviour
             currentState?.OnSkill(1);
         }
 
-        if(Input.GetKeyDown(KeyCode.G)) // 상호작용
+        if (Input.GetKeyDown(KeyCode.G)) // 상호작용
         {
             Interact();
         }
     }
 
-    private void Interact()
+    public void Interact()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, interactableLayerMask))
+        if (Physics.SphereCast(transform.position, 3f, transform.forward, out hit, 2, interactableLayerMask))
         {
             hit.collider.GetComponent<NPC>()?.Interact();
         }
+
     }
 
     public bool TryUseSkill(int slotIndex)
@@ -241,7 +278,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void OnGuaurdAnimationEnd() // 가드 애니메이션 종료 후 상태 전환
     {
-            ChangeState(IdleState);        
+        ChangeState(IdleState);
     }
 
     public void OnSkillAnimationEnd() // 스킬 애니메이션 종료 후 상태 전환
@@ -266,7 +303,7 @@ public class PlayerStateMachine : MonoBehaviour
         this.gameObject.layer = _playerLayer;
     }
 
- 
+
 
     void OnDisable()
     {
@@ -338,6 +375,26 @@ public class PlayerStateMachine : MonoBehaviour
             }
         }
         return bestTarget;
+    }
+
+    public void AnimationEvent_PlayLeftFootstepSound()
+    {
+        SoundSFX?.PlayLeftFootstepSound();
+    }
+
+    public void AnimationEvent_PlayRightFootstepSound()
+    {
+        SoundSFX?.PlayRightFootstepSound();
+    }
+
+    public void AnimationEvent_PlayAttackSKillSound()
+    {
+        SoundSFX?.PlayAttackSkillSound();
+    }
+
+    public void AnimationEvent_PlayBuffSkillSound()
+    {
+        SoundSFX?.PlayBuffSkillSound();
     }
 }
 

@@ -1,3 +1,4 @@
+﻿using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerState
@@ -18,7 +19,7 @@ public class PlayerMoveState : PlayerState
     {
         if (stateMachine.InputX == 0 && stateMachine.InputY == 0)
         {
-            stateMachine.ChangeState(new PlayerIdleState(stateMachine, player, animator));
+            stateMachine.ChangeState(stateMachine.IdleState);
             return;
         }
 
@@ -32,14 +33,24 @@ public class PlayerMoveState : PlayerState
         Move(Time.fixedDeltaTime);
     }
 
+    public override void Exit()
+    {
+        stateMachine.IsSprinting = false;
+        animator.SetBool("IsSprint", false);
+    }
+
     public override void OnAttack()
     {
         Transform target = stateMachine.FindAutoTarget();
         if (target != null)
         {
             Vector3 targetDir = target.position - player.transform.position;
+            float currentDistance = targetDir.magnitude;
             targetDir.y = 0;
             player.transform.rotation = Quaternion.LookRotation(targetDir);
+
+            if (currentDistance > 1.6f)
+                stateMachine.Rb.AddForce(player.transform.forward * stateMachine.dashForce, ForceMode.Impulse);
         }
 
         if (stateMachine.Stats.TryUseStamina(stateMachine.attackStaminaCost))
@@ -90,8 +101,10 @@ public class PlayerMoveState : PlayerState
 
     private void Move(float fixedDeltaTime)
     {
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        float moveAmount = Mathf.Clamp01(Mathf.Abs(stateMachine.InputX) + Mathf.Abs(stateMachine.InputY));
         float currentSpeed;
+        //bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        bool isSprinting = moveAmount > 0.6f;
 
         if (isSprinting)
         {
@@ -133,7 +146,8 @@ public class PlayerMoveState : PlayerState
 
         animator.SetFloat("Speed", moveAmount, 0.1f, deltaTime);
 
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        //bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        bool isSprinting = moveAmount > 0.6f;
         animator.SetBool("IsSprint", isSprinting);
     }
 }

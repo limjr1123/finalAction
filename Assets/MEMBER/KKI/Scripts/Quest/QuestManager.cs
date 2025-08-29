@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameSave;
 using UnityEngine;
+using System;
 
 public class QuestManager : Singleton<QuestManager>
 {
@@ -12,21 +13,20 @@ public class QuestManager : Singleton<QuestManager>
     [Header("Active Quests (runtime)")]
     private List<QuestProgress> activeQuests = new List<QuestProgress>();
 
-
+    // ✅ HUD 갱신용 이벤트
+    public event Action OnQuestsUpdated;
 
     void Start()
     {
-        QuestData startQuest = questDatabase.GetQuestByID("TalkToChief1");
-        if (startQuest != null)
-        {
-            Debug.Log(startQuest.title + " 퀘스트 등록!");
-            AddQuest(startQuest);
-        }
 
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GameEvents.NPCTalked("Chief");
+        }
         if (Input.GetKeyDown(KeyCode.C))
         {
             GameEvents.DungeonReach("Dungeon1");
@@ -54,12 +54,17 @@ public class QuestManager : Singleton<QuestManager>
         GameEvents.OnNPCTalked -= OnNPCTalked;
     }
 
+    public QuestProgress GetFirstActiveQuest()
+    {
+        return activeQuests.Count > 0 ? activeQuests[0] : null;
+    }
 
     public void AddQuest(QuestData questData)
     {
         // 중복 등록 방지
         if (GetProgressByID(questData.questID) != null) return;
         activeQuests.Add(new QuestProgress(questData));
+        OnQuestsUpdated?.Invoke();
     }
 
     #region 퀘스트 업데이트 함수
@@ -79,6 +84,8 @@ public class QuestManager : Singleton<QuestManager>
                     prograss.currentAmounts[i] += amount;
                     if (prograss.currentAmounts[i] >= obj.targetAmount)
                         prograss.currentAmounts[i] = obj.targetAmount;
+
+                    OnQuestsUpdated?.Invoke();
 
                     if (IsQuestCompleted(prograss))
                     {
@@ -106,11 +113,30 @@ public class QuestManager : Singleton<QuestManager>
         Debug.Log(progress.questData.title + " 완료!");
         progress.isCompleted = true;
 
-        // TODO: 보상 지급
+        activeQuests.Remove(progress);
+
         foreach (var r in progress.questData.rewards)
         {
-            // Inventory.Add(r.itemId, r.amount);
-            // PlayerStats.Gold += r.gold;
+            switch (r.type)
+            {
+                case RewardType.Gold:
+                    GoldSystem.Instance.AddCurrency(r.amount);
+                    Debug.Log($"+{r.amount} Gold 획득!");
+                    break;
+
+                case RewardType.Exp:
+                    PlayerStats.Instance.AddExp(r.amount);
+                    Debug.Log($"+{r.amount} Exp 획득!");
+                    break;
+
+                case RewardType.Item:
+                    if (!string.IsNullOrEmpty(r.itemId))
+                    {
+                        InventoryManager.Instance.AddItem(r.itemId, r.amount);
+                        Debug.Log($"{r.itemId} x{r.amount} 획득!");
+                    }
+                    break;
+            }
         }
 
         if (!string.IsNullOrEmpty(progress.questData.nextQuestID))
@@ -122,6 +148,8 @@ public class QuestManager : Singleton<QuestManager>
                 Debug.Log(next.title + " 퀘스트 등록!");
             }
         }
+
+        OnQuestsUpdated?.Invoke();
     }
 
 
@@ -181,6 +209,7 @@ public class QuestManager : Singleton<QuestManager>
                 AddQuest(questData);
             }
         }
+        OnQuestsUpdated?.Invoke();
 
     }
 
