@@ -42,7 +42,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
                     }
                     else
                     {
-                        StartCoroutine(MeleeAttack());
+                        TriggerMeleeAttack();
                     }
                 }
                 else if (enemy.enemyType == EnemyType.Range)
@@ -53,7 +53,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
                     }
                     else
                     {
-                        StartCoroutine(RangeAttack());
+                        TriggerRangeAttack();
                     }
                 }
             }
@@ -63,6 +63,20 @@ public class EnemyAttackState : EnemyState<EnemyController>
             // 공격 범위 밖이면 직접 추적
             enemy.navAgent.SetDestination(enemy.target.transform.position);
         }
+    }
+
+    private void TriggerMeleeAttack()
+    {
+        if (isAttacking) return;
+        isAttacking = true;
+        enemy.StartCoroutine(MeleeAttack());
+    }
+
+    private void TriggerRangeAttack()
+    {
+        if (isAttacking) return;
+        isAttacking = true;
+        enemy.StartCoroutine(RangeAttack());
     }
 
     IEnumerator MeleeAttack()

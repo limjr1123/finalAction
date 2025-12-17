@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HealingCircle : MonoBehaviour
@@ -16,34 +17,42 @@ public class HealingCircle : MonoBehaviour
 
     bool isSkillStart = false; // 스킬 시작 여부
 
-    void Update()
+    private HashSet<EnemyStat> targetsInRange = new HashSet<EnemyStat>();
+
+    float timer = 0f;
+
+    private void Update()
     {
-        if (isSkillStart)
-            StartCoroutine(HealCoroutine());
+        if (!isSkillStart) return;
+
+        timer += Time.deltaTime;
+
+        if (timer >= HealPeriod)
+        {
+            foreach (var target in targetsInRange)
+            {
+                if (target != null)
+                    target.IncreaseHealth(Amount);
+            }
+            timer -= HealPeriod;  // 또는 timer = 0f;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            // 플레이어에게 회복 효과 적용
-            EnemyStat enemy = other.GetComponent<EnemyStat>();
-            if (enemy != null)
-            {
-                enemy.IncreaseHealth(Amount);
-            }
+            var stat = other.GetComponent<EnemyStat>();
+            if (stat != null) targetsInRange.Add(stat);
         }
     }
 
-    private IEnumerator HealCoroutine()
+    private void OnTriggerExit(Collider other)
     {
-        isSkillStart = false;
-
-        for (int i = 0; i < 5; i++)
+        if (other.CompareTag("Enemy"))
         {
-            healingCircleCollider.enabled = true; // Healing Circle 콜라이더 활성화
-            yield return new WaitForSeconds(HealPeriod); // Duration 동안 기다림
-            healingCircleCollider.enabled = false; // Healing Circle 콜라이더 비활성화
+            var stat = other.GetComponent<EnemyStat>();
+            if (stat != null) targetsInRange.Remove(stat);
         }
     }
 
