@@ -9,6 +9,7 @@ TagManager:
   - PlayerGuard
   - PlayerParry
   - Ground
+  - NPC
   layers:
   - Default
   - TransparentFX

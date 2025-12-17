@@ -74,15 +74,14 @@ public class EnemyAttackState : EnemyState<EnemyController>
         yield return new WaitUntil(() => enemy.meleeEnemy.attackState == EnemyAttackStateInfo.Idle);
 
         // navAgent가 비활성화된 상태라면 코루틴 종료
-        if (!enemy.navAgent.enabled)
-            yield return null;
-        
-        enemy.anim.applyRootMotion = false;
-        enemy.navAgent.isStopped = false;
-        isAttacking = false;
-
-        if (enemy.IsInState(EnemyStates.Attack))
-            enemy.ChangeState(EnemyStates.Battle);
+        if (enemy.navAgent.enabled)
+        {
+            enemy.anim.applyRootMotion = false;
+            enemy.navAgent.isStopped = false;
+            isAttacking = false;
+            if (enemy.IsInState(EnemyStates.Attack))
+                enemy.ChangeState(EnemyStates.Battle);
+        }
     }
 
     IEnumerator RangeAttack()
@@ -94,15 +93,14 @@ public class EnemyAttackState : EnemyState<EnemyController>
         yield return new WaitUntil(() => enemy.rangeEnemy.attackState == EnemyAttackStateInfo.Idle);
 
         // navAgent가 비활성화된 상태라면 코루틴 종료
-        if (!enemy.navAgent.enabled)
-            yield return null;
-        
-        enemy.anim.applyRootMotion = false;
-        enemy.navAgent.isStopped = false;
-        isAttacking = false;
-        
-        if (enemy.IsInState(EnemyStates.Attack))
-            enemy.ChangeState(EnemyStates.Battle);
+        if (enemy.navAgent.enabled)
+        {
+            enemy.anim.applyRootMotion = false;
+            enemy.navAgent.isStopped = false;
+            isAttacking = false;
+            if (enemy.IsInState(EnemyStates.Attack))
+                enemy.ChangeState(EnemyStates.Battle);
+        }
     }
 
     public override void Exit()

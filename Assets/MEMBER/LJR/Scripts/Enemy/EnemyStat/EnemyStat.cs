@@ -41,7 +41,7 @@ public struct DamageRange
 public class EnemyStat : MonoBehaviour
 {
     [SerializeField] private EnemyStatData statData;
-
+    private EnemyController enemyController;
     [field: SerializeField] public int currentHealth { get; private set; }  //현재 체력
 
     [Header("기본 정보")]
@@ -75,6 +75,7 @@ public class EnemyStat : MonoBehaviour
         InitializeStat();
         OnHealthChanged += () => HealthCheck();
         attackDamageRange = new DamageRange(attackDamage.GetValue(), damageRange); // 공격 피해 범위 초기화
+        enemyController = GetComponent<EnemyController>();
     }
 
     protected void InitializeStat()
@@ -118,7 +119,12 @@ public class EnemyStat : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            Die();
+            enemyController.ChangeState(EnemyStates.Dead);
+        }
+        else
+        {
+            if (!enemyController.isSkillUse)
+                enemyController.ChangeState(EnemyStates.GetHit);
         }
     }
 

@@ -67,6 +67,8 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("가드 관련")]
     public float guardExitDuration = 0.6f;
 
+    [Header("상호작용 관련")]
+    public PlayerInteractRange interactRange;
     public Collider interactableCollider; // 상호작용할 수 있는 오브젝트의 콜라이더
     public LayerMask interactableLayerMask; // 상호작용 가능한 레이어
 
@@ -102,6 +104,8 @@ public class PlayerStateMachine : MonoBehaviour
 
         _playerLayer = LayerMask.NameToLayer("Player");
         _evasionLayer = LayerMask.NameToLayer("PlayerDodge");
+
+        interactRange = GetComponentInChildren<PlayerInteractRange>();
     }
 
     void Start()
@@ -203,10 +207,15 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void Interact()
     {
-        RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 3f, transform.forward, out hit, 2, interactableLayerMask))
+        //RaycastHit hit;
+        //if (Physics.SphereCast(transform.position, 3f, transform.forward, out hit, 2, interactableLayerMask))
+        //{
+        //    hit.collider.GetComponent<NPC>()?.Interact();
+        //}
+
+        if(interactRange.currentNPC != null)
         {
-            hit.collider.GetComponent<NPC>()?.Interact();
+            interactRange.currentNPC.GetComponent<NPC>()?.Interact();
         }
 
     }
