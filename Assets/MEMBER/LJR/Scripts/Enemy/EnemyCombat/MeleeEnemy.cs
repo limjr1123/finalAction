@@ -91,7 +91,7 @@ public class MeleeEnemy : MonoBehaviour
         }
 
         EnemyAttackData attackData;
-        Debug.Log(skillList);
+        //Debug.Log(skillList);
         if (!enemyController.isSkillUse && skillCooldownTimer <= 0 && skillList.Length > 0)
         {
             // skills 리스트에서 애니매이션을 선택

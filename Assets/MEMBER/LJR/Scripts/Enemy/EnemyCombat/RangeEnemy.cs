@@ -55,7 +55,7 @@ public class RangeEnemy : MonoBehaviour
 
     IEnumerator RangeAttack(Vector3? attackDir = null)
     {
-        Debug.Log("RangeEnemy Attack Start");
+        //Debug.Log("RangeEnemy Attack Start");
         inAction = true;
         isShooting = true; // 공격 중인 상태로 설정
 
