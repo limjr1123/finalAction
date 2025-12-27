@@ -57,6 +57,15 @@ public class PlayerIdleState : PlayerState
 
     public override void OnGuard()
     {
+        Transform target = stateMachine.FindAutoTarget();
+        if (target != null)
+        {
+            Vector3 targetDir = target.position - player.transform.position;
+            float currentDistance = targetDir.magnitude;
+            targetDir.y = 0;
+            player.transform.rotation = Quaternion.LookRotation(targetDir);
+        }
+
         stateMachine.ChangeState(stateMachine.GuardState);
     }
 

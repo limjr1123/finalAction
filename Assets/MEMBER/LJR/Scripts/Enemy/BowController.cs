@@ -30,7 +30,7 @@ public class BowController : MonoBehaviour
 
     private void Update()
     {
-        if (enemyController.inGetHit)
+        if (enemyController.inGetHit || enemyController.stats.currentHealth <= 0)
         {
             ResetBow();
             if (arrowController != null)

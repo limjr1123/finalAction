@@ -92,11 +92,10 @@ public class EnemyAttackState : EnemyState<EnemyController>
         {
             enemy.anim.applyRootMotion = false;
             enemy.navAgent.isStopped = false;
+            isAttacking = false;
+            if (enemy.IsInState(EnemyStates.Attack))
+                enemy.ChangeState(EnemyStates.Battle);
         }
-        isAttacking = false;
-
-        if (enemy.IsInState(EnemyStates.Attack))
-            enemy.ChangeState(EnemyStates.Battle);
     }
 
     IEnumerator RangeAttack()
@@ -112,11 +111,10 @@ public class EnemyAttackState : EnemyState<EnemyController>
         {
             enemy.anim.applyRootMotion = false;
             enemy.navAgent.isStopped = false;
+            isAttacking = false;
+            if (enemy.IsInState(EnemyStates.Attack))
+                enemy.ChangeState(EnemyStates.Battle);
         }
-        isAttacking = false;
-        
-        if (enemy.IsInState(EnemyStates.Attack))
-            enemy.ChangeState(EnemyStates.Battle);
     }
 
     public override void Exit()

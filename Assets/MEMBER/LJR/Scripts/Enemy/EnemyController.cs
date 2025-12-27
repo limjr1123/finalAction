@@ -142,19 +142,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // HitBox와 충돌했을 때 호출되는 메서드.
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("HitBox") && !isSkillUse)
-        {
-            Debug.Log("타격 성공");
-            if (stats.currentHealth <= 0)
-                stateMachine.ChangeState(stateDict[EnemyStates.Dead]);
-            else
-                stateMachine.ChangeState(stateDict[EnemyStates.GetHit]);
-        }
-    }
-
     public void TargetChaseDirection(Vector3 _direction)
     {
         Quaternion targetRotation = Quaternion.LookRotation(_direction);
