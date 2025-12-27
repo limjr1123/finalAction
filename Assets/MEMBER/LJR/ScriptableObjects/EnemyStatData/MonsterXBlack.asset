@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95d823253eb4ca458a67d57ac2920a3, type: 3}
   m_Name: MonsterXBlack
   m_EditorClassIdentifier: 
+  enemyName: "\uB4DC\uB77D\uC18C\uB974"
   attackDamage: 15
   magicDamage: 0
   maxHealth: 100
@@ -19,7 +20,7 @@ MonoBehaviour:
   magicDefense: 5
   mana: 0
   manaRegen: 0
-  aggroRange: 150
+  aggroRange: 300
   attackRange: 1.3
   moveSpeed: 5
   attackSpeed: 1

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType { Weapon, Armor, Consumable }
+public enum ItemType { Equipment, Consumable, Etc }
 
 public abstract class ItemData : ScriptableObject
 {
@@ -11,14 +11,16 @@ public abstract class ItemData : ScriptableObject
     [SerializeField] private Sprite itemSp;         // 아이템 스프라이트
     [SerializeField] private bool stackable;        // 아이템이 적재될 수 있는가?
     [SerializeField] private int maxStack;          // 아이템 최대 적재 개수
+    [SerializeField] private int gold;              // 아이템 가치
     [TextArea]
     [SerializeField] private string description;    // 아이템 설명서
 
     public string ItemID => itemID != null ? itemID : "NoID";
     public string ItemName => itemName != null ? itemName : "Unknown";
     public ItemType ItemType => itemType;
-    public Sprite Sprite => itemSp;
+    public Sprite ItemSprite => itemSp;
     public bool Stackable => stackable;
     public int MaxStack => maxStack;
+    public int Gold => gold;
     public string Description => description;
 }

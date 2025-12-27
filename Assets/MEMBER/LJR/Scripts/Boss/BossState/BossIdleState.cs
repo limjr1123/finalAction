@@ -11,7 +11,6 @@ public class BossIdleState : EnemyState<BossController>
 
     public override void Execute()
     {
-        Debug.Log("Boss is in Idle State");
         boss.target = boss.FindTarget();
         if (boss.target != null)
         {

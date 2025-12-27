@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95d823253eb4ca458a67d57ac2920a3, type: 3}
   m_Name: Knight1
   m_EditorClassIdentifier: 
+  enemyName: "\uACAC\uC2B5 \uAE30\uC0AC"
   attackDamage: 20
   magicDamage: 0
   maxHealth: 150
   defense: 10
-  magicDefense: 0
+  magicDefense: 5
   mana: 0
   manaRegen: 0
-  aggroRange: 150
-  attackRange: 1.5
+  aggroRange: 10
+  attackRange: 1.7
   moveSpeed: 5
   attackSpeed: 1
-  attackInterval: 2.5
+  attackInterval: 2
   criticalChance: 0.05
   criticalDamage: 1.5

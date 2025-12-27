@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe4ea36dde9057458c07a96f161dcab, type: 3}
+  m_Name: attack24
+  m_EditorClassIdentifier: 
+  attackCount: 1
+  <animName>k__BackingField: attack24
+  <hitboxToUse>k__BackingField: 0
+  <impactStartTime>k__BackingField: 0
+  <impactEndTime>k__BackingField: 0
+  <isParry>k__BackingField: 0
+  <attackPhases>k__BackingField:
+  - animName: attack24_ready
+    hitboxToUse: 0
+    impactStartTime: 0
+    impactEndTime: 0
+    isParry: 0
+    attackZAngle: 0
+  - animName: attack24_slash
+    hitboxToUse: 0
+    impactStartTime: 0.1
+    impactEndTime: 1
+    isParry: 0
+    attackZAngle: 35
+  - animName: attack24_slash1
+    hitboxToUse: 0
+    impactStartTime: 0.1
+    impactEndTime: 1
+    isParry: 0
+    attackZAngle: -35

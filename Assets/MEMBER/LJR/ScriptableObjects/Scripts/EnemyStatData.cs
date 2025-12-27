@@ -3,6 +3,9 @@
 [CreateAssetMenu(fileName = "EnemyStatData", menuName = "Enemy Stat Setting/EnemyStatData", order = 1)]
 public class EnemyStatData : ScriptableObject
 {
+    [Header("info")]
+    public string enemyName;    //적 이름
+
     [Header("int Stat")]
     public int attackDamage;    //물리 공격력
     public int magicDamage;     //마법 공격력
@@ -20,4 +23,4 @@ public class EnemyStatData : ScriptableObject
     public float attackInterval;  //공격 주기
     public float criticalChance;  //치명타 확률
     public float criticalDamage;  //치명타 피해량
-}                               
+}

@@ -1,219 +1,159 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections; // ÄÚ·çÆ¾ »ç¿ëÀ» À§ÇØ ÇÊ¿ä
+using System.Collections;
 
 public class Portal : MonoBehaviour
 {
     [Header("Portal Settings")]
-    public string portalID = "DefaultPortal"; // ÀÌ Æ÷Å»ÀÇ °íÀ¯ ID (¾À ³»¿¡¼­ ´Ù¸¥ Æ÷Å»ÀÌ ÀÌ Æ÷Å»À» ¸ñÀûÁö·Î »ïÀ» ¶§ »ç¿ë)
+    public string portalID = "DefaultPortal";
 
     [Header("Scene Transition")]
-    [Tooltip("ÀÌ Æ÷Å»À» ÅëÇØ ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§ (ÇÊ¼ö). Build Settings¿¡ Ãß°¡µÇ¾î ÀÖ¾î¾ß ÇÕ´Ï´Ù.")]
-    public string targetSceneName; // ÀÌµ¿ÇÒ ¾À ÀÌ¸§ (ÇÊ¼ö)
-    [Tooltip("ÀÌ Æ÷Å»À» ÅëÇØ ÀÌµ¿ÇßÀ» ¶§, µµÂøÇÒ ¾À¿¡ ÀÖ´Â ¸ñÀûÁö Æ÷Å»ÀÇ IDÀÔ´Ï´Ù.")]
-    public string targetPortalID; // µµÂøÇÒ ¾À¿¡ ÀÖ´Â ¸ñÀûÁö Æ÷Å»ÀÇ °íÀ¯ ID
+    [Tooltip("ì´ í¬íƒˆì„ í†µí•´ ì´ë™í•  ì”¬ì˜ ì´ë¦„ (í•„ìˆ˜). Build Settingsì— ì¶”ê°€ë˜ì–´ ìˆì–´ì•¼ í•©ë‹ˆë‹¤.")]
+    public string targetSceneName;
+    [Tooltip("ì´ í¬íƒˆì„ í†µí•´ ì´ë™í–ˆì„ ë•Œ, ë„ì°©í•  ì”¬ì— ìˆëŠ” ëª©ì ì§€ í¬íƒˆì˜ IDì…ë‹ˆë‹¤.")]
+    public string targetPortalID;
 
-    [Header("Player Settings")]
-    public GameObject player; // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® (Inspector¿¡¼­ ÇÒ´ç ¶Ç´Â "Player" ÅÂ±×·Î Ã£À½)
-    public float teleportDelay = 0.5f; // ÇÃ·¹ÀÌ¾î°¡ Æ÷Å»¿¡ µé¾î°£ ÈÄ ÀÌµ¿±îÁöÀÇ µô·¹ÀÌ
-    public float fadeDuration = 0.5f; // È­¸é ÆäÀÌµå ÀÎ/¾Æ¿ô ½Ã°£ (½ÇÁ¦ ±¸ÇöÀº º°µµ ½ºÅ©¸³Æ® ±ÇÀå)
+    [Header("Cooldown Settings")]
+    [Tooltip("í¬íƒˆ ì‚¬ìš© í›„ ë‹¤ì‹œ ì‚¬ìš©í•˜ê¸°ê¹Œì§€ì˜ ëŒ€ê¸° ì‹œê°„(ì´ˆ)ì…ë‹ˆë‹¤.")]
+    public float portalCooldown = 10f;
 
-    private bool playerInRange = false;
-    private bool isTeleporting = false; // Áßº¹ ÅÚ·¹Æ÷Æ® ¹æÁö ÇÃ·¡±×
-
-    void Start()
-    {
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®°¡ ÇÒ´çµÇÁö ¾Ê¾Ò´Ù¸é, "Player" ÅÂ±×¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À½
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null)
-            {
-                Debug.LogError("Portal: Player GameObject not found. Please assign it in the Inspector or tag your player with 'Player'.");
-            }
-        }
-
-        // Æ÷Å» ¿ÀºêÁ§Æ®¿¡ Collider°¡ ¾øÀ¸¸é °æ°í
-        if (GetComponent<Collider>() == null || !GetComponent<Collider>().isTrigger)
-        {
-            Debug.LogWarning("Portal: This Portal needs a Collider component with 'Is Trigger' enabled to detect player entry.", this);
-        }
-
-        // ¸ñÀûÁö ¾À ÀÌ¸§ÀÌ ¼³Á¤µÇÁö ¾Ê¾ÒÀ¸¸é °æ°í (¾À ÀÌµ¿ Àü¿ëÀÌ¹Ç·Î ÇÊ¼ö)
-        if (string.IsNullOrEmpty(targetSceneName))
-        {
-            Debug.LogError($"Portal '{portalID}': Target Scene Name is not set. This portal cannot function without a target scene!", this);
-        }
-        // ¸ñÀûÁö Æ÷Å» ID°¡ ¼³Á¤µÇÁö ¾Ê¾ÒÀ¸¸é °æ°í (¾À ·Îµå ÈÄ ÇÃ·¹ÀÌ¾î¸¦ ¹èÄ¡ÇÒ ¶§ ÇÊ¿ä)
-        if (string.IsNullOrEmpty(targetPortalID))
-        {
-            Debug.LogWarning($"Portal '{portalID}': Target Portal ID is not set. Player might not spawn at the correct location in the new scene.", this);
-        }
-    }
+    private bool isTeleporting = false;
+    private float lastTeleportTime = -1f;
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == player && !isTeleporting)
+        if (other.CompareTag("Player") && !isTeleporting)
         {
-            if (!playerInRange) // Áßº¹ Æ®¸®°Å ¹æÁö
+            if (Time.time < lastTeleportTime + portalCooldown)
             {
-                playerInRange = true;
-                isTeleporting = true; // ÅÚ·¹Æ÷Æ® ½ÃÀÛ ÇÃ·¡±× ¼³Á¤
-                Debug.Log($"ÇÃ·¹ÀÌ¾î '{player.name}'°¡ Æ÷Å» '{portalID}'¿¡ ÁøÀÔÇß½À´Ï´Ù. ¾À '{targetSceneName}'ÀÇ '{targetPortalID}'·Î ÀÌµ¿ ½Ãµµ.");
-                StartCoroutine(TeleportPlayer());
+                Debug.Log($"í¬íƒˆ ì¿¨íƒ€ì„ ì¤‘ì…ë‹ˆë‹¤. {((lastTeleportTime + portalCooldown) - Time.time):F1}ì´ˆ ë‚¨ìŒ.");
+                return;
             }
+
+            isTeleporting = true;
+            Debug.Log($"í”Œë ˆì´ì–´ '{other.name}'ê°€ í¬íƒˆ '{portalID}'ì— ì§„ì…í–ˆìŠµë‹ˆë‹¤. ì”¬ '{targetSceneName}'ì˜ '{targetPortalID}'ë¡œ ì´ë™ ì‹œë„.");
+            StartCoroutine(TeleportPlayer(other.gameObject));
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == player)
-        {
-            playerInRange = false;
-            // ÇÃ·¹ÀÌ¾î°¡ ³ª°¬À» ¶§ ÅÚ·¹Æ÷Æ®°¡ ÁøÇà ÁßÀÌÁö ¾Ê´Ù¸é ÇÃ·¡±× ¸®¼Â
-            if (!isTeleporting)
-            {
-                Debug.Log($"ÇÃ·¹ÀÌ¾î '{player.name}'°¡ Æ÷Å» '{portalID}'¿¡¼­ ¹ş¾î³µ½À´Ï´Ù.");
-            }
-        }
+        isTeleporting = false;
     }
 
-    IEnumerator TeleportPlayer()
+    IEnumerator TeleportPlayer(GameObject player)
     {
-        // 1. ÅÚ·¹Æ÷Æ® µô·¹ÀÌ
-        yield return new WaitForSeconds(teleportDelay);
+        GameEvents.DungeonReach("Dungeon1");
+        // ì¿¨íƒ€ì„ ì„¤ì •
+        lastTeleportTime = Time.time;
 
-        // 2. È­¸é ÆäÀÌµå ¾Æ¿ô (¿É¼Ç)
-        // ½ÇÁ¦ °ÔÀÓ¿¡¼­´Â ScreenFader °°Àº Àü¿ª ½ºÅ©¸³Æ®¸¦ »ç¿ëÇÕ´Ï´Ù.
-        // ¿¹¸¦ µé¾î ScreenFader.Instance.FadeOut(fadeDuration);
-        Debug.Log("È­¸é ÆäÀÌµå ¾Æ¿ô Áß...");
-        yield return new WaitForSeconds(fadeDuration); // ÆäÀÌµå ¾Æ¿ôÀÌ ¿Ï·áµÉ ¶§±îÁö ±â´Ù¸² (ÀÓ½Ã)
+        // í™”ë©´ í˜ì´ë“œ ì•„ì›ƒ ë“±ì˜ íš¨ê³¼ë¥¼ ì—¬ê¸°ì— ì¶”ê°€í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+        // ì´ ë¶€ë¶„ì€ SceneLoaderì˜ ë¡œë”© UIê°€ ì²˜ë¦¬í•˜ë¯€ë¡œ, ì—¬ê¸°ì„œëŠ” ë”œë ˆì´ë¥¼ ì£¼ì§€ ì•Šê±°ë‚˜
+        // í˜ì´ë“œ íš¨ê³¼ë¥¼ SceneLoaderì™€ ì—°ë™í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+        // ì—¬ê¸°ì„œëŠ” ì¼ë‹¨ ë¡œê·¸ë§Œ ë‚¨ê¹ë‹ˆë‹¤.
+        Debug.Log("ì”¬ ë¡œë”©ì„ ì‹œì‘í•©ë‹ˆë‹¤...");
 
-        // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ºñÈ°¼ºÈ­ (¼ø°£ ÀÌµ¿ Áß ÀÌµ¿ ¹æÁö)
-        SetPlayerMovement(false);
+        // í”Œë ˆì´ì–´ ì´ë™ ë¹„í™œì„±í™”
+        SetPlayerMovement(player, false);
 
-        // 3. ¸ñÀûÁö Á¤º¸¸¦ PlayerPrefs¿¡ ÀúÀå
-        // ¾À ·Îµå ÈÄ ÇÃ·¹ÀÌ¾î¸¦ ¿Ã¹Ù¸¥ À§Ä¡¿¡ ¹èÄ¡ÇÏ±â À§ÇØ ÇÊ¿ä
+        // PlayerPrefsë¥¼ ì‚¬ìš©í•´ ë„ì°©ì§€ í¬íƒˆ IDë¥¼ ë‹¤ìŒ ì”¬ìœ¼ë¡œ ì „ë‹¬
         PlayerPrefs.SetString("TargetPortalIDAfterSceneLoad", targetPortalID);
         PlayerPrefs.Save();
 
-        // 4. ¾À ·Îµå
-        // ¾À ·Îµå°¡ ¿Ï·áµÇ¸é OnSceneLoadedAndTeleport ÇÔ¼ö È£ÃâÇÏµµ·Ï ÀÌº¥Æ® ¿¬°á
-        SceneManager.sceneLoaded += OnSceneLoadedAndTeleport;
-        SceneManager.LoadScene(targetSceneName);
+        // ì”¬ ë¡œë“œ ì´ì „ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ìœ ì§€í•˜ê¸° ìœ„í•¨.
+        DontDestroyOnLoad(player);
 
-        // isTeleporting ÇÃ·¡±×´Â ÀÌµ¿ ¿Ï·á ÈÄ OnSceneLoadedAndTeleport ÇÔ¼ö¿¡¼­ ¸®¼Â
+        // --- ì¤‘ìš” ë³€ê²½ì  ---
+        // ê¸°ì¡´ì˜ ë™ê¸° ë°©ì‹ ë¡œë“œ ëŒ€ì‹ , ë¡œë”© UIë¥¼ í‘œì‹œí•˜ëŠ” ë¹„ë™ê¸° ë°©ì‹ SceneLoaderë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
+        SceneLoader.LoadSceneAsync(targetSceneName);
+
+        // ì”¬ ë¡œë“œ ì™„ë£Œ ì‹œ í”Œë ˆì´ì–´ ìœ„ì¹˜ë¥¼ ì¬ì„¤ì •í•  í•¨ìˆ˜ë¥¼ ë“±ë¡
+        SceneManager.sceneLoaded += OnSceneLoadedAndTeleport;
+
+        TransferManager.Instance.TransformPlayerCoroutine(player);
+
+        yield return null; // ì”¬ ë¡œë“œê°€ ì™„ë£Œë  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
     }
 
-    // ´Ù¸¥ ¾À ·Îµå ¿Ï·á ÈÄ È£ÃâµÉ ÇÔ¼ö
     void OnSceneLoadedAndTeleport(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"¾À '{scene.name}' ·Îµå ¿Ï·á. ÅÚ·¹Æ÷Æ® ¸ñÀûÁö Ã£±â.");
-        // ÀÌº¥Æ® ÇÚµé·¯ ÇØÁ¦ (Áßº¹ È£Ãâ ¹æÁö)
+        // ì´ë²¤íŠ¸ ì¤‘ë³µ í˜¸ì¶œì„ ë§‰ê¸° ìœ„í•´ ì¦‰ì‹œ ë“±ë¡ í•´ì œ
         SceneManager.sceneLoaded -= OnSceneLoadedAndTeleport;
 
-        // PlayerPrefs¿¡¼­ ¸ñÀûÁö Æ÷Å» ID ´Ù½Ã °¡Á®¿À±â
-        string storedTargetPortalID = PlayerPrefs.GetString("TargetPortalIDAfterSceneLoad", "");
-        if (string.IsNullOrEmpty(storedTargetPortalID))
+        // PlayerManagerë‚˜ ë‹¤ë¥¸ ìˆ˜ë‹¨ì„ í†µí•´ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ìŠµë‹ˆë‹¤.
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
         {
-            Debug.LogError("¾À ·Îµå ÈÄ TargetPortalIDAfterSceneLoad µ¥ÀÌÅÍ°¡ PlayerPrefs¿¡ ¾ø½À´Ï´Ù! ÇÃ·¹ÀÌ¾î¸¦ ¹èÄ¡ÇÒ ¼ö ¾ø½À´Ï´Ù.");
-            FinishTeleportation();
+            Debug.LogError("ìƒˆë¡œìš´ ì”¬ì—ì„œ 'Player'ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+            isTeleporting = false;
             return;
         }
 
-        // »õ·Î ·ÎµåµÈ ¾À¿¡¼­ ÇÃ·¹ÀÌ¾î ÂüÁ¶ ´Ù½Ã °¡Á®¿À±â
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®°¡ DontDestroyOnLoad µÇÁö ¾Ê¾Ò´Ù¸é, »õ·Î¿î ¾À¿¡¼­ ´Ù½Ã Ã£¾Æ¾ß ÇÔ.
-        // ¶Ç´Â ÇÃ·¹ÀÌ¾î ÇÁ¸®ÆÕÀ» ÀÎ½ºÅÏ½ºÈ­ ÇØ¾ß ÇÔ (PlayerRespawnManagerÀÇ ·ÎÁ÷°ú À¯»ç)
-        if (player == null || !player.activeInHierarchy) // ÇöÀç ¾À¿¡ ÇÃ·¹ÀÌ¾î°¡ ¾ø°Å³ª ºñÈ°¼ºÈ­µÇ¾î ÀÖ´Ù¸é
+        string storedTargetPortalID = PlayerPrefs.GetString("TargetPortalIDAfterSceneLoad", "");
+        if (string.IsNullOrEmpty(storedTargetPortalID))
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null)
-            {
-                // ÀÌ ºÎºĞÀº PlayerRespawnManager°¡ ÇÃ·¹ÀÌ¾î ÇÁ¸®ÆÕÀ» ÀÎ½ºÅÏ½ºÈ­ÇÏ´Â ·ÎÁ÷À» ´ã´çÇÏ´Â °ÍÀÌ ´õ ÁÁÀ½.
-                // ¿©±â¼­´Â ÇÃ·¹ÀÌ¾î°¡ ¾À¿¡ Á¸ÀçÇÑ´Ù°í °¡Á¤ÇÏ°Å³ª, GameManager°¡ ÇÃ·¹ÀÌ¾î¸¦ °ü¸®ÇÑ´Ù°í °¡Á¤.
-                Debug.LogError("»õ·Î¿î ¾À¿¡¼­ 'Player' ÅÂ±×¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù! ÇÃ·¹ÀÌ¾î ¹èÄ¡ ½ÇÆĞ.");
-                FinishTeleportation();
-                return;
-            }
+            Debug.LogError("PlayerPrefsì—ì„œ TargetPortalIDë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+            FinishTeleportation(player);
+            return;
         }
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®°¡ ºñÈ°¼ºÈ­µÇ¾î ÀÖ¾ú´Ù¸é È°¼ºÈ­
-        player.SetActive(true);
 
-
-        // ·ÎµåµÈ ¾À¿¡¼­ ¸ñÀûÁö Æ÷Å» Ã£±â
-        Portal[] allPortalsInNewScene = FindObjectsOfType<Portal>();
-        Portal targetPortal = null;
-
-        foreach (Portal p in allPortalsInNewScene)
-        {
-            if (p.portalID == storedTargetPortalID)
-            {
-                targetPortal = p;
-                break;
-            }
-        }
+        Portal targetPortal = FindTargetPortal(storedTargetPortalID);
 
         if (targetPortal != null)
         {
-            // ÇÃ·¹ÀÌ¾î À§Ä¡ ¹× È¸Àü ¼³Á¤ (Æ÷Å»ÀÇ ¹Ù·Î ¾Õ)
-            Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * 1.5f; // Æ÷Å» ¾Õ 1.5 À¯´Ö
+            // í”Œë ˆì´ì–´ë¥¼ ëª©ì ì§€ í¬íƒˆì˜ ìœ„ì¹˜ì™€ ë°©í–¥ìœ¼ë¡œ ì„¤ì •
+            Vector3 destination = targetPortal.transform.position + targetPortal.transform.forward * 6f;
             player.transform.position = destination;
             player.transform.rotation = targetPortal.transform.rotation;
-            Debug.Log($"ÇÃ·¹ÀÌ¾î¸¦ »õ·Î¿î ¾ÀÀÇ '{targetPortal.portalID}' Æ÷Å» À§Ä¡·Î ÀÌµ¿½ÃÄ×½À´Ï´Ù: {destination}");
+            Debug.Log($"í”Œë ˆì´ì–´ë¥¼ ìƒˆë¡œìš´ ì”¬ì˜ '{targetPortal.portalID}' í¬íƒˆ ìœ„ì¹˜ë¡œ ì´ë™ì‹œì¼°ìŠµë‹ˆë‹¤: {destination}");
         }
         else
         {
-            Debug.LogError($"»õ·Î¿î ¾À '{scene.name}'¿¡¼­ ¸ñÀûÁö Æ÷Å» ID '{storedTargetPortalID}'¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù! ÇÃ·¹ÀÌ¾î ¹èÄ¡ ½ÇÆĞ.");
+            Debug.LogError($"ìƒˆë¡œìš´ ì”¬ '{scene.name}'ì—ì„œ ëª©ì ì§€ í¬íƒˆ ID '{storedTargetPortalID}'ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤! í”Œë ˆì´ì–´ ë°°ì¹˜ ì‹¤íŒ¨.");
         }
 
-        // PlayerPrefs µ¥ÀÌÅÍ »èÁ¦ (¸ñÀûÁö Á¤º¸´Â ÇÑ ¹ø »ç¿ë ÈÄ »èÁ¦)
         PlayerPrefs.DeleteKey("TargetPortalIDAfterSceneLoad");
-        PlayerPrefs.Save();
-
-        // ÀÌµ¿ ¿Ï·á ÈÄ ÇÃ·¡±× ¸®¼Â ¹× ÇÃ·¹ÀÌ¾î È°¼ºÈ­
-        FinishTeleportation();
+        FinishTeleportation(player);
     }
 
-    void FinishTeleportation()
+    Portal FindTargetPortal(string portalID)
     {
-        // 1. È­¸é ÆäÀÌµå ÀÎ (¿É¼Ç)
-        // ¿¹¸¦ µé¾î ScreenFader.Instance.FadeIn(fadeDuration);
-        Debug.Log("È­¸é ÆäÀÌµå ÀÎ Áß...");
-        // yield return new WaitForSeconds(fadeDuration); // ½ÇÁ¦·Î´Â ÆäÀÌµå ÀÎÀÌ ¿Ï·áµÉ ¶§±îÁö ±â´Ù¸²
-
-        // 2. ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ È°¼ºÈ­
-        SetPlayerMovement(true);
-
-        // 3. ÅÚ·¹Æ÷Æ® ÇÃ·¡±× ¸®¼Â
-        isTeleporting = false;
-        playerInRange = false; // OnTriggerExit ¾øÀÌµµ ´Ù½Ã µé¾î°¥ ¼ö ÀÖµµ·Ï
-        Debug.Log("ÅÚ·¹Æ÷Æ® ¿Ï·á.");
+        Portal[] allPortals = FindObjectsOfType<Portal>();
+        foreach (Portal p in allPortals)
+        {
+            if (p.portalID == portalID)
+            {
+                return p;
+            }
+        }
+        return null;
     }
 
-    void SetPlayerMovement(bool enabled)
+    void FinishTeleportation(GameObject player)
+    {
+        // SceneLoaderì˜ ë¡œë”© UIê°€ ì‚¬ë¼ì§„ í›„ í”Œë ˆì´ì–´ ì´ë™ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
+        Debug.Log("í™”ë©´ ì „í™˜ ì™„ë£Œ. í”Œë ˆì´ì–´ ì´ë™ì„ ë‹¤ì‹œ í™œì„±í™”í•©ë‹ˆë‹¤.");
+        SetPlayerMovement(player, true);
+        isTeleporting = false;
+        Debug.Log("í…”ë ˆí¬íŠ¸ ì™„ë£Œ.");
+    }
+
+    void SetPlayerMovement(GameObject player, bool enabled)
     {
         if (player != null)
         {
-            // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓÀ» Á¦¾îÇÏ´Â ½ºÅ©¸³Æ®°¡ ÀÖ´Ù¸é ÇØ´ç ½ºÅ©¸³Æ®ÀÇ È°¼ºÈ­¸¦ Á¶Àı
-            // ¿¹:
-            // var controller = player.GetComponent<PlayerController>(); // ¿©·¯ºĞÀÇ ÇÃ·¹ÀÌ¾î ÄÁÆ®·Ñ·¯ ½ºÅ©¸³Æ®
-            // if (controller != null) controller.enabled = enabled;
-
-            // ¶Ç´Â Rigidbody¸¦ »ç¿ëÇÏ´Â °æ¿ì
-            // var rb = player.GetComponent<Rigidbody>();
-            // if (rb != null) rb.isKinematic = !enabled; // KinematicÀ¸·Î ¼³Á¤ÇÏ¸é ¹°¸®Àû ÀÌµ¿ ºÒ°¡
-
-            Debug.Log($"ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ {(enabled ? "È°¼ºÈ­" : "ºñÈ°¼ºÈ­")}.");
+            // ì‹¤ì œ í”„ë¡œì íŠ¸ì— ë§ëŠ” í”Œë ˆì´ì–´ ì´ë™ ì œì–´ ìŠ¤í¬ë¦½íŠ¸ë¥¼ í™œì„±í™”/ë¹„í™œì„±í™” í•˜ì„¸ìš”.
+            // ì˜ˆ: player.GetComponent<PlayerController>().enabled = enabled;
+            Debug.Log($"í”Œë ˆì´ì–´ ì›€ì§ì„ {(enabled ? "í™œì„±í™”" : "ë¹„í™œì„±í™”")}.");
         }
     }
 
-    // À¯´ÏÆ¼ ¿¡µğÅÍ¿¡¼­ Æ÷Å»ÀÇ Àü¹æÇâÀ» ½Ã°¢È­
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position, transform.localScale); // Æ÷Å» ¹üÀ§
+        Gizmos.DrawWireCube(transform.position, transform.localScale);
         Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position, transform.forward * 2f); // Æ÷Å» Àü¹æÇâ Ç¥½Ã
-        Gizmos.DrawSphere(transform.position + transform.forward * 2f, 0.2f); // Àü¹æÇâ ³¡Á¡
+        Gizmos.DrawRay(transform.position, transform.forward * 2f);
     }
 }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe4ea36dde9057458c07a96f161dcab, type: 3}
+  m_Name: attack22
+  m_EditorClassIdentifier: 
+  attackCount: 1
+  <animName>k__BackingField: attack22
+  <hitboxToUse>k__BackingField: 0
+  <impactStartTime>k__BackingField: 0
+  <impactEndTime>k__BackingField: 0
+  <isParry>k__BackingField: 0
+  <attackPhases>k__BackingField:
+  - animName: attack22_ready
+    hitboxToUse: 1
+    impactStartTime: 0
+    impactEndTime: 0
+    isParry: 0
+    attackZAngle: -35
+  - animName: attack22_slash
+    hitboxToUse: 1
+    impactStartTime: 0.21
+    impactEndTime: 0.9
+    isParry: 0
+    attackZAngle: -35

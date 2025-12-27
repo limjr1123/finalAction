@@ -433,9 +433,10 @@ GameObject:
   - component: {fileID: 8924629300212347042}
   - component: {fileID: 3486306561709582496}
   - component: {fileID: 1305192927322209996}
+  - component: {fileID: 5796363620988888909}
   m_Layer: 7
   m_Name: Monster_X_Black
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -495,8 +496,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35490eaf5725dae40bc5bd82f41bf6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fov: 180
+  fov: 360
   <target>k__BackingField: {fileID: 0}
+  <enemyType>k__BackingField: 0
 --- !u!114 &2548881174697248963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,6 +513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statData: {fileID: 11400000, guid: 6c3748e74fd885a4aabad5b981eea3d0, type: 2}
   <currentHealth>k__BackingField: 0
+  enemyName: 
   attackDamage:
     baseValue: 0
     modifiers: 
@@ -550,9 +553,13 @@ MonoBehaviour:
   criticalChance:
     baseValue: 0
     modifiers: []
-  criticalDamage:
+  criticalMultiplier:
     baseValue: 0
     modifiers: []
+  attackDamageRange:
+    min: 0
+    max: 0
+  damageRange: 0.2
 --- !u!114 &3686575619922822792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,6 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceToStand: 0
   adjustDistanceThreshold: 0.1
+  backstepDistance: 2
 --- !u!114 &6646351315816102494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,6 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f9e3fa61efb0b4cbdcf8d2da59ffd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitAnimationIndex: 0
 --- !u!114 &8864076697728465470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,10 +639,17 @@ MonoBehaviour:
   attacks:
   - {fileID: 11400000, guid: 196b2e633a5580b45931429654092893, type: 2}
   - {fileID: 11400000, guid: c95fd410b9fb3db4e82d6049a4f98b9b, type: 2}
+  skills: []
   weapon: {fileID: 0}
   leftHandCollider: {fileID: 4545155797044054257}
   rightHandCollider: {fileID: 1570383066609922536}
+  leftFootCollider: {fileID: 0}
+  rightFootCollider: {fileID: 0}
+  slash: {fileID: 0}
+  swing: {fileID: 0}
+  <hitEffectType>k__BackingField: 0
   attackState: 0
+  skillCooldownTimer: 0
 --- !u!195 &8924629300212347042
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -653,7 +669,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &3486306561709582496
@@ -706,6 +722,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &5796363620988888909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044956858299777166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f211072d0838bcb43b4ec2ba6af7564e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconType: 2
+  iconSize: 3
 --- !u!1 &1595328436999576805
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,8 +810,9 @@ GameObject:
   - component: {fileID: 6620381220499893470}
   - component: {fileID: 4545155797044054257}
   - component: {fileID: 7073540206461216016}
+  - component: {fileID: 2145758533230823241}
   m_Layer: 10
-  m_Name: LeftHandCollider
+  m_Name: LeftHandHitBox
   m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -850,6 +881,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &2145758533230823241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787180931877354987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!1 &1895021369230516184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,7 +1590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   sphereCollider: {fileID: 0}
-  enemyController: {fileID: 0}
+  aggroRange: 0
 --- !u!135 &427513832810078164
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1905,8 +1949,9 @@ GameObject:
   - component: {fileID: 3447410688511677662}
   - component: {fileID: 1570383066609922536}
   - component: {fileID: 4330646836132435555}
+  - component: {fileID: 7425664598610983806}
   m_Layer: 10
-  m_Name: RightHandCollider
+  m_Name: RightHandHitBox
   m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1975,6 +2020,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7425664598610983806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8506482662592386699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a480efd052b495e4092bbfac4424c599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffectType: 0
 --- !u!1 &9144611389784851359
 GameObject:
   m_ObjectHideFlags: 0

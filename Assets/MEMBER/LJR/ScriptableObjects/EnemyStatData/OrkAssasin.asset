@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95d823253eb4ca458a67d57ac2920a3, type: 3}
   m_Name: OrkAssasin
   m_EditorClassIdentifier: 
+  enemyName: "\uC624\uD06C\uC554\uC0B4\uC790"
   attackDamage: 20
   magicDamage: 0
-  maxHealth: 1000
+  maxHealth: 200
   defense: 10
   magicDefense: 10
   mana: 0
   manaRegen: 0
-  aggroRange: 300
-  attackRange: 1.5
+  aggroRange: 20
+  attackRange: 2.5
   moveSpeed: 5
   attackSpeed: 1
-  attackInterval: 2
+  attackInterval: 0.5
   criticalChance: 0.2
   criticalDamage: 1.5

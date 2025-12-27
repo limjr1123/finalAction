@@ -14,7 +14,7 @@ public class EnemyAttackState : EnemyState<EnemyController>
 
     public override void Execute()
     {
-        if (isAttacking)
+        if (isAttacking && !enemy.inGetHit)
             return;
 
         float distanceToPlayer = Vector3.Distance(enemy.target.transform.position, transform.position);
@@ -34,14 +34,27 @@ public class EnemyAttackState : EnemyState<EnemyController>
             {
                 float dot = Vector3.Dot(enemy.transform.forward, directionToPlayer);
 
-                if (dot < 0.9f)
+                if (enemy.enemyType == EnemyType.Melee)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+                    if (dot < 0.9f)
+                    {
+                        enemy.TargetChaseDirection(directionToPlayer);
+                    }
+                    else
+                    {
+                        TriggerMeleeAttack();
+                    }
                 }
-                else
+                else if (enemy.enemyType == EnemyType.Range)
                 {
-                    StartCoroutine(MeleeAttack());
+                    if (dot < 0.98f)
+                    {
+                        enemy.TargetChaseDirection(directionToPlayer);
+                    }
+                    else
+                    {
+                        TriggerRangeAttack();
+                    }
                 }
             }
         }
@@ -52,20 +65,56 @@ public class EnemyAttackState : EnemyState<EnemyController>
         }
     }
 
+    private void TriggerMeleeAttack()
+    {
+        if (isAttacking) return;
+        isAttacking = true;
+        enemy.StartCoroutine(MeleeAttack());
+    }
+
+    private void TriggerRangeAttack()
+    {
+        if (isAttacking) return;
+        isAttacking = true;
+        enemy.StartCoroutine(RangeAttack());
+    }
+
     IEnumerator MeleeAttack()
-    {        
+    {
         isAttacking = true;
         enemy.anim.applyRootMotion = true;
         enemy.meleeEnemy.TryToAttack();
         enemy.navAgent.isStopped = true;
         yield return new WaitUntil(() => enemy.meleeEnemy.attackState == EnemyAttackStateInfo.Idle);
 
-        enemy.anim.applyRootMotion = false;
-        enemy.navAgent.isStopped = false;
-        isAttacking = false;
+        // navAgent가 비활성화된 상태라면 코루틴 종료
+        if (enemy.navAgent.enabled)
+        {
+            enemy.anim.applyRootMotion = false;
+            enemy.navAgent.isStopped = false;
+            isAttacking = false;
+            if (enemy.IsInState(EnemyStates.Attack))
+                enemy.ChangeState(EnemyStates.Battle);
+        }
+    }
 
-        if (enemy.IsInState(EnemyStates.Attack))
-            enemy.ChangeState(EnemyStates.Battle);
+    IEnumerator RangeAttack()
+    {
+        isAttacking = true;
+        enemy.anim.applyRootMotion = true;
+        enemy.rangeEnemy.TryToAttack();
+        enemy.navAgent.isStopped = true;
+        yield return new WaitUntil(() => enemy.rangeEnemy.attackState == EnemyAttackStateInfo.Idle);
+
+        // navAgent가 비활성화된 상태라면 코루틴 종료
+        if (enemy.navAgent.enabled)
+        {
+            enemy.anim.applyRootMotion = false;
+            enemy.navAgent.isStopped = false;
+            isAttacking = false;
+            if (enemy.IsInState(EnemyStates.Attack))
+                enemy.ChangeState(EnemyStates.Battle);
+        }
     }
 
     public override void Exit()

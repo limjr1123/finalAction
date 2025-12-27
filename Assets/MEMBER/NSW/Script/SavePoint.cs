@@ -1,91 +1,97 @@
-using UnityEngine;
-using UnityEngine.SceneManagement; // ¾À ÀüÈ¯ ½Ã ÇÊ¿äÇÒ ¼ö ÀÖÀ½
+ï»¿using UnityEngine;
+using UnityEngine.SceneManagement; // ì”¬ ê´€ë¦¬ë¥¼ ìœ„í•´ í•„ìš”í•©ë‹ˆë‹¤.
 
+/// <summary>
+/// í”Œë ˆì´ì–´ê°€ ì§„ì… ì‹œ, ì§€ì •ëœ RespawnPointì˜ ìœ„ì¹˜ë¥¼ ì €ì¥í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸.
+/// </summary>
 public class SavePoint : MonoBehaviour
 {
     [Header("Save Point Settings")]
-    public string savePointID = "DefaultSavePoint"; // °¢ ¼¼ÀÌºê Æ÷ÀÎÆ®¸¦ ½Äº°ÇÒ °íÀ¯ ID
-    public GameObject player; // ÀúÀåÇÒ ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® (Inspector¿¡¼­ ÇÒ´ç)
-    public float saveDelay = 0.5f; // ÇÃ·¹ÀÌ¾î°¡ ¼¼ÀÌºê Æ÷ÀÎÆ®¿¡ µé¾î°£ ÈÄ ÀúÀå±îÁöÀÇ µô·¹ÀÌ
+    [Tooltip("ê° ì„¸ì´ë¸Œ í¬ì¸íŠ¸ë¥¼ ì‹ë³„í•  ê³ ìœ  ID (ì„ íƒ ì‚¬í•­)")]
+    public string savePointID = "DefaultSavePoint";
 
+    [Tooltip("ì´ ì„¸ì´ë¸Œ í¬ì¸íŠ¸ì™€ ì§ì„ ì´ë£¨ëŠ” ë¦¬ìŠ¤í° í¬ì¸íŠ¸ ì˜¤ë¸Œì íŠ¸ì˜ Transform")]
+    public Transform respawnPoint;
+
+    [Tooltip("í”Œë ˆì´ì–´ê°€ ì§„ì… í›„ ì €ì¥ê¹Œì§€ ê±¸ë¦¬ëŠ” ì‹œê°„(ì´ˆ)")]
+    public float saveDelay = 0.5f;
+
+    // í”Œë ˆì´ì–´ê°€ ë²”ìœ„ ë‚´ì— ìˆëŠ”ì§€ í™•ì¸í•˜ì—¬ ì¤‘ë³µ ì €ì¥ì„ ë°©ì§€í•˜ëŠ” í”Œë˜ê·¸
     private bool playerInRange = false;
 
+    /// <summary>
+    /// ìŠ¤í¬ë¦½íŠ¸ê°€ ì²˜ìŒ í™œì„±í™”ë  ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤.
+    /// í•„ìš”í•œ ì»´í¬ë„ŒíŠ¸ë‚˜ ì„¤ì •ì´ ì˜¬ë°”ë¥¸ì§€ í™•ì¸í•©ë‹ˆë‹¤.
+    /// </summary>
     void Start()
     {
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®°¡ ÇÒ´çµÇÁö ¾Ê¾Ò´Ù¸é, "Player" ÅÂ±×¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À½
-        if (player == null)
+        // ë¦¬ìŠ¤í° í¬ì¸íŠ¸ê°€ Inspectorì—ì„œ í• ë‹¹ë˜ì—ˆëŠ”ì§€ í™•ì¸
+        if (respawnPoint == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null)
-            {
-                Debug.LogError("SavePoint: Player GameObject not found. Please assign it in the Inspector or tag your player with 'Player'.");
-            }
+            // respawnPoint ë³€ìˆ˜ê°€ ë¹„ì–´ìˆìœ¼ë©´ ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ ì½˜ì†”ì— ì¶œë ¥í•©ë‹ˆë‹¤.
+            Debug.LogError($"SavePoint '{savePointID}'ì— RespawnPointê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤! Inspectorì—ì„œ ì„¤ì •í•´ì£¼ì„¸ìš”.", this);
         }
 
-        // ¼¼ÀÌºê Æ÷ÀÎÆ® ¿ÀºêÁ§Æ®¿¡ Collider°¡ ¾øÀ¸¸é °æ°í
-        if (GetComponent<Collider>() == null || !GetComponent<Collider>().isTrigger)
+        // ì´ ì˜¤ë¸Œì íŠ¸ì— Colliderê°€ ìˆê³ , Is Triggerê°€ ì¼œì ¸ ìˆëŠ”ì§€ í™•ì¸
+        Collider col = GetComponent<Collider>();
+        if (col == null || !col.isTrigger)
         {
-            Debug.LogWarning("SavePoint: This SavePoint needs a Collider component with 'Is Trigger' enabled to detect player entry.", this);
+            // íŠ¸ë¦¬ê±° ì„¤ì •ì´ ì—†ìœ¼ë©´ ê²½ê³  ë©”ì‹œì§€ë¥¼ ì½˜ì†”ì— ì¶œë ¥í•©ë‹ˆë‹¤.
+            Debug.LogWarning("SavePoint: ì´ ì˜¤ë¸Œì íŠ¸ëŠ” 'Is Trigger'ê°€ í™œì„±í™”ëœ Colliderê°€ í•„ìš”í•©ë‹ˆë‹¤.", this);
         }
     }
 
+    /// <summary>
+    /// ë‹¤ë¥¸ Colliderê°€ ì´ ì˜¤ë¸Œì íŠ¸ì˜ íŠ¸ë¦¬ê±° ë²”ìœ„ ì•ˆìœ¼ë¡œ ë“¤ì–´ì™”ì„ ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤.
+    /// </summary>
+    /// <param name="other">íŠ¸ë¦¬ê±°ì— ë“¤ì–´ì˜¨ ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ì˜ Collider</param>
     void OnTriggerEnter(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ¼¼ÀÌºê Æ÷ÀÎÆ® ¹üÀ§¿¡ µé¾î¿À¸é ÀúÀå
-        if (other.gameObject == player)
+        // ë“¤ì–´ì˜¨ ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ê°€ "Player"ì¸ì§€ í™•ì¸í•˜ê³ , ì•„ì§ ë²”ìœ„ ì•ˆì— ë“¤ì–´ì˜¤ì§€ ì•Šì•˜ë‹¤ë©´
+        if (other.CompareTag("Player") && !playerInRange)
         {
-            if (!playerInRange) // Áßº¹ ÀúÀåÀ» ¹æÁö
-            {
-                playerInRange = true;
-                Debug.Log($"ÇÃ·¹ÀÌ¾î '{player.name}'°¡ ¼¼ÀÌºê Æ÷ÀÎÆ® '{savePointID}'¿¡ ÁøÀÔÇß½À´Ï´Ù. Àá½Ã ÈÄ ÀúÀåµË´Ï´Ù.");
-                Invoke("PerformSave", saveDelay); // µô·¹ÀÌ ÈÄ ÀúÀå ÇÔ¼ö È£Ãâ
-            }
+            playerInRange = true; // í”Œë ˆì´ì–´ê°€ ë²”ìœ„ì— ë“¤ì–´ì™”ë‹¤ê³  í‘œì‹œ
+            Debug.Log($"í”Œë ˆì´ì–´ê°€ ì„¸ì´ë¸Œ í¬ì¸íŠ¸ '{savePointID}'ì— ì§„ì…í–ˆìŠµë‹ˆë‹¤.");
+
+            // ì§€ì •ëœ ë”œë ˆì´ ì´í›„ì— PerformSave í•¨ìˆ˜ë¥¼ í˜¸ì¶œ
+            Invoke("PerformSave", saveDelay);
         }
     }
 
+    /// <summary>
+    /// ë‹¤ë¥¸ Colliderê°€ ì´ ì˜¤ë¸Œì íŠ¸ì˜ íŠ¸ë¦¬ê±° ë²”ìœ„ ë°–ìœ¼ë¡œ ë‚˜ê°”ì„ ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤.
+    /// </summary>
+    /// <param name="other">íŠ¸ë¦¬ê±°ì—ì„œ ë‚˜ê°„ ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ì˜ Collider</param>
     void OnTriggerExit(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ¼¼ÀÌºê Æ÷ÀÎÆ® ¹üÀ§¿¡¼­ ¹ş¾î³ª¸é ÇÃ·¡±× ¸®¼Â
-        if (other.gameObject == player)
+        // ë‚˜ê°„ ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ê°€ "Player"ë¼ë©´
+        if (other.CompareTag("Player"))
         {
-            playerInRange = false;
-            Debug.Log($"ÇÃ·¹ÀÌ¾î '{player.name}'°¡ ¼¼ÀÌºê Æ÷ÀÎÆ® '{savePointID}'¿¡¼­ ¹ş¾î³µ½À´Ï´Ù.");
-            CancelInvoke("PerformSave"); // ÀúÀå µô·¹ÀÌ Áß ³ª°¬´Ù¸é Ãë¼Ò
+            playerInRange = false; // í”Œë ˆì´ì–´ê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚¬ë‹¤ê³  í‘œì‹œ
         }
     }
 
+    /// <summary>
+    /// ì‹¤ì œ ì €ì¥ ë¡œì§ì„ ìˆ˜í–‰í•˜ëŠ” í•¨ìˆ˜.
+    /// </summary>
     void PerformSave()
     {
-        if (player == null) return;
+        // respawnPointê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ë‹¤ë©´ í•¨ìˆ˜ë¥¼ ì¦‰ì‹œ ì¢…ë£Œ
+        if (respawnPoint == null) return;
 
-        // 1. ÇÃ·¹ÀÌ¾î À§Ä¡/·ÎÅ×ÀÌ¼Ç ÀúÀå
-        PlayerPrefs.SetFloat("PlayerPosX", player.transform.position.x);
-        PlayerPrefs.SetFloat("PlayerPosY", player.transform.position.y);
-        PlayerPrefs.SetFloat("PlayerPosZ", player.transform.position.z);
-        PlayerPrefs.SetFloat("PlayerRotY", player.transform.rotation.eulerAngles.y); // YÃà È¸Àü¸¸ ÀúÀå (Ä³¸¯ÅÍ ¹æÇâ)
+        // 1. í”Œë ˆì´ì–´ ìœ„ì¹˜ ëŒ€ì‹ , ì—°ê²°ëœ ë¦¬ìŠ¤í° í¬ì¸íŠ¸ì˜ ìœ„ì¹˜ë¥¼ ì €ì¥
+        PlayerPrefs.SetFloat("PlayerPosX", respawnPoint.position.x);
+        PlayerPrefs.SetFloat("PlayerPosY", respawnPoint.position.y);
+        PlayerPrefs.SetFloat("PlayerPosZ", respawnPoint.position.z);
+        PlayerPrefs.SetFloat("PlayerRotY", respawnPoint.rotation.eulerAngles.y); // ë¦¬ìŠ¤í° í¬ì¸íŠ¸ì˜ Yì¶• íšŒì „ê°’ ì €ì¥
 
-        // 2. ÇöÀç ¾À ÀÌ¸§ ÀúÀå (¾À ·Îµå½Ã »ç¿ë)
+        // 2. í˜„ì¬ ì”¬ ì´ë¦„ ì €ì¥
         PlayerPrefs.SetString("LastSceneName", SceneManager.GetActiveScene().name);
 
-        // 3. (¼±ÅÃ »çÇ×) °ÔÀÓ ÁøÇà »óÈ² ÀúÀå ¿¹½Ã
-        // ÀÌ ºÎºĞÀº °ÔÀÓÀÇ ´Ù¸¥ ½ºÅ©¸³Æ®¿¡¼­ PlayerPrefabs¸¦ ÅëÇØ Á¢±ÙÇÏ°Å³ª,
-        // SaveManager¿Í °°Àº Áß¾Ó °ü¸® ½ºÅ©¸³Æ®¸¦ ÅëÇØ ÀúÀå/·ÎµåÇÏ´Â °ÍÀÌ ÀÏ¹İÀû
-        // ¿©±â¼­´Â ¿¹½Ã·Î 'Coins'¿Í 'QuestProgress'¸¦ ÀúÀåÇÑ´Ù°í °¡Á¤
-        PlayerPrefs.SetInt("PlayerCoins", 100); // ÇöÀç ÄÚÀÎ ¼ö (¿¹½Ã)
-        PlayerPrefs.SetInt("QuestProgress", 2); // Äù½ºÆ® ÁøÇà ´Ü°è (¿¹½Ã)
-
-        // 4. PlayerPrefs º¯°æ»çÇ× Àû¿ë (¸Å¿ì Áß¿ä!)
+        // 3. PlayerPrefsì˜ ëª¨ë“  ë³€ê²½ì‚¬í•­ì„ ë””ìŠ¤í¬ì— ì‹¤ì œë¡œ ì €ì¥ (ë§¤ìš° ì¤‘ìš”!)
         PlayerPrefs.Save();
 
-        Debug.Log($"<color=lime>°ÔÀÓÀÌ '{savePointID}' ÁöÁ¡¿¡ ÀúÀåµÇ¾ú½À´Ï´Ù!</color>");
-
-        // ÀúÀå ¿Ï·á ¸Ş½ÃÁö Ç¥½Ã ¶Ç´Â »ç¿îµå Àç»ı µî Ãß°¡ È¿°ú
-        // GetComponent<AudioSource>()?.Play();
-    }
-
-    // ¿ÜºÎ¿¡¼­ °­Á¦·Î ÀúÀå ·ÎÁ÷À» È£ÃâÇØ¾ß ÇÒ °æ¿ì¸¦ ´ëºñ (¼±ÅÃ »çÇ×)
-    public void ForceSave()
-    {
-        PerformSave();
+        // ì €ì¥ ì™„ë£Œ ë¡œê·¸ë¥¼ ë¼ì„ìƒ‰(lime)ìœ¼ë¡œ ë³´ê¸° ì¢‹ê²Œ ì¶œë ¥
+        Debug.Log($"<color=lime>ê²Œì„ ì €ì¥ ì™„ë£Œ! ë¦¬ìŠ¤í° ìœ„ì¹˜({respawnPoint.position})ê°€ ì„¤ì •ë˜ì—ˆìŠµë‹ˆë‹¤.</color>");
     }
 }

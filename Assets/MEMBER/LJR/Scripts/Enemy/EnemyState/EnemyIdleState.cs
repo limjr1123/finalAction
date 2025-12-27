@@ -7,11 +7,11 @@ public class EnemyIdleState : EnemyState<EnemyController>
     public override void Enter(EnemyController owner)
     {
         enemy = owner;
+        enemy.anim.SetBool("BattleState", false);
     }
 
     public override void Execute()
     {
-        Debug.Log("Enemy is in Idle State");
         enemy.target = enemy.FindTarget();
         if(enemy.target != null)
         {
@@ -20,6 +20,11 @@ public class EnemyIdleState : EnemyState<EnemyController>
     }
 
     public override void Exit()
+    {
+
+    }
+
+    public void RandomMovePattern()
     {
 
     }

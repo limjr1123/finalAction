@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 3
   tags:
   - HitBox
+  - Enemy
+  - PlayerGuard
+  - PlayerParry
+  - Ground
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -18,11 +23,11 @@ TagManager:
   - HitBox
   - EnemyHitBox
   - EnemyVision
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlayerDodge
+  - MinimapIcons
+  - NPC
+  - Wall
+  - Obstacle
   - 
   - 
   - 
