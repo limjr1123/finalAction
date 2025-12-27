@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class RangeEnemy : MonoBehaviour
 {
-    EnemyController enemy;
+    EnemyController enemyController;
 
-    [SerializeField] GameObject weaponObj;      // 원거리 공격에 사용할 무기 오브젝트
-    [SerializeField] public BowController bow;  // bow 컨트롤러
+    [SerializeField] GameObject weaponObj;          // 원거리 공격에 사용할 무기 오브젝트
+    [SerializeField] public BowController bow;      // bow 컨트롤러
 
     [SerializeField] EnemyAttackData draw;  // 공격 애니메이션과 관련된 데이터
     [SerializeField] EnemyAttackData shoot; // 공격 애니메이션과 관련된 데이터
@@ -14,14 +14,13 @@ public class RangeEnemy : MonoBehaviour
     Animator anim;
 
     public bool inAction { get; private set; } = false; // 현재 공격 동작 중인지 여부  
-    public bool inGetHit { get; set; } = false; // 현재 피격 상태인지 여부
     public bool isShooting { get; set; } = false; // 공격 중인 상태인지 여부
 
     public EnemyAttackStateInfo attackState;
 
     private void Awake()
     {
-        enemy = GetComponent<EnemyController>();
+        enemyController = GetComponent<EnemyController>();
         anim = GetComponent<Animator>();
     }
 
@@ -32,12 +31,12 @@ public class RangeEnemy : MonoBehaviour
 
     private void Update()
     {
-        if(attackState == EnemyAttackStateInfo.Windup)
-            enemy.TargetChaseDirection(enemy.target.transform.position - transform.position);
+        if (attackState == EnemyAttackStateInfo.Windup)
+            enemyController.TargetChaseDirection(enemyController.target.transform.position - transform.position);
     }
     public void TryToAttack()
     {
-        if (!inAction && !inGetHit)
+        if (!inAction && !enemyController.inGetHit)
         {
             StartCoroutine(RangeAttack());
             inAction = true;
@@ -55,7 +54,7 @@ public class RangeEnemy : MonoBehaviour
 
     IEnumerator RangeAttack(Vector3? attackDir = null)
     {
-        Debug.Log("RangeEnemy Attack Start");
+        //Debug.Log("RangeEnemy Attack Start");
         inAction = true;
         isShooting = true; // 공격 중인 상태로 설정
 
@@ -66,7 +65,7 @@ public class RangeEnemy : MonoBehaviour
 
         while (isShooting)
         {
-            if(enemy.inGetHit)
+            if (enemyController.inGetHit || enemyController.stats.currentHealth <= 0)
             {
                 isShooting = false; // 피격 상태면 공격 중지
                 inAction = false;

@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +15,7 @@ public class MonsterHPUI : MonoBehaviour
 
     private EnemyStat currentTarget;
     private float lastDamageTime;
-
+    private float targetMaxHP;
 
     void Awake()
     {
@@ -43,6 +43,10 @@ public class MonsterHPUI : MonoBehaviour
         {
             HideUI();
         }
+        else
+        {
+            UpdateHP(currentTarget.currentHealth, targetMaxHP);
+        }
     }
 
 
@@ -51,8 +55,12 @@ public class MonsterHPUI : MonoBehaviour
         currentTarget = monster;
         monsterName.text = monster.enemyName;
         hpPanel.SetActive(true);
+        
+        targetMaxHP = monster.maxHealth.GetValue();
+
         UpdateHP(monster.currentHealth, monster.maxHealth.GetValue());
         lastDamageTime = Time.time;
+        
     }
 
 
